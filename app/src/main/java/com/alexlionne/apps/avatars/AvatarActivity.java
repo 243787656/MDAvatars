@@ -78,6 +78,7 @@ public class AvatarActivity extends AppCompatActivity {
 
         for(int i = 0;i<list.size();i++){
 
+            //TODO Ffix bug here
             EditionFragment fragment = new  EditionFragment().newInstance(list.get(i).get(0),list.get(i));
             list.get(i).remove(0);
             fragments.add(fragment);
