@@ -23,19 +23,19 @@ public class EditionFragment extends Fragment {
    protected View view;
     private ListView listView;
     private TextView textView;
-    private static ArrayList<ArrayList<String>> list;
-    private static String title;
+    private ArrayList<ArrayList<String>> list;
+    private String title;
 
 public EditionFragment(){
 
 }
-    public static final EditionFragment newInstance(String title,ArrayList list){
-        EditionFragment f = new EditionFragment();
-        EditionFragment.list = list;
-        EditionFragment.title = title;
-
-        return f;
+    public void setTitle(String title){
+        this.title = title;
     }
+    public void setList(ArrayList list){
+        this.list = list;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,6 +50,10 @@ public EditionFragment(){
         ArrayAdapter adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,list);
         listView.setAdapter(adapter);
         return view;
+    }
+
+    public String getTitle(){
+        return title;
     }
 
 

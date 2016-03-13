@@ -7,7 +7,7 @@ import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -29,10 +29,10 @@ import java.util.ArrayList;
 public class AvatarActivity extends AppCompatActivity {
     private WebView webview;
     public static Kit kit;
-    private EditionFragment fragment;
-    private android.app.FragmentTransaction ft;
     private FragmentManager fm;
-    private  ArrayList<EditionFragment> fragments;
+    private FragmentTransaction fragmentTransaction;
+    private EditionFragment fragment[];
+
 
 
     @SuppressLint("CommitTransaction")
@@ -61,45 +61,44 @@ public class AvatarActivity extends AppCompatActivity {
         webview.getSettings().setDisplayZoomControls(false);
         webview.getSettings().setUseWideViewPort(true);
         webview.setWebChromeClient(new WebChromeClient());
-        webview.setWebViewClient(new WebViewClient(){
+        webview.setWebViewClient(new WebViewClient() {
             @Override
-            public void onPageFinished(WebView view,String url){
+            public void onPageFinished(WebView view, String url) {
 
             }
-
 
 
         });
 
         kit.attachWebView(webview);
-        ArrayList<ArrayList<String>> list = kit.getAllcategories();
-        fragments = new ArrayList<>();
+        final ArrayList<ArrayList<String>> list = kit.getAllcategories();
+        fragment  = new EditionFragment[list.size()];
 
-
-        for(int i = 0;i<list.size();i++){
-
-            //TODO Ffix bug here
-            EditionFragment fragment = new  EditionFragment().newInstance(list.get(i).get(0),list.get(i));
+        for(int i = 0;i<list.size();i++) {
+            String title = list.get(i).get(0);
+            fragment[i] = new EditionFragment();
+            fragment[i].setTitle(title);
+            fragment[i].setList(list.get(i));
             list.get(i).remove(0);
-            fragments.add(fragment);
-            fm = getFragmentManager();
-            ft = fm.beginTransaction().add(R.id.container,fragments.get(0));
-            ft.commit();
+
         }
-        //fragment = fragments.get(0);
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.container, fragment[0]);
+        fragmentTransaction.commit();
 
 
         Button button = (Button)findViewById(R.id.change);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchFragment(fragments.get(1));
+                switchFragment(fragment[1]);
             }
         });
 
 
 
-                //kit.getListeners().get(0).get(1));
+        //kit.getListeners().get(0).get(1));
        /* button.setOnClickListener(
                 new View.OnClickListener() {
             @Override
@@ -113,15 +112,18 @@ public class AvatarActivity extends AppCompatActivity {
         });*/
 
     }
+    public void addFragment(int position){
+
+    }
     public void switchFragment(EditionFragment to){
         to = new EditionFragment();
-        ft = fm.beginTransaction();
-        ft.replace(R.id.container, to);
-        ft.commit();
+        fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.replace(R.id.container, to);
+        fragmentTransaction.commit();
     }
-public void attachKit(Kit kit){
-    AvatarActivity.kit = kit;
-}
+    public void attachKit(Kit kit){
+        AvatarActivity.kit = kit;
+    }
     public static Kit getKit(){
         return AvatarActivity.kit;
     }
