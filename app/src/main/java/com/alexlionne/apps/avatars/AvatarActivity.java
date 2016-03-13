@@ -15,6 +15,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -93,11 +94,8 @@ public class AvatarActivity extends AppCompatActivity {
                 switchFragment(fragment[1]);
             }
         });
-        for(int i = 0;i<kit.getListeners().size();i++) {
-            fragment[i].getListView();
-            setListener(v,i,kit.getListeners().get(i+1));
 
-        }
+
 
 
 
@@ -116,16 +114,17 @@ public class AvatarActivity extends AppCompatActivity {
 
     }
 
-    private void setListener(int i) {
 
-    }
+
 
     public void addFragment(int i){
         String title = list.get(i).get(0);
         fragment[i] = new EditionFragment();
+        fragment[i].setPosition(i);
         fragment[i].setTitle(title);
         fragment[i].setList(list.get(i));
         list.get(i).remove(0);
+        fragment[i].setListener(kit.getListeners().get(i).get(i));
     }
     public void switchFragment(EditionFragment to){
         to = new EditionFragment();

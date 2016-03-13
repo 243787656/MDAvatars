@@ -25,10 +25,19 @@ public class EditionFragment extends Fragment {
     private TextView textView;
     private ArrayList<ArrayList<String>> list;
     private String title;
+    private int position;
+    private View.OnClickListener listener;
+
 
 public EditionFragment(){
 
 }
+    public void setPosition(int pos){
+        this.position = pos;
+    }
+    public int getPosition(){
+        return this.position;
+    }
     public void setTitle(String title){
         this.title = title;
     }
@@ -55,9 +64,29 @@ public EditionFragment(){
 
         ArrayAdapter adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,list);
         listView.setAdapter(adapter);
+
+        View v = getViewByPosition(position, listView);
+        v.setOnClickListener(clickListener());
+
         return view;
     }
+    public void setListener(View.OnClickListener listener){
+        this.listener = listener;
+    }
+    public View.OnClickListener clickListener(){
+        return listener;
+    }
+    public View getViewByPosition(int pos, ListView listView) {
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
 
+        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+            return listView.getAdapter().getView(pos, null, listView);
+        } else {
+            final int childIndex = pos - firstListItemPosition;
+            return listView.getChildAt(childIndex);
+        }
+    }
     public String getTitle(){
         return title;
     }

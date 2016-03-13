@@ -73,7 +73,7 @@ public class GoogleKitOne extends Kit {
 
             }
         };
-        head.add(head_style);
+
 
         ArrayList<ArrayList<View.OnClickListener>> result = new ArrayList<>();
         result.add(head);
