@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class EditionFragment extends Fragment {
    protected View mView;
    protected View view;
-    private ListView listView;
+    public static ListView listView;
     private TextView textView;
     private ArrayList<ArrayList<String>> list;
     private String title;
@@ -34,6 +34,12 @@ public EditionFragment(){
     }
     public void setList(ArrayList list){
         this.list = list;
+    }
+    public ArrayList getList(){
+        return this.list;
+    }
+    public ListView getListView(){
+        return listView;
     }
 
     @Override

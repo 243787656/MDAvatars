@@ -32,6 +32,7 @@ public class AvatarActivity extends AppCompatActivity {
     private FragmentManager fm;
     private FragmentTransaction fragmentTransaction;
     private EditionFragment fragment[];
+    private ArrayList<ArrayList<String>> list;
 
 
 
@@ -71,15 +72,11 @@ public class AvatarActivity extends AppCompatActivity {
         });
 
         kit.attachWebView(webview);
-        final ArrayList<ArrayList<String>> list = kit.getAllcategories();
+        list = kit.getAllcategories();
         fragment  = new EditionFragment[list.size()];
 
         for(int i = 0;i<list.size();i++) {
-            String title = list.get(i).get(0);
-            fragment[i] = new EditionFragment();
-            fragment[i].setTitle(title);
-            fragment[i].setList(list.get(i));
-            list.get(i).remove(0);
+           addFragment(i);
 
         }
         FragmentManager fragmentManager = getFragmentManager();
@@ -89,12 +86,18 @@ public class AvatarActivity extends AppCompatActivity {
 
 
         Button button = (Button)findViewById(R.id.change);
+        assert button != null;
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switchFragment(fragment[1]);
             }
         });
+        for(int i = 0;i<kit.getListeners().size();i++) {
+            fragment[i].getListView();
+            setListener(v,i,kit.getListeners().get(i+1));
+
+        }
 
 
 
@@ -112,8 +115,17 @@ public class AvatarActivity extends AppCompatActivity {
         });*/
 
     }
-    public void addFragment(int position){
 
+    private void setListener(int i) {
+
+    }
+
+    public void addFragment(int i){
+        String title = list.get(i).get(0);
+        fragment[i] = new EditionFragment();
+        fragment[i].setTitle(title);
+        fragment[i].setList(list.get(i));
+        list.get(i).remove(0);
     }
     public void switchFragment(EditionFragment to){
         to = new EditionFragment();

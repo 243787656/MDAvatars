@@ -14,6 +14,18 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_gravity="left|top"
+        android:minHeight="3dp"
+        android:maxHeight="3dp"
+        android:layout_above="@+id/container"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#fff" />
     <FrameLayout
         android:background="#fff"
         android:layout_width="match_parent"
@@ -21,14 +33,7 @@
         android:layout_alignParentBottom="true"
         android:id="@+id/container">
 
-        <ProgressBar
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/progressBar"
-            android:layout_gravity="left|top"
-            android:minHeight="3dp"
-            android:maxHeight="3dp" />
+
     </FrameLayout>
     <Button
         style="?android:attr/buttonStyleSmall"
