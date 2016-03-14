@@ -7,6 +7,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 
 import com.alexlionne.apps.avatars.adapters.KitAdapter;
 import com.alexlionne.apps.avatars.objects.kits.GoogleKitOne;
@@ -24,7 +26,7 @@ public class Kit {
     private String name;
     private String smalldesc;
     private int showcase;
-    private ArrayList<ArrayList<View.OnClickListener>> listeners;
+    private ArrayList<AdapterView.OnItemClickListener> listeners;
     private IconicsDrawable icon;
     private String svg_path;
     private ArrayList<ArrayList<String>> category;
@@ -84,12 +86,12 @@ public class Kit {
         this.category = category;
     }
 
-    public void setListener(ArrayList<ArrayList<View.OnClickListener>> listener) {
+    public void setListener(ArrayList<AdapterView.OnItemClickListener> listener) {
         this.listeners = listener;
 
     }
 
-    public ArrayList<ArrayList<View.OnClickListener>> getListeners() {
+    public ArrayList<AdapterView.OnItemClickListener> getListeners() {
         return this.listeners;
     }
 

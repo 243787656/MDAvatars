@@ -9,9 +9,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alexlionne.apps.avatars.AvatarActivity;
 import com.alexlionne.apps.avatars.R;
@@ -19,14 +21,15 @@ import com.alexlionne.apps.avatars.R;
 import java.util.ArrayList;
 
 public class EditionFragment extends Fragment {
-   protected View mView;
-   protected View view;
+    protected View mView;
+    protected View view;
     public static ListView listView;
     private TextView textView;
     private ArrayList<ArrayList<String>> list;
     private String title;
     private int position;
-    private View.OnClickListener listener;
+    private ArrayList<AdapterView.OnItemClickListener> listener;
+    private int progress;
 
 
 public EditionFragment(){
@@ -64,32 +67,28 @@ public EditionFragment(){
 
         ArrayAdapter adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,list);
         listView.setAdapter(adapter);
-
-        View v = getViewByPosition(position, listView);
-        v.setOnClickListener(clickListener());
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        listView.setOnItemClickListener(listener.get(position));
 
         return view;
     }
-    public void setListener(View.OnClickListener listener){
+    public void setListener(ArrayList<AdapterView.OnItemClickListener> listener){
         this.listener = listener;
     }
-    public View.OnClickListener clickListener(){
-        return listener;
-    }
-    public View getViewByPosition(int pos, ListView listView) {
-        final int firstListItemPosition = listView.getFirstVisiblePosition();
-        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+    public AdapterView.OnItemClickListener getListener(int position){
+        return listener.get(position);
 
-        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
-            return listView.getAdapter().getView(pos, null, listView);
-        } else {
-            final int childIndex = pos - firstListItemPosition;
-            return listView.getChildAt(childIndex);
-        }
     }
     public String getTitle(){
         return title;
     }
+    public void setProgress(int progress){
+        this.progress = progress;
+    }
+    public int getProgress(){
+        return this.progress;
+    }
+
 
 
 

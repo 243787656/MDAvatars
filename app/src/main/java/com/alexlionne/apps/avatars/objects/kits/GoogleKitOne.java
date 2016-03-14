@@ -8,9 +8,11 @@ import android.os.Parcelable;
 import android.support.v7.graphics.Palette;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.alexlionne.apps.avatars.R;
+import com.alexlionne.apps.avatars.adapters.KitAdapter;
 import com.alexlionne.apps.avatars.objects.Kit;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -59,24 +61,27 @@ public class GoogleKitOne extends Kit {
 
    return result;
     }
-
-    public ArrayList<ArrayList<View.OnClickListener>> getGoogleKitOneListeners() {
-        ArrayList<View.OnClickListener> head = new ArrayList<>();
-        //adding a first null element to override Title in over Arrays
-        head.add(null);
-        View.OnClickListener head_style = new View.OnClickListener() {
+    public ArrayList<AdapterView.OnItemClickListener> getGoogleKitOneListeners(){
+        ArrayList<AdapterView.OnItemClickListener> list = new ArrayList<>();
+        AdapterView.OnItemClickListener head_list = new AdapterView.OnItemClickListener(){
             @Override
-            public void onClick(View v) {
-                Toast.makeText(context,"test",Toast.LENGTH_LONG).show();
-                String javascript = "javascript:document.getElementById('body').setAttribute('fill','"+"none"/*+Utils.convertHexColorString(getResources().getColor(android.R.color.transparent))*/  +"');";
-                       GoogleKitOne.super.getWebView().loadUrl(javascript);
+            public void onItemClick(AdapterView<?> arg0, View v, int p, long arg3) {
+                switch (p) {
+                    case 0:
+                        String javascript = "javascript:document.getElementById('body').setAttribute('fill','"+"none"/*+Utils.convertHexColorString(getResources().getColor(android.R.color.transparent))*/  +"');";
+                        GoogleKitOne.super.getWebView().loadUrl(javascript);
+                        break;
+
+                    case 1:
+                        Toast.makeText(context,"case 1 clicked !",Toast.LENGTH_LONG).show();
+                        break;
+                }
+
 
             }
         };
+        list.add(head_list);
+        list.add(head_list);
+    return list;}
 
-
-        ArrayList<ArrayList<View.OnClickListener>> result = new ArrayList<>();
-        result.add(head);
-        return result;
-    }
 }

@@ -28,13 +28,16 @@ import java.util.ArrayList;
 
 
 public class AvatarActivity extends AppCompatActivity {
+    private int currentFragment ;
     private WebView webview;
     public static Kit kit;
     private FragmentManager fm;
     private FragmentTransaction fragmentTransaction;
     private EditionFragment fragment[];
     private ArrayList<ArrayList<String>> list;
-
+    private EditionFragment pre;
+    private EditionFragment post;
+    private EditionFragment current;
 
 
     @SuppressLint("CommitTransaction")
@@ -46,9 +49,9 @@ public class AvatarActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-        ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
-        progressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
-        progressBar.setProgress(35);
+        final ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        progressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.md_grey_900), PorterDuff.Mode.SRC_IN);
+
         webview = (WebView) findViewById(R.id.webView1);
         webview.getSettings().setJavaScriptEnabled(true);
 
@@ -84,14 +87,31 @@ public class AvatarActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.container, fragment[0]);
         fragmentTransaction.commit();
+        currentFragment=0;
+        setCurrentFragment(fragment[currentFragment]);
+        setNextFragment(fragment[currentFragment + 1]);
+        if(getCurrentFragment().getPosition()!=0){
+            setPreviousFragment(fragment[currentFragment - 1]);
+        }
 
+        final int position = getCurrentFragment().getPosition();
+
+
+        progressBar.setProgress(getCurrentFragment().getProgress());
 
         Button button = (Button)findViewById(R.id.change);
         assert button != null;
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchFragment(fragment[1]);
+
+                switchFragment(getNextFragment());
+                progressBar.setProgress(getNextFragment().getProgress());
+                setNextFragment(fragment[position+1]);
+                if(getCurrentFragment().getPosition() != 0) {
+                    setPreviousFragment(fragment[position - 1]);
+                }
+
             }
         });
 
@@ -118,19 +138,24 @@ public class AvatarActivity extends AppCompatActivity {
 
 
     public void addFragment(int i){
+        int UNIT_SIZE = (i+1)*(100 / fragment.length) ;
         String title = list.get(i).get(0);
         fragment[i] = new EditionFragment();
         fragment[i].setPosition(i);
+        fragment[i].setListener(kit.getListeners());
         fragment[i].setTitle(title);
         fragment[i].setList(list.get(i));
+        fragment[i].setProgress(UNIT_SIZE);
         list.get(i).remove(0);
-        fragment[i].setListener(kit.getListeners().get(i).get(i));
+
     }
     public void switchFragment(EditionFragment to){
-        to = new EditionFragment();
-        fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.replace(R.id.container, to);
-        fragmentTransaction.commit();
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.container, to);
+        transaction.commit();
+
+
     }
     public void attachKit(Kit kit){
         AvatarActivity.kit = kit;
@@ -138,6 +163,29 @@ public class AvatarActivity extends AppCompatActivity {
     public static Kit getKit(){
         return AvatarActivity.kit;
     }
+
+    public void setNextFragment(EditionFragment post){
+        this.post = post;
+    }
+    public EditionFragment getNextFragment(){
+        return this.post;
+    }
+    public void setCurrentFragment(EditionFragment current){
+        this.current = current;
+    }
+    public EditionFragment getCurrentFragment(){
+        return  this.current;
+    }
+    public void setPreviousFragment(EditionFragment pre)throws IllegalArgumentException{
+        if(pre.getPosition()==0) {
+            throw new IllegalArgumentException("current is 0!");
+        }
+        this.pre = pre;
+    }
+    public EditionFragment getPreviousFragment(){
+        return this.pre;
+    }
+
 
 
 
