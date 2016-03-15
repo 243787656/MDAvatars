@@ -272,6 +272,7 @@ switch (p) {
 case 0 correspond to `Color` Item into Background Array :p
 
 As we need to change color i've imported `com.kennyc.colorchooser.ColorChooserDialog` to build the DialogChooser
+
 Set an array of color
 ```java
 .colors(R.array.md_colors)
@@ -298,5 +299,20 @@ Set other attributes
                                 .show(AvatarActivity.fragmentManager, null);
 ```
 
+#####Do the same for all items and you class will be ok !
 
+###Latest step, you will need to edit AvatarActivity class like below and add your kit to the condition
 
+```java
+...
+String current = getIntent().getStringExtra("kit")
+        if (current.equals("Google-Kit I")){
+            kit = new GoogleKitOne(this);
+        }else if(current.equals("Android Kit")){
+            kit = new AndroidKit(this);
+        }
+        attachKit(kit);
+...
+```
+
+###All is done do not forget to contact me if needed ! 
