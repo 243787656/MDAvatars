@@ -85,25 +85,85 @@ You will create your kit object via an Activity so we need to get its context to
 ```
 
 Set a name to your kit, a small description and showcase image and an icon that appear into Kits's dashboard
-
+```java
         super.setName("Google-Kit I");
         super.setSmallDesc("Material palette, grain shadows,rounded shapes ");
         super.setShowcase(R.drawable.gmd_kit_1);
         super.setIcon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_google).sizeDp(18));
-
+```
 
 I assume you've store your `.svg` file into Asset folder, link your kit to its svg 
+
 ```java
     super.setSvg("file:///android_asset/android_kit.html");
 ```
 
 As I said before a kit need 2 Arrays :
+
 ```java
         super.setCategories(getAndroidKitCategories());
         super.setListener(getAndroidKitListeners());
 ```
+A categorie one and another for listeners.
 
-A categorie one and another for listeners
-Let's create them
 
 ####Arrays
+First ArrayList is about Categories to be displayed in fragments
+```java
+private ArrayList<ArrayList<String>> getAndroidKitCategories() {
+        ArrayList<String> background = new ArrayList<>();
+        background.add("Background");
+        background.add("Color");
+
+        ArrayList<String> head = new ArrayList<>();
+        head.add("Head");
+        head.add("Color");
+
+        ArrayList<ArrayList<String>> result = new ArrayList<>();
+        result.add(background);
+        result.add(head);
+
+        return result;
+    }
+```
+####Explanations
+
+Here we have an Array background 
+
+```java
+ArrayList<String> background = new ArrayList<>();
+        background.add("Background");
+        background.add("Color");
+        background.add("Image");
+
+```
+that contain a Title (all the time the first element do not forget it !)
+
+```java
+        background.add("Background");
+```
+
+and item to be displayed in a ListView
+
+```java
+        background.add("Color");
+        background.add("Image");
+```
+This will be displayed in 1 Fragment, you can make more if you want more Categories : 
+```java
+ArrayList<String> head = new ArrayList<>();
+        head.add("Head");
+        head.add("Color");
+```
+
+Store all those Array into a result Array that you will return : 
+```java
+ArrayList<ArrayList<String>> result = new ArrayList<>();
+        result.add(background);
+        result.add(head);
+
+        return result;
+```
+
+You're done !, you've just create all categories, now you need to associate all items to a custom
+Listener, its why we need a second Array of ArrayList ! 
