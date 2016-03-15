@@ -50,6 +50,7 @@ public class GoogleKitOne extends Kit {
             super.setSvg("file:///android_asset/gmd_kit_1.html");
             super.setCategories(getGoogleKitOneCategories());
             super.setListener(getGoogleKitOneListeners());
+            super.setDefaultBgColor(context.getResources().getColor(R.color.md_green_200));
 
 
         }

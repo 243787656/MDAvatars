@@ -25,11 +25,12 @@ public class AndroidKit extends Kit {
         this.context = context.getApplicationContext();
         super.setName("Android Kit");
         super.setSmallDesc("Simple Bugdroid ! ");
-        super.setShowcase(R.drawable.gmd_kit_1);
+        super.setShowcase(R.drawable.android_kit);
         super.setIcon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_android).sizeDp(18));
         super.setSvg("file:///android_asset/android_kit.html");
         super.setCategories(getAndroidKitCategories());
         super.setListener(getAndroidKitListeners());
+        super.setDefaultBgColor(context.getResources().getColor(R.color.md_green_300));
     }
 
     private ArrayList<ArrayList<String>> getAndroidKitCategories() {

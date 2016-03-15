@@ -89,10 +89,11 @@ public class AvatarActivity extends AppCompatActivity {
         webview.getSettings().setDisplayZoomControls(false);
         webview.getSettings().setUseWideViewPort(true);
         webview.setWebChromeClient(new WebChromeClient());
+        webview.setBackgroundColor(kit.getDefaultBgColor());
         webview.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-
+                super.onPageFinished(view, url);
             }
 
 

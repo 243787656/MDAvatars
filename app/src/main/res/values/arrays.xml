@@ -7,7 +7,36 @@
         <item>Instagram</item>
         <item>Facebook</item>
     </string-array>
-
+    <string-array name="md_colors_skin">
+        <item>#FFF590</item>
+        <item>#FFF176</item>
+        <item>#FFE082</item>
+        <item>#FFD54F</item>
+        <item>#FFCC80</item>
+        <item>#FFB74D</item>
+        <item>#FFAB91</item>
+        <item>#FF8A65</item>
+        <item>#6D4C41</item>
+        <item>#5D4037</item>
+        <item>#4E342E</item>
+        <item>#3E2723</item>
+    </string-array>
+    <string-array name="md_colors_skin_plus">
+        <item>#FFF590</item>
+        <item>#FFF176</item>
+        <item>#FFE082</item>
+        <item>#FFD54F</item>
+        <item>#FFCC80</item>
+        <item>#FFB74D</item>
+        <item>#FFAB91</item>
+        <item>#FF8A65</item>
+        <item>#6D4C41</item>
+        <item>#5D4037</item>
+        <item>#4E342E</item>
+        <item>#3E2723</item>
+        <item>#FFFFFF</item>
+        <item>#000000</item>
+    </string-array>
     <string-array name="md_colors">
 
     <item>#FFEBEE</item>

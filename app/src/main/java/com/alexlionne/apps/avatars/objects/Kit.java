@@ -27,6 +27,7 @@ public class Kit {
     private static ArrayList<Kit> kitArrayList;
     private String name;
     private String smalldesc;
+    private int bgcolor;
     private int showcase;
     private ArrayList<AdapterView.OnItemClickListener> listeners;
     private IconicsDrawable icon;
@@ -58,6 +59,13 @@ public class Kit {
 
     public String getSvg() {
         return this.svg_path;
+    }
+
+    public void setDefaultBgColor(int bgcolor){
+        this.bgcolor = bgcolor;
+    }
+    public int getDefaultBgColor(){
+        return this.bgcolor;
     }
 
     public void setName(String name) {
@@ -111,9 +119,10 @@ public class Kit {
 
     public static ArrayList<Kit> getAllKits() {
         kitArrayList = new ArrayList<>();
-        kitArrayList.add(new Kit(context).with(new GoogleKitOne(context)));
         kitArrayList.add(new Kit(context).with(new AndroidKit(context)));
+        kitArrayList.add(new Kit(context).with(new GoogleKitOne(context)));
         kitArrayList.add(new Kit(context).with(new GoogleKitTwo(context)));
+
 
         return kitArrayList;
     }

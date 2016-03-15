@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public class GoogleKitTwo extends Kit {
     private Context context;
+    private static int selectedColor ;
 
 
     public GoogleKitTwo(Context context) {
@@ -24,11 +25,12 @@ public class GoogleKitTwo extends Kit {
         this.context = context.getApplicationContext();
         super.setName("Google-Kit II");
         super.setSmallDesc("Material palette, grain shadows,rounded shapes ");
-        super.setShowcase(R.drawable.gmd_kit_1);
-        super.setIcon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_google_circles_group).sizeDp(18));
+        super.setShowcase(R.drawable.gmd_kit_2);
+        super.setIcon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_google).sizeDp(18));
         super.setSvg("file:///android_asset/gmd_kit_2.html");
         super.setCategories(getGoogleKitTwoCategories());
         super.setListener(getGoogleKitTwoListeners());
+        super.setDefaultBgColor(context.getResources().getColor(R.color.md_orange_900));
     }
 
     private ArrayList<ArrayList<String>> getGoogleKitTwoCategories() {
@@ -40,14 +42,18 @@ public class GoogleKitTwo extends Kit {
         head.add("Head");
         head.add("Color");
 
-        ArrayList<String> arms = new ArrayList<>();
-        arms.add("Arms");
-        arms.add("Left arm Color");
-        arms.add("Right arm Color");
+        ArrayList<String> hand = new ArrayList<>();
+        hand.add("Hand");
+        hand.add("hand");
+
+        ArrayList<String> hairs = new ArrayList<>();
+        hairs.add("Hairs");
+        hairs.add("Color");
+
 
         ArrayList<String> body = new ArrayList<>();
-        body.add("Body");
-        body.add("Body Color");
+        body.add("Clothes");
+        body.add("Clothes Color");
 
         ArrayList<String> saves = new ArrayList<>();
         saves.add("Save and options");
@@ -57,7 +63,8 @@ public class GoogleKitTwo extends Kit {
         ArrayList<ArrayList<String>> result = new ArrayList<>();
         result.add(background);
         result.add(head);
-        result.add(arms);
+        result.add(hand);
+        result.add(hairs);
         result.add(body);
         result.add(saves);
 
@@ -81,13 +88,15 @@ public class GoogleKitTwo extends Kit {
                                     @Override
                                     public void onColorSelect(int color) {
 
+                                        selectedColor = color;
                                         GoogleKitTwo.super.getWebView().setBackgroundColor(color);
                                     }
                                 }))
                                 .positiveButton("Okay")
                                 .negativeButton("Cancel")
                                 .title("Select Color")
-                                .positiveButtonColor(Color.BLUE)
+                                .selectedColor(selectedColor)
+                                .positiveButtonColor(context.getResources().getColor(R.color.accent))
                                 .build()
                                 .show(AvatarActivity.fragmentManager, null);
 
@@ -110,11 +119,11 @@ public class GoogleKitTwo extends Kit {
                     case 0:
 
                         new ColorChooserDialog.Builder(context.getApplicationContext())
-                                .colors(R.array.md_colors)
+                                .colors(R.array.md_colors_skin)
                                 .listener((new ColorChooserDialog.ColorListener() {
                                     @Override
                                     public void onColorSelect(int color) {
-                                        String javascript = " javascript:document.getElementById('head').setAttribute('fill','"+ Utils.convertHexColorString(color)  +"');";
+                                        String javascript = " javascript:document.getElementById('head').setAttribute('fill','" + Utils.convertHexColorString(color) + "');";
                                         GoogleKitTwo.super.getWebView().loadUrl(javascript);
                                     }
                                 }))
@@ -131,7 +140,7 @@ public class GoogleKitTwo extends Kit {
                 }
             }
         };
-        AdapterView.OnItemClickListener arms = new AdapterView.OnItemClickListener(){
+        AdapterView.OnItemClickListener hand = new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> arg0, View v, int p, long arg3) {
 
@@ -139,11 +148,11 @@ public class GoogleKitTwo extends Kit {
                 switch (p) {
                     case 0:
                         new ColorChooserDialog.Builder(context.getApplicationContext())
-                                .colors(R.array.md_colors)
+                                .colors(R.array.md_colors_skin_plus)
                                 .listener((new ColorChooserDialog.ColorListener() {
                                     @Override
                                     public void onColorSelect(int color) {
-                                        String javascript = " javascript:document.getElementById('lef_x5F_arm').setAttribute('fill','"+ Utils.convertHexColorString(color)  +"');";
+                                        String javascript = " javascript:document.getElementById('hand').setAttribute('fill','"+ Utils.convertHexColorString(color)  +"');";
                                         GoogleKitTwo.super.getWebView().loadUrl(javascript);
                                     }
                                 }))
@@ -156,17 +165,39 @@ public class GoogleKitTwo extends Kit {
 
 
                         break;
-                    case 1:
+
+
+                }
+            }
+        };
+        AdapterView.OnItemClickListener clothes = new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View v, int p, long arg3) {
+
+
+                switch (p) {
+                    case 0:
 
                         new ColorChooserDialog.Builder(context.getApplicationContext())
                                 .colors(R.array.md_colors)
                                 .listener((new ColorChooserDialog.ColorListener() {
                                     @Override
                                     public void onColorSelect(int color) {
-                                        String javascript = " javascript:document.getElementById('right_x5F_arm').setAttribute('fill','"+ Utils.convertHexColorString(color)  +"');";
+                                        String javascript = "javascript:document.getElementById('body').setAttribute('fill','" + Utils.convertHexColorString(color) + "');";
                                         GoogleKitTwo.super.getWebView().loadUrl(javascript);
-                                    }
-                                }))
+                                        String javascript_more = "javascript:document.getElementById('uparm').setAttribute('fill','" + Utils.convertHexColorString(color) + "');";
+                                        GoogleKitTwo.super.getWebView().loadUrl(javascript_more);
+                                        String javascript_shadow_one = "javascript:var svgElement=document.getElementById('shadow1');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.getAccentDarkColor(context, Utils.convertHexColorString(color)) + "');};";
+                                        GoogleKitTwo.super.getWebView().loadUrl(javascript_shadow_one);
+                                        String javascript_shadow_two = "javascript:var svgElement=document.getElementById('shadow2');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.getAccentDarkColor(context, Utils.convertHexColorString(color)) + "');};";
+                                        GoogleKitTwo.super.getWebView().loadUrl(javascript_shadow_two);
+                                        String javascript_shadow_three = "javascript:var svgElement=document.getElementById('shadow3');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.getAccentDarkColor(context, Utils.convertHexColorString(color)) + "');};";
+                                        GoogleKitTwo.super.getWebView().loadUrl(javascript_shadow_three);
+
+
+
+                                    }}))
+
                                 .positiveButton("Okay")
                                 .negativeButton("Cancel")
                                 .title("Select Color")
@@ -180,7 +211,7 @@ public class GoogleKitTwo extends Kit {
                 }
             }
         };
-        AdapterView.OnItemClickListener body = new AdapterView.OnItemClickListener(){
+        AdapterView.OnItemClickListener hairs = new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> arg0, View v, int p, long arg3) {
 
@@ -193,7 +224,7 @@ public class GoogleKitTwo extends Kit {
                                 .listener((new ColorChooserDialog.ColorListener() {
                                     @Override
                                     public void onColorSelect(int color) {
-                                        String javascript = " javascript:document.getElementById('body').setAttribute('fill','"+ Utils.convertHexColorString(color)  +"');";
+                                        String javascript = " javascript:document.getElementById('hairskrillex').setAttribute('fill','"+ Utils.convertHexColorString(color)  +"');";
                                         GoogleKitTwo.super.getWebView().loadUrl(javascript);
                                     }
                                 }))
@@ -206,57 +237,6 @@ public class GoogleKitTwo extends Kit {
 
 
                         break;
-
-                }
-            }
-        };
-        AdapterView.OnItemClickListener legs = new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View v, int p, long arg3) {
-
-
-                switch (p) {
-                    case 0:
-
-                        new ColorChooserDialog.Builder(context.getApplicationContext())
-                                .colors(R.array.md_colors)
-                                .listener((new ColorChooserDialog.ColorListener() {
-                                    @Override
-                                    public void onColorSelect(int color) {
-                                        String javascript = " javascript:document.getElementById('lef_x5F_arm').setAttribute('fill','"+ Utils.convertHexColorString(color)  +"');";
-                                        GoogleKitTwo.super.getWebView().loadUrl(javascript);
-                                    }
-                                }))
-                                .positiveButton("Okay")
-                                .negativeButton("Cancel")
-                                .title("Select Color")
-                                .positiveButtonColor(Color.BLUE)
-                                .build()
-                                .show(AvatarActivity.fragmentManager, null);
-
-
-                        break;
-                    case 1:
-
-                        new ColorChooserDialog.Builder(context.getApplicationContext())
-                                .colors(R.array.md_colors)
-                                .listener((new ColorChooserDialog.ColorListener() {
-                                    @Override
-                                    public void onColorSelect(int color) {
-                                        String javascript = " javascript:document.getElementById('right_x5F_arm').setAttribute('fill','"+ Utils.convertHexColorString(color)  +"');";
-                                        GoogleKitTwo.super.getWebView().loadUrl(javascript);
-                                    }
-                                }))
-                                .positiveButton("Okay")
-                                .negativeButton("Cancel")
-                                .title("Select Color")
-                                .positiveButtonColor(Color.BLUE)
-                                .build()
-                                .show(AvatarActivity.fragmentManager, null);
-
-
-                        break;
-
                 }
             }
         };
@@ -278,8 +258,9 @@ public class GoogleKitTwo extends Kit {
 
         list.add(background);
         list.add(head);
-        list.add(arms);
-        list.add(body);
+        list.add(hand);
+        list.add(hairs);
+        list.add(clothes);
         list.add(saves);
 
         return list;

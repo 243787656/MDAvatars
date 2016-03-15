@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         }).build();
         if (savedInstanceState == null) {
             this.currentItem = -1;
-            this.result.setSelection(2);
+            this.result.setSelection(1);
         }
     }
 
