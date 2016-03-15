@@ -301,7 +301,7 @@ Set other attributes
 
 #####Do the same for all items and you class will be ok !
 
-###Latest step, you will need to edit AvatarActivity class like below and add your kit to the condition
+####Latest step, you will need to edit AvatarActivity class like below and add your kit to the condition
 
 ```java
 ...
