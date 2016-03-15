@@ -128,8 +128,7 @@ public class GoogleKitOne extends Kit {
                                     @Override
                                     public void onColorSelect(int color) {
 
-                                        String javascript = "javascript:document.body.style.backgroundColor = '"+ Utils.convertHexColorString(color)  +"'";
-                                        GoogleKitOne.super.getWebView().loadUrl(javascript);
+                                        GoogleKitOne.super.getWebView().setBackgroundColor(color);
                                     }
                                 }))
                                 .positiveButton("Okay")
@@ -165,7 +164,7 @@ public class GoogleKitOne extends Kit {
                                 .listener((new ColorChooserDialog.ColorListener() {
                                     @Override
                                     public void onColorSelect(int color) {
-                                        String javascript = "javascript:(function() { document.body.style.background='"+Utils.convertHexColorString(color)+"';";
+                                        String javascript = "javascript:document.body.style.background = " + color + ";";
                                         GoogleKitOne.super.getWebView().loadUrl(javascript);
                                     }
                                 }))
