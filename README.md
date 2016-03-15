@@ -301,10 +301,19 @@ Set other attributes
 
 #####Do the same for all items and you class will be ok !
 
-####Latest step, you will need to edit AvatarActivity class like below and add your kit to the condition
+####Latest steps, you will need to edit AvatarActivity class like below and add your kit to the condition, and register it to Kit class as well, You need to add a new fragment too, `Save and Options` 
+
+
+
 
 ```java
+AndroidKit.class
+  ArrayList<String> saves = new ArrayList<>();
+        saves.add("Save and options");
+        saves.add("add shadow");
+        
 ...
+AvatarActivity.class
 String current = getIntent().getStringExtra("kit")
         if (current.equals("Google-Kit I")){
             kit = new GoogleKitOne(this);
@@ -313,6 +322,15 @@ String current = getIntent().getStringExtra("kit")
         }
         attachKit(kit);
 ...
+Kit.class
+...
+ public static ArrayList<Kit> getAllKits() {
+        kitArrayList = new ArrayList<>();
+        kitArrayList.add(new Kit(context).with(new GoogleKitOne(context)));
+        kitArrayList.add(new Kit(context).with(new AndroidKit(context)));
+
+        return kitArrayList;
+    }
 ```
 
 ###All is done do not forget to contact me if needed ! 
