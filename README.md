@@ -45,7 +45,7 @@ great you will see what I mean
 First let's create a new AndroidKit class (or whatever you want) that extends Kit:
 
 #####Create the class
-
+```java
     package com.alexlionne.apps.avatars.objects.kits;
      
     import android.content.Context;
@@ -58,9 +58,10 @@ First let's create a new AndroidKit class (or whatever you want) that extends Ki
         super(context);
     }
     }
-    
+```  
 After this you need to set all informations about your kit from superclass methods : 
 
+```java
      public AndroiKit(Context context) {
        super(context);
         this.context = context.getApplicationContext();
@@ -72,13 +73,16 @@ After this you need to set all informations about your kit from superclass metho
         super.setCategories(getAndroidKitCategories());
         super.setListener(getAndroidKitListeners());
     }
-    
+```
+
 ####Explanations
 
 You will create your kit object via an Activity so we need to get its context to use `IconicsDrawable`
 
+```java
         super(context);
         this.context = context.getApplicationContext();
+```
 
 Set a name to your kit, a small description and showcase image and an icon that appear into Kits's dashboard
 
@@ -89,13 +93,16 @@ Set a name to your kit, a small description and showcase image and an icon that 
 
 
 I assume you've store your `.svg` file into Asset folder, link your kit to its svg 
-
+```java
     super.setSvg("file:///android_asset/android_kit.html");
-    
-As I said before a kit need 2 Arrays :
+```
 
+As I said before a kit need 2 Arrays :
+```java
         super.setCategories(getAndroidKitCategories());
         super.setListener(getAndroidKitListeners());
+```
+
 A categorie one and another for listeners
 Let's create them
 
