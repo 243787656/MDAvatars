@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import com.alexlionne.apps.avatars.fragments.EditionFragment;
 import com.alexlionne.apps.avatars.objects.Kit;
+import com.alexlionne.apps.avatars.objects.kits.AndroidKit;
 import com.alexlionne.apps.avatars.objects.kits.GoogleKitOne;
 import java.util.ArrayList;
 
@@ -57,12 +58,13 @@ public class AvatarActivity extends AppCompatActivity {
         webview = (WebView) findViewById(R.id.webView1);
         webview.getSettings().setJavaScriptEnabled(true);
 
-
-        if (getIntent().getStringExtra("kit").equals("Google-Kit I")){
+        String current = getIntent().getStringExtra("kit");
+        if (current.equals("Google-Kit I")){
             kit = new GoogleKitOne(this);
-            attachKit(kit);
+        }else if(current.equals("Android Kit")){
+            kit = new AndroidKit(this);
         }
-
+        attachKit(kit);
         webview.loadUrl(kit.getSvg());
         webview.getSettings().setBuiltInZoomControls(true);
         webview.getSettings().setDisplayZoomControls(false);

@@ -40,8 +40,6 @@ import java.util.ArrayList;
 public class GoogleKitOne extends Kit {
     private Context context;
 
-
-
         public GoogleKitOne(Context context) {
             super(context);
             this.context = context.getApplicationContext();
