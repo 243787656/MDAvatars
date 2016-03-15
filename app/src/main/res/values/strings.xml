@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Avatars</string>
+    <string name="color_palette">Color Palette</string>
+    <string name="colors">Colors</string>
 </resources>

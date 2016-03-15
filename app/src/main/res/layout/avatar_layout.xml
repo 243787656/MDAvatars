@@ -32,16 +32,32 @@
             android:layout_gravity="left|top"
             android:minHeight="10dp"
             android:background="#fff" />
+
     </FrameLayout>
+
     <Button
+        android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
+        android:layout_margin="8dp"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="COLOR"
         android:id="@+id/change"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true" />
+
+    <Button
+        android:drawableLeft="@drawable/ic_keyboard_arrow_left_black_24dp"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/change_back"
+        android:layout_gravity="left|bottom"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="true"
+        android:layout_margin="8dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
 
     <android.support.v7.widget.Toolbar
         app:layout_scrollFlags="scroll|enterAlways"

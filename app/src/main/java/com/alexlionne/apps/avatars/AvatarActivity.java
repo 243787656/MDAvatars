@@ -3,11 +3,14 @@ package com.alexlionne.apps.avatars;
 
 import android.annotation.SuppressLint;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -15,19 +18,15 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
-
 import com.alexlionne.apps.avatars.fragments.EditionFragment;
 import com.alexlionne.apps.avatars.objects.Kit;
 import com.alexlionne.apps.avatars.objects.kits.GoogleKitOne;
-
-
 import java.util.ArrayList;
 
 
 public class AvatarActivity extends AppCompatActivity {
+    private static int accentPreselect;
     private int currentFragment ;
     private WebView webview;
     public static Kit kit;
@@ -38,6 +37,9 @@ public class AvatarActivity extends AppCompatActivity {
     private EditionFragment pre;
     private EditionFragment post;
     private EditionFragment current;
+    public static FragmentManager fragmentManager ;
+    private long backPressedTime = 0;
+
 
 
     @SuppressLint("CommitTransaction")
@@ -75,6 +77,7 @@ public class AvatarActivity extends AppCompatActivity {
 
         });
 
+        fragmentManager = getFragmentManager();
         kit.attachWebView(webview);
         list = kit.getAllcategories();
         fragment  = new EditionFragment[list.size()];
@@ -83,58 +86,78 @@ public class AvatarActivity extends AppCompatActivity {
            addFragment(i);
 
         }
-        FragmentManager fragmentManager = getFragmentManager();
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.container, fragment[0]);
         fragmentTransaction.commit();
         currentFragment=0;
         setCurrentFragment(fragment[currentFragment]);
-        setNextFragment(fragment[currentFragment + 1]);
-        if(getCurrentFragment().getPosition()!=0){
-            setPreviousFragment(fragment[currentFragment - 1]);
-        }
-
-        final int position = getCurrentFragment().getPosition();
+        setNextFragment(fragment[getCurrentFragment().getPosition() + 1]);
 
 
         progressBar.setProgress(getCurrentFragment().getProgress());
-
-        Button button = (Button)findViewById(R.id.change);
+        final Button button = (Button)findViewById(R.id.change);
+        final Button back= (Button)findViewById(R.id.change_back);
         assert button != null;
+        assert back != null;
+        button.setText(getNextFragment().getTitle());
+        back.setVisibility(View.INVISIBLE);
+        button.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        back.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                back.setVisibility(View.VISIBLE);
+                setNextFragment(fragment[getCurrentFragment().getPosition() + 1]);
                 switchFragment(getNextFragment());
-                progressBar.setProgress(getNextFragment().getProgress());
-                setNextFragment(fragment[position+1]);
-                if(getCurrentFragment().getPosition() != 0) {
-                    setPreviousFragment(fragment[position - 1]);
+
+                for (int i = 0; i < fragment.length; i++) {
+                    if (getCurrentFragment().getPosition() == 6) {
+                        button.setText("Save");
+                        back.setText(fragment[getCurrentFragment().getPosition() - 1].getTitle());
+                    } else {
+                        back.setText(fragment[getCurrentFragment().getPosition() - 1].getTitle());
+                        button.setText(fragment[getCurrentFragment().getPosition() + 1].getTitle());
+                    }
+
+
                 }
+
+                if (getCurrentFragment().getPosition() != 0) {
+                    setPreviousFragment(fragment[getCurrentFragment().getPosition() - 1]);
+                }
+                progressBar.setProgress(getNextFragment().getProgress());
+
 
             }
         });
-
-
-
-
-
-        //kit.getListeners().get(0).get(1));
-       /* button.setOnClickListener(
-                new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setNextFragment(fragment[getCurrentFragment().getPosition() - 1]);
+                switchBackFragment(getNextFragment());
 
-                String javascript = "javascript:document.getElementById('body').setAttribute('fill','"+"none"/*+Utils.convertHexColorString(getResources().getColor(android.R.color.transparent))*/  //  +"');";
-               /* webview.loadUrl(javascript);
+                for(int i=0;i<fragment.length;i++) {
+                    if(getCurrentFragment().getPosition() == 0) {
+                        button.setText(fragment[getCurrentFragment().getPosition() + 1].getTitle());
+                        back.setVisibility(View.INVISIBLE);
+                    } else {
+                        back.setText(fragment[getCurrentFragment().getPosition() - 1].getTitle());
+                        button.setText(fragment[getCurrentFragment().getPosition() + 1].getTitle());
+                    }
+
+
+                }
+
+                if(getCurrentFragment().getPosition() != 0) {
+                    setPreviousFragment(fragment[getCurrentFragment().getPosition() + 1]);
+                }
+                progressBar.setProgress(getNextFragment().getProgress());
 
 
             }
-        });*/
-
+        });
     }
-
-
 
 
     public void addFragment(int i){
@@ -152,11 +175,26 @@ public class AvatarActivity extends AppCompatActivity {
     public void switchFragment(EditionFragment to){
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
+        transaction.setCustomAnimations(R.anim.slide_in_left,
+                R.anim.slide_out_right, 0, 0);
         transaction.replace(R.id.container, to);
         transaction.commit();
+        setCurrentFragment(to);
 
 
     }
+    public void switchBackFragment(EditionFragment to){
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.setCustomAnimations(R.anim.slide_out_left,R.anim.slide_in_right,
+                 0, 0);
+        transaction.replace(R.id.container, to);
+        transaction.commit();
+        setCurrentFragment(to);
+
+
+    }
+
     public void attachKit(Kit kit){
         AvatarActivity.kit = kit;
     }
@@ -176,14 +214,20 @@ public class AvatarActivity extends AppCompatActivity {
     public EditionFragment getCurrentFragment(){
         return  this.current;
     }
-    public void setPreviousFragment(EditionFragment pre)throws IllegalArgumentException{
-        if(pre.getPosition()==0) {
-            throw new IllegalArgumentException("current is 0!");
+    public void setPreviousFragment(EditionFragment pre){
+        if(pre.getPosition()!=0) {
+            this.pre = pre;
         }
-        this.pre = pre;
+
     }
     public EditionFragment getPreviousFragment(){
         return this.pre;
+
+    }
+    @Override
+    public void onBackPressed(){
+
+
     }
 
 
