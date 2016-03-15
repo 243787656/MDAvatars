@@ -187,10 +187,47 @@ public class GoogleKitOne extends Kit {
             }
         };
 
+        AdapterView.OnItemClickListener body = new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View v, int p, long arg3) {
+
+
+                switch (p) {
+                    case 0:
+                        Toast.makeText(context,"case style clicked !",Toast.LENGTH_LONG).show();
+                        break;
+                    case 1:
+
+                        new ColorChooserDialog.Builder(context.getApplicationContext())
+                                .colors(R.array.md_colors)
+                                .listener((new ColorChooserDialog.ColorListener() {
+                                    @Override
+                                    public void onColorSelect(int color) {
+
+                                        String javascript = " javascript:document.getElementById('body').setAttribute('fill','"+Utils.convertHexColorString(color)  +"');";
+                                        GoogleKitOne.super.getWebView().loadUrl(javascript);
+                                    }
+                                }))
+                                .positiveButton("Okay")
+                                .negativeButton("Cancel")
+                                .title("Select Color")
+                                .positiveButtonColor(Color.BLUE)
+                                .build()
+                                .show(AvatarActivity.fragmentManager, null);
+
+
+                        break;
+
+
+                }
+
+
+            }
+        };
         list.add(background);
         list.add(head_list);
         list.add(head_list);
-        list.add(head_list);
+        list.add(body);
         list.add(head_list);
         list.add(head_list);
         list.add(head_list);
