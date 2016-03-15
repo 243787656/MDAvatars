@@ -86,10 +86,10 @@ You will create your kit object via an Activity so we need to get its context to
 
 Set a name to your kit, a small description and showcase image and an icon that appear into Kits's dashboard
 ```java
-        super.setName("Google-Kit I");
-        super.setSmallDesc("Material palette, grain shadows,rounded shapes ");
-        super.setShowcase(R.drawable.gmd_kit_1);
-        super.setIcon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_google).sizeDp(18));
+        super.setName("Android Kit);
+        super.setSmallDesc("Simple BugDroid !");
+        super.setShowcase(R.drawable.android_kit_1);
+        super.setIcon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_android).sizeDp(18));
 ```
 
 I assume you've store your `.svg` file into Asset folder, link your kit to its svg 
@@ -166,4 +166,137 @@ ArrayList<ArrayList<String>> result = new ArrayList<>();
 ```
 
 You're done !, you've just create all categories, now you need to associate all items to a custom
-Listener, its why we need a second Array of ArrayList ! 
+Listener, its why we need a second Array ! 
+
+###Listeners
+
+You need now to set up Listener for your Items. Have in mind that all your items (displayed in the listview) 
+can have a custom action that we're defined now : 
+
+```java
+public ArrayList<AdapterView.OnItemClickListener> getAndroidKitListeners(){
+        ArrayList<AdapterView.OnItemClickListener> list = new ArrayList<>();
+        AdapterView.OnItemClickListener background = new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View v, int p, long arg3) {
+
+
+                switch (p) {
+                    case 0:
+
+                        new ColorChooserDialog.Builder(context.getApplicationContext())
+                                .colors(R.array.md_colors)
+                                .listener((new ColorChooserDialog.ColorListener() {
+                                    @Override
+                                    public void onColorSelect(int color) {
+
+                                        AndroiKitsuper.getWebView().setBackgroundColor(color);
+                                    }
+                                }))
+                                .positiveButton("Okay")
+                                .negativeButton("Cancel")
+                                .title("Select Color")
+                                .positiveButtonColor(Color.BLUE)
+                                .build()
+                                .show(AvatarActivity.fragmentManager, null);
+
+
+                        break;
+
+            }
+        };
+
+
+        AdapterView.OnItemClickListener head_list = new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View v, int p, long arg3) {
+
+
+                switch (p) {
+                    case 0:
+
+                        new ColorChooserDialog.Builder(context.getApplicationContext())
+                                .colors(R.array.md_colors)
+                                .listener((new ColorChooserDialog.ColorListener() {
+                                    @Override
+                                    public void onColorSelect(int color) {
+                                        String javascript = "javascript:document.body.style.background = " + color + ";";
+                                        AndroiKit.super.getWebView().loadUrl(javascript);
+                                    }
+                                }))
+                                .positiveButton("Okay")
+                                .negativeButton("Cancel")
+                                .title("Select Color")
+                                .positiveButtonColor(Color.BLUE)
+                                .build()
+                                .show(AvatarActivity.fragmentManager, null);
+
+
+                        break;
+
+                }
+
+
+            }
+        };
+```
+
+####Explanations
+
+Now we have set 2 Categories : Background and Head. They both have one item. So we need to setup exactly
+1 Array of 2 Custom `AdapterView.OnItemClickListener` (we are setting actions via cases) 
+```java
+switch (p) {
+                    case 0:
+
+                        new ColorChooserDialog.Builder(context.getApplicationContext())
+                                .colors(R.array.md_colors)
+                                .listener((new ColorChooserDialog.ColorListener() {
+                                    @Override
+                                    public void onColorSelect(int color) {
+
+                                        AndroiKit.super.getWebView().setBackgroundColor(color);
+                                    }
+                                }))
+                                .positiveButton("Okay")
+                                .negativeButton("Cancel")
+                                .title("Select Color")
+                                .positiveButtonColor(Color.BLUE)
+                                .build()
+                                .show(AvatarActivity.fragmentManager, null);
+
+
+                        break;
+```
+
+case 0 correspond to `Color` Item into Background Array :p
+
+As we need to change color i've imported `com.kennyc.colorchooser.ColorChooserDialog` to build the DialogChooser
+Set an array of color
+```java
+.colors(R.array.md_colors)
+```
+set your custom action ! 
+```java
+.listener((new ColorChooserDialog.ColorListener() {
+                                    @Override
+                                    public void onColorSelect(int color) {
+
+                                        AndroiKit.super.getWebView().setBackgroundColor(color);
+                                    }
+                                }))
+```
+here we need to change the background color, so you can get the webview by `super.getWebView()` method
+
+Set other attributes 
+```java
+.positiveButton("Okay")
+                                .negativeButton("Cancel")
+                                .title("Select Color")
+                                .positiveButtonColor(Color.BLUE)
+                                .build()
+                                .show(AvatarActivity.fragmentManager, null);
+```
+
+
+
