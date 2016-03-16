@@ -17,23 +17,19 @@ import com.alexlionne.apps.avatars.R;
 import com.alexlionne.apps.avatars.adapters.KitAdapter;
 import com.alexlionne.apps.avatars.objects.Kit;
 import com.alexlionne.apps.avatars.objects.kits.GoogleKitOne;
+import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.BottomBarFragment;
 
 import java.util.ArrayList;
 
 /**
  * Created by Alex on 08/03/2016.
  */
-public class KitFragment extends Fragment implements KitAdapter.OnItemClickListener {
+public class KitFragment extends Fragment {
     private ViewGroup root;
-    private int mColumnCount;
-    private int numColumns = 1;
-    private static int DEFAULT_COLUMNS_PORTRAIT;
-    private static int DEFAULT_COLUMNS_LANDSCAPE;
-    private RecyclerView recyclerView;
-    private KitAdapter kitAdapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private  ArrayList<Kit> kits;
-
+    private BottomBar mBottomBar;
 
     public KitFragment() {
         // Required empty public constructor
@@ -42,63 +38,29 @@ public class KitFragment extends Fragment implements KitAdapter.OnItemClickListe
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.kit_layout, container, false);
-        DEFAULT_COLUMNS_PORTRAIT = 1;
-        DEFAULT_COLUMNS_LANDSCAPE = 2;
-        recyclerView = (RecyclerView) root.findViewById(R.id.recycler);
-        final boolean isLandscape = isLandscape();
-        int mColumnCountPortrait = DEFAULT_COLUMNS_PORTRAIT;
-        int mColumnCountLandscape = DEFAULT_COLUMNS_LANDSCAPE;
-        int newColumnCount = isLandscape ? mColumnCountLandscape : mColumnCountPortrait;
-        if (mColumnCount != newColumnCount) {
-            mColumnCount = newColumnCount;
-            numColumns = mColumnCount;
-        }
+        root = (ViewGroup) inflater.inflate(R.layout.kit_layout, container, false);
 
 
-        new UpdateUI().execute();
+        mBottomBar = BottomBar.attach(getActivity(), savedInstanceState);
+
+        mBottomBar.setFragmentItems(getActivity().getSupportFragmentManager(), R.id.container,
+                new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_trending_up).sizeDp(18), "Trending"),
+                new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_newspaper).sizeDp(18), "Latest"),
+                new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_tag_faces).sizeDp(18), "All")
+
+        );
+
      return root;
 
     }
 
-    class UpdateUI extends AsyncTask<Void, Void, Void> {
 
-        @Override
-        public void onPreExecute() {
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            kits = new Kit(getActivity().getApplicationContext()).getAllKits();
-
-
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void args) {
-
-            layoutManager = new GridLayoutManager(getContext(), numColumns);
-            kitAdapter = new KitAdapter(getContext(), kits, KitFragment.this);
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter( kitAdapter);
-
-
-        }
-    }
-
-
-    private boolean isLandscape() {
-        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
-    }
     @Override
-    public void onItemClick(int position) {
-        Kit kit = ((KitAdapter) recyclerView.getAdapter()).getItemAtPosition(position);
-        Intent i = new Intent(getActivity(), AvatarActivity.class)
-                .putExtra("kit", kit.getName());
-        getActivity().startActivity(i);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
+        // Necessary to restore the BottomBar's state, otherwise we would
+        // lose the current tab on orientation change.
+        mBottomBar.onSaveInstanceState(outState);
     }
 }
