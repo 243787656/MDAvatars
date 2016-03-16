@@ -108,8 +108,8 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
                 .title("Avatar")
                 .content("What do you want to do ?")
                 .positiveText("set")
-                .neutralText("share")
-                .negativeText("delete")
+                .negativeText("share")
+                .neutralText("delete")
                 .show();
 
     }
