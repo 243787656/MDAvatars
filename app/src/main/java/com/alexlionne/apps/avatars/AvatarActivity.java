@@ -109,7 +109,7 @@ public class AvatarActivity extends AppCompatActivity {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(Color.parseColor(Utils.getAccentDarkColor(this, Utils.convertHexColorString(kit.getDefaultBgColor()))));
+            window.setStatusBarColor(Utils.getAccentDarkColor(kit.getDefaultBgColor()));
         }
         webview.setWebViewClient(new WebViewClient() {
             @Override
@@ -259,7 +259,9 @@ public class AvatarActivity extends AppCompatActivity {
     }
 
     public void switchBackFragment(EditionFragment to) {
-
+        if (getCurrentFragment().getPosition() != 0) {
+            setPreviousFragment(fragment[getCurrentFragment().getPosition() - 1]);
+        }
 
         if(android.os.Build.VERSION.SDK_INT >= 11){
             // will update the "progress" propriety of seekbar until it reaches progress
