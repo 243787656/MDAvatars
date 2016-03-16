@@ -36,10 +36,7 @@ public class MainActivity extends AppCompatActivity {
     public Drawer result = null;
     public String version;
     final String directory ="/MDAvatar/";
-    final String subdirectory1 ="/Original/";
-    final String subdirectory2 ="/Brick/";
-    final String subdirectory3 ="/Galaxy/";
-    final String subdirectory4 ="/Googlish/";
+
 
 
     @SuppressLint("NewApi")
@@ -51,35 +48,11 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setElevation(3);
 
-        //creat the sdcard directory
+        //create the sdcard directory
         File md_folder = new File(Environment.getExternalStorageDirectory()+directory);
         boolean sucess =true;
         if (!md_folder.exists()) {
             sucess = md_folder.mkdir();
-        }
-        //creat the sdcard directory
-        File md_subfolder1 = new File(Environment.getExternalStorageDirectory()+directory+subdirectory1);
-        boolean sucess1 =true;
-        if (!md_subfolder1.exists()) {
-            sucess = md_subfolder1.mkdir();
-        }
-        //creat the sdcard directory
-        File md_subfolder2 = new File(Environment.getExternalStorageDirectory()+directory+subdirectory2);
-        boolean sucess2 =true;
-        if (!md_subfolder2.exists()) {
-            sucess = md_subfolder2.mkdir();
-        }
-        //creat the sdcard directory
-        File md_subfolder3 = new File(Environment.getExternalStorageDirectory()+directory+subdirectory3);
-        boolean sucess3 =true;
-        if (!md_subfolder3.exists()) {
-            sucess = md_subfolder3.mkdir();
-        }
-        //creat the sdcard directory
-        File md_subfolder4 = new File(Environment.getExternalStorageDirectory()+directory+subdirectory4);
-        boolean sucess4 =true;
-        if (!md_subfolder4.exists()) {
-            sucess = md_subfolder4.mkdir();
         }
 
         final AccountHeader headerResult = new AccountHeaderBuilder().withHeaderBackground(getResources().getDrawable(R.drawable.header)).withActivity(this).addProfiles(new ProfileDrawerItem().withName("MD Avatar").withIcon(GoogleMaterial.Icon.gmd_face).withIdentifier(1)).build();
@@ -98,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                         case 2:
-
+                            MainActivity.this.switchFragment(2, "MyAvatars", "MyAvatars");
                             break;
 
                     }

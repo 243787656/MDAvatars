@@ -54,8 +54,7 @@ public class AvatarActivity extends AppCompatActivity {
     private EditionFragment post;
     private EditionFragment current;
     public static FragmentManager fragmentManager ;
-    private final String MDSdirectory = "/sdcard/MDAvatar/Googlish/";
-    private Bitmap dstBmp;
+    private final String MDSdirectory = "/sdcard/MDAvatar/";
 
 
 
