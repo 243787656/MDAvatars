@@ -1,8 +1,12 @@
 package com.alexlionne.apps.avatars.objects.kits;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 
 import com.alexlionne.apps.avatars.AvatarActivity;
@@ -30,7 +34,7 @@ public class GoogleKitTwo extends Kit {
         super.setSvg("file:///android_asset/gmd_kit_2.html");
         super.setCategories(getGoogleKitTwoCategories());
         super.setListener(getGoogleKitTwoListeners());
-        super.setDefaultBgColor(context.getResources().getColor(R.color.md_orange_900));
+        super.setDefaultBgColor(context.getResources().getColor(R.color.md_orange_700));
     }
 
     private ArrayList<ArrayList<String>> getGoogleKitTwoCategories() {
@@ -90,6 +94,12 @@ public class GoogleKitTwo extends Kit {
 
                                         selectedColor = color;
                                         GoogleKitTwo.super.getWebView().setBackgroundColor(color);
+                                        if (Build.VERSION.SDK_INT >= 21) {
+                                            Window window = AvatarActivity.getWindowView();
+                                            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                                            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                                            window.setStatusBarColor(Color.parseColor(Utils.getAccentDarkColor(context, Utils.convertHexColorString(color))));
+                                        }
                                     }
                                 }))
                                 .positiveButton("Okay")
