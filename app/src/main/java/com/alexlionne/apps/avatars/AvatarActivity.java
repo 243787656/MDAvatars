@@ -1,8 +1,11 @@
 package com.alexlionne.apps.avatars;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -28,12 +31,15 @@ import android.text.InputType;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.alexlionne.apps.avatars.fragments.EditionFragment;
@@ -50,6 +56,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import io.codetail.animation.SupportAnimator;
+import io.codetail.animation.ViewAnimationUtils;
+
 
 public class AvatarActivity extends AppCompatActivity {
     private static int accentPreselect;
@@ -65,6 +74,7 @@ public class AvatarActivity extends AppCompatActivity {
     private EditionFragment current;
     public static FragmentManager fragmentManager;
     private static Window window;
+    private boolean hidden = true;
     private final String MDSdirectory = "/sdcard/MDAvatar/";
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -79,6 +89,10 @@ public class AvatarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.avatar_layout);
+        final RelativeLayout view = (RelativeLayout)findViewById(R.id.layout);
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -88,6 +102,9 @@ public class AvatarActivity extends AppCompatActivity {
 
         webview = (WebView) findViewById(R.id.webView1);
         webview.getSettings().setJavaScriptEnabled(true);
+
+
+
 
         String current = getIntent().getStringExtra("kit");
          if (current.equals("Google-Kit I")) {
@@ -99,12 +116,22 @@ public class AvatarActivity extends AppCompatActivity {
         }
         attachKit(kit);
         setWindow(getWindow());
+        view.setVisibility(View.INVISIBLE);
+        view.post(new Runnable() {
+
+            @Override
+            public void run() {
+                reavealStart(view);
+
+            }
+        });
+
         webview.loadUrl(kit.getSvg());
+        webview.setBackgroundColor(kit.getDefaultBgColor());
         webview.getSettings().setBuiltInZoomControls(true);
         webview.getSettings().setDisplayZoomControls(false);
         webview.getSettings().setUseWideViewPort(true);
         webview.setWebChromeClient(new WebChromeClient());
-        webview.setBackgroundColor(kit.getDefaultBgColor());
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -119,6 +146,9 @@ public class AvatarActivity extends AppCompatActivity {
 
 
         });
+
+
+
 
         fragmentManager = getFragmentManager();
         kit.attachWebView(webview);
@@ -136,9 +166,8 @@ public class AvatarActivity extends AppCompatActivity {
         currentFragment = 0;
         setCurrentFragment(fragment[currentFragment]);
         setNextFragment(fragment[getCurrentFragment().getPosition() + 1]);
-
-
         progressBar.setProgress(getCurrentFragment().getProgress());
+
         final Button button = (Button) findViewById(R.id.change);
         final Button back = (Button) findViewById(R.id.change_back);
         assert button != null;
@@ -209,6 +238,79 @@ public class AvatarActivity extends AppCompatActivity {
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
+    private void reavealStart(final View mRevealView) {
+        int cx = (mRevealView.getLeft() + mRevealView.getRight());
+        int cy = (mRevealView.getTop() + mRevealView.getBottom())/2;
+        //int cy = mRevealView.getTop();
+
+        int radius = Math.max(mRevealView.getWidth(), mRevealView.getHeight());
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+
+
+            SupportAnimator animator =
+                    ViewAnimationUtils.createCircularReveal(mRevealView, cx, cy, 0, radius);
+            animator.setInterpolator(new AccelerateDecelerateInterpolator());
+            animator.setDuration(1000);
+
+            SupportAnimator animator_reverse = animator.reverse();
+
+            if (hidden) {
+                mRevealView.setVisibility(View.VISIBLE);
+                animator.start();
+                hidden = false;
+            } else {
+                animator_reverse.addListener(new SupportAnimator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart() {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd() {
+                        mRevealView.setVisibility(View.INVISIBLE);
+                        hidden = true;
+
+                    }
+
+                    @Override
+                    public void onAnimationCancel() {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat() {
+
+                    }
+                });
+                animator_reverse.start();
+
+            }
+        } else {
+            if (hidden) {
+                Animator anim = android.view.ViewAnimationUtils.createCircularReveal(mRevealView, cx, cy, 0, radius);
+                mRevealView.setVisibility(View.VISIBLE);
+                anim.start();
+                hidden = false;
+
+            } else {
+                Animator anim = android.view.ViewAnimationUtils.createCircularReveal(mRevealView, cx, cy, radius, 0);
+                anim.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        mRevealView.setVisibility(View.INVISIBLE);
+                        hidden = true;
+                    }
+                });
+
+                anim.start();
+
+            }
+        }
+
+    }
+
 
     public void addFragment(int i) {
         int UNIT_SIZE = (i + 1) * (100 / fragment.length);
@@ -238,7 +340,7 @@ public class AvatarActivity extends AppCompatActivity {
         }
         if(android.os.Build.VERSION.SDK_INT >= 11){
             // will update the "progress" propriety of seekbar until it reaches progress
-            ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", getNextFragment().getProgress());
+            ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", to.getProgress());
             animation.setDuration(500); // 0.5 second
             animation.setInterpolator(new DecelerateInterpolator());
             animation.start();
@@ -265,15 +367,13 @@ public class AvatarActivity extends AppCompatActivity {
 
         if(android.os.Build.VERSION.SDK_INT >= 11){
             // will update the "progress" propriety of seekbar until it reaches progress
-            ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", getPreviousFragment().getProgress());
+            ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", to.getProgress());
             animation.setDuration(500); // 0.5 second
             animation.setInterpolator(new DecelerateInterpolator());
             animation.start();
+        } else {
+            progressBar.setProgress(getPreviousFragment().getProgress());
         }
-        else
-
-            progressBar.setProgress(getNextFragment().getProgress());
-
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.setCustomAnimations(R.anim.slide_out_left, R.anim.slide_in_right,
