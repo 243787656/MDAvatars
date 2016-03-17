@@ -46,7 +46,7 @@ public class LatestKitFragment extends Fragment implements KitAdapter.OnItemClic
 
 
 
-
+        kitAdapter = null;
         DEFAULT_COLUMNS_PORTRAIT = 1;
         DEFAULT_COLUMNS_LANDSCAPE = 2;
         recyclerView = (RecyclerView) root.findViewById(R.id.recycler);

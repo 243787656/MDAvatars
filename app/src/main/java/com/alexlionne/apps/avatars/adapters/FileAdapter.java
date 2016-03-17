@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.alexlionne.apps.avatars.R;
 import com.alexlionne.apps.avatars.objects.Kit;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.List;
@@ -55,7 +57,12 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         File file = itemData.get(position);
-        holder.wall.setImageBitmap(getBitmap(file.getAbsolutePath()));
+        Uri uri = Uri.fromFile(new File(itemData.get(position).getAbsolutePath()));
+
+        Picasso.with(context)
+                .load(uri)
+                .into(holder.wall);
+        //holder.wall.setImageBitmap(getBitmap(file.getAbsolutePath()));
         holder.name.setText(file.getName().replace(".png",""));
         holder.icon.setImageDrawable(new IconicsDrawable(context, GoogleMaterial.Icon.gmd_face).sizeDp(18).color(Color.BLACK));
         setAnimation(holder.content, position);

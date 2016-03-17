@@ -21,6 +21,7 @@ import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.BottomBarFragment;
+import com.roughike.bottombar.BottomBarTab;
 
 import java.util.ArrayList;
 
@@ -38,29 +39,22 @@ public class KitFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        root = (ViewGroup) inflater.inflate(R.layout.kit_layout, container, false);
+        View view = inflater.inflate(R.layout.kit_layout,container, false);
 
-
-        mBottomBar = BottomBar.attach(getActivity(), savedInstanceState);
-
-        mBottomBar.setFragmentItems(getActivity().getSupportFragmentManager(), R.id.container,
-                new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_trending_up).sizeDp(18), "Trending"),
-                new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_newspaper).sizeDp(18), "Latest"),
-                new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_tag_faces).sizeDp(18), "All")
-
+        BottomBar bottomBar = BottomBar.attach(view, savedInstanceState);
+        bottomBar.setFragmentItems(getActivity().getSupportFragmentManager(), R.id.container,
+                        new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_trending_up).sizeDp(18), "Trending"),
+                        new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_newspaper).sizeDp(18), "Latest"),
+                        new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_tag_faces).sizeDp(18), "All")
         );
 
-     return root;
-
+        return bottomBar;
     }
 
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        // Necessary to restore the BottomBar's state, otherwise we would
-        // lose the current tab on orientation change.
         mBottomBar.onSaveInstanceState(outState);
     }
 }

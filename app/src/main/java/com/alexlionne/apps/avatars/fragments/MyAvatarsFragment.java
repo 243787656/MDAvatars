@@ -50,6 +50,7 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.latest_kit_layout, container, false);
+        kitAdapter = null;
         DEFAULT_COLUMNS_PORTRAIT = 2;
         DEFAULT_COLUMNS_LANDSCAPE = 2;
         recyclerView = (RecyclerView) root.findViewById(R.id.recycler);
@@ -77,21 +78,25 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
         @Override
         protected Void doInBackground(Void... params) {
 
-            myAvatars = Utils.getAllSavedAvatars();
+            myAvatars = new ArrayList<>();
+            for(int i=0;i<Utils.getAllSavedAvatars().size();i++){
+                myAvatars.add(Utils.getAllSavedAvatars().get(i));
+            }
 
 
 
             return null;
         }
+        protected void onProgressUpdate(Void... progress) {
 
+
+        }
         @Override
         protected void onPostExecute(Void args) {
-
             layoutManager = new GridLayoutManager(getContext(), numColumns);
             kitAdapter = new FileAdapter(getContext(), myAvatars, MyAvatarsFragment.this);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter( kitAdapter);
-
 
         }
     }
