@@ -33,6 +33,7 @@ public class LatestKitFragment extends Fragment implements KitAdapter.OnItemClic
     private KitAdapter kitAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private  ArrayList<Kit> kits;
+    private  ArrayList<Kit> kits_result;
 
     public LatestKitFragment() {
         // Required empty public constructor
@@ -76,7 +77,12 @@ public class LatestKitFragment extends Fragment implements KitAdapter.OnItemClic
         protected Void doInBackground(Void... params) {
 
             kits = new Kit(getActivity().getApplicationContext()).getAllKits();
-
+            kits_result = new ArrayList<>();
+            for(int i=kits.size()-1;i>=0;i--){
+                if(i<10) {
+                    kits_result.add(kits.get(i));
+                }
+            }
 
 
             return null;
@@ -86,7 +92,7 @@ public class LatestKitFragment extends Fragment implements KitAdapter.OnItemClic
         protected void onPostExecute(Void args) {
 
             layoutManager = new GridLayoutManager(getContext(), numColumns);
-            kitAdapter = new KitAdapter(getContext(), kits, LatestKitFragment.this);
+            kitAdapter = new KitAdapter(getContext(), kits_result, LatestKitFragment.this);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(kitAdapter);
 
