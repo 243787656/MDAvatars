@@ -107,11 +107,11 @@ public class AvatarActivity extends AppCompatActivity {
 
 
         String current = getIntent().getStringExtra("kit");
-         if (current.equals("Google-Kit I")) {
+         if (current.equals("Google I")) {
             kit = new GoogleKitOne(this);
-        } else if (current.equals("Android Kit")) {
+        } else if (current.equals("Android")) {
             kit = new AndroidKit(this);
-        } else if (current.equals("Google-Kit II")) {
+        } else if (current.equals("Google II")) {
             kit = new GoogleKitTwo(this);
         }
         attachKit(kit);

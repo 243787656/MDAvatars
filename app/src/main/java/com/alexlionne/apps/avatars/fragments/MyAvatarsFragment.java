@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.alexlionne.apps.avatars.AvatarActivity;
 import com.alexlionne.apps.avatars.R;
@@ -107,14 +108,35 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
     }
     @Override
     public void onItemClick(int position) {
-        File file = ((FileAdapter) recyclerView.getAdapter()).getItemAtPosition(position);
+        final File file = ((FileAdapter) recyclerView.getAdapter()).getItemAtPosition(position);
 
         new MaterialDialog.Builder(getActivity())
                 .title("Avatar")
                 .content("What do you want to do ?")
                 .positiveText("set")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+
+                    }
+                })
                 .negativeText("share")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+
+                    }
+                })
                 .neutralText("delete")
+                .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                        file.delete();
+                        new UpdateUI().execute();
+                        dialog.dismiss();
+                        //snackbar
+                    }
+                })
                 .show();
 
     }

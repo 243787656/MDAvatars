@@ -30,7 +30,7 @@ import java.util.ArrayList;
  */
 public class KitFragment extends Fragment {
     private ViewGroup root;
-    private BottomBar mBottomBar;
+    private BottomBar bottomBar;
 
     public KitFragment() {
         // Required empty public constructor
@@ -41,7 +41,7 @@ public class KitFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.kit_layout,container, false);
 
-        BottomBar bottomBar = BottomBar.attach(view, savedInstanceState);
+        bottomBar = BottomBar.attach(view, savedInstanceState);
         bottomBar.setFragmentItems(getActivity().getSupportFragmentManager(), R.id.container,
                         new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_trending_up).sizeDp(18), "Trending"),
                         new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_newspaper).sizeDp(18), "Latest"),
@@ -55,6 +55,6 @@ public class KitFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mBottomBar.onSaveInstanceState(outState);
+        bottomBar.onSaveInstanceState(outState);
     }
 }
