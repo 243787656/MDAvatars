@@ -28,7 +28,7 @@ public class GoogleKitTwo extends Kit {
         super(context);
         this.context = context.getApplicationContext();
         super.setName("Google-Kit II");
-        super.setSmallDesc("Material palette, grain shadows,rounded shapes ");
+        super.setSmallDesc("Material Design ! V2");
         super.setShowcase(R.drawable.gmd_kit_2);
         super.setIcon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_google).sizeDp(18));
         super.setSvg("file:///android_asset/gmd_kit_2.html");

@@ -51,7 +51,7 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.latest_kit_layout, container, false);
         kitAdapter = null;
-        DEFAULT_COLUMNS_PORTRAIT = 2;
+        DEFAULT_COLUMNS_PORTRAIT = 1;
         DEFAULT_COLUMNS_LANDSCAPE = 2;
         recyclerView = (RecyclerView) root.findViewById(R.id.recycler);
         final boolean isLandscape = isLandscape();
