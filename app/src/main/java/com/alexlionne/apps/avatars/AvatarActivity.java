@@ -430,7 +430,7 @@ public class AvatarActivity extends AppCompatActivity {
                         InputType.TYPE_TEXT_FLAG_CAP_WORDS)
                 .inputMaxLength(20)
                 .positiveText("go")
-                .input("name", "my_amazing_avatar", false, new MaterialDialog.InputCallback() {
+                .input("name", "my_avatar_"+Utils.getAllSavedAvatars().size()+1, false, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
                         Picture picture = webview.capturePicture();
