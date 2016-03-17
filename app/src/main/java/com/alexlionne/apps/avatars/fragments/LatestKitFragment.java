@@ -1,31 +1,27 @@
 package com.alexlionne.apps.avatars.fragments;
 
 import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Explode;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
+import android.webkit.WebView;
 
 import com.alexlionne.apps.avatars.AvatarActivity;
 import com.alexlionne.apps.avatars.R;
 import com.alexlionne.apps.avatars.adapters.KitAdapter;
 import com.alexlionne.apps.avatars.objects.Kit;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.BottomBarFragment;
-
 import java.util.ArrayList;
 
-import io.codetail.animation.SupportAnimator;
-import io.codetail.animation.ViewAnimationUtils;
 
 /**
  * Created by Alex on 08/03/2016.
@@ -37,6 +33,7 @@ public class LatestKitFragment extends Fragment implements KitAdapter.OnItemClic
     private static int DEFAULT_COLUMNS_PORTRAIT;
     private static int DEFAULT_COLUMNS_LANDSCAPE;
     private RecyclerView recyclerView;
+    private WebView webView;
     private KitAdapter kitAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Kit> kits;
@@ -51,6 +48,8 @@ public class LatestKitFragment extends Fragment implements KitAdapter.OnItemClic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final ViewGroup root = (ViewGroup) inflater.inflate(R.layout.latest_kit_layout, container, false);
+
+
 
 
         recyclerView = (RecyclerView) root.findViewById(R.id.recycler);
@@ -74,9 +73,13 @@ public class LatestKitFragment extends Fragment implements KitAdapter.OnItemClic
             }
         });
 
+        //getActivity().getWindow().setEnterTransition(new Explode());
+        //getActivity().getWindow().setExitTransition(new Explode());
         return root;
 
     }
+
+
 
     public void UI() {
 
@@ -121,11 +124,18 @@ public class LatestKitFragment extends Fragment implements KitAdapter.OnItemClic
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onItemClick(View v, int position) {
+        WebView web = (WebView) v.findViewById(R.id.kit_showcase);
         Kit kit = ((KitAdapter) recyclerView.getAdapter()).getItemAtPosition(position);
         Intent i = new Intent(getActivity(), AvatarActivity.class)
                 .putExtra("kit", kit.getName());
-        getActivity().startActivity(i);
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(getActivity(), web , "image");
+        getActivity().startActivity(i, options.toBundle());
+
+
+
+
 
     }
 }

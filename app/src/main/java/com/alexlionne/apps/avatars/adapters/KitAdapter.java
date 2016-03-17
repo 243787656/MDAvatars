@@ -1,6 +1,8 @@
 package com.alexlionne.apps.avatars.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -15,6 +19,8 @@ import android.widget.TextView;
 
 import com.alexlionne.apps.avatars.R;
 import com.alexlionne.apps.avatars.objects.Kit;
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGParser;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
@@ -34,7 +40,7 @@ public class KitAdapter extends RecyclerView.Adapter<KitAdapter.ViewHolder> {
 
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(View v, int position);
     }
 
     public KitAdapter(Context context, List<Kit> items, OnItemClickListener onItemClickListener) {
@@ -55,7 +61,11 @@ public class KitAdapter extends RecyclerView.Adapter<KitAdapter.ViewHolder> {
         Kit kit = itemData.get(position);
         holder.name.setText(kit.getName());
         holder.smalldesc.setText(kit.getSmallDesc());
-        holder.wall.setImageDrawable(context.getResources().getDrawable(kit.getShowcase()));
+        holder.wall.loadUrl(kit.getSvg());
+        holder.wall.setBackgroundColor(kit.getDefaultBgColor());
+        holder.wall.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        holder.wall.getSettings().setLoadWithOverviewMode(true);
+        holder.wall.getSettings().setUseWideViewPort(true);
         holder.icon.setImageDrawable(kit.getIcon());
         //setAnimation(holder.content, position);
 
@@ -85,7 +95,8 @@ public class KitAdapter extends RecyclerView.Adapter<KitAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        final ImageView wall,icon;
+        static WebView wall;
+        final ImageView icon;
         final TextView name;
         final TextView smalldesc;
         final OnItemClickListener onItemClickListener;
@@ -95,18 +106,25 @@ public class KitAdapter extends RecyclerView.Adapter<KitAdapter.ViewHolder> {
             super(v);
             v.setClickable(true);
             v.setOnClickListener(this);
-            wall = (ImageView) v.findViewById(R.id.kit_showcase);
+            wall = (WebView) v.findViewById(R.id.kit_showcase);
             icon = (ImageView) v.findViewById(R.id.kit_icon);
             content = (CardView)v.findViewById(R.id.card);
             name = (TextView) v.findViewById(R.id.kit_name);
             smalldesc = (TextView) v.findViewById(R.id.kit_small_desc);
             this.onItemClickListener = onItemClickListener;
+
+
         }
 
         @Override
         public void onClick(View v) {
-            onItemClickListener.onItemClick(getAdapterPosition());
+            onItemClickListener.onItemClick(getView(),getAdapterPosition());
         }
+
+        private View getView() {
+            return ViewHolder.wall;
+        }
+
 
     }
 

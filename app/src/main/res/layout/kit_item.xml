@@ -31,7 +31,7 @@
             android:layout_gravity="bottom"
             tools:ignore="UnusedAttribute">
 
-            <ImageView
+            <WebView
                 android:id="@+id/kit_showcase"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
@@ -40,7 +40,7 @@
                 tools:ignore="ContentDescription,UnusedAttribute" >
 
 
-            </ImageView>
+            </WebView>
 
 
 
