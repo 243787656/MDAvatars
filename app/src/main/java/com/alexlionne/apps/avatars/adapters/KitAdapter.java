@@ -57,7 +57,7 @@ public class KitAdapter extends RecyclerView.Adapter<KitAdapter.ViewHolder> {
         holder.smalldesc.setText(kit.getSmallDesc());
         holder.wall.setImageDrawable(context.getResources().getDrawable(kit.getShowcase()));
         holder.icon.setImageDrawable(kit.getIcon());
-        setAnimation(holder.content, position);
+        //setAnimation(holder.content, position);
 
 
 

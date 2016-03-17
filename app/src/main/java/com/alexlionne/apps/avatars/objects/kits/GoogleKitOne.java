@@ -43,7 +43,7 @@ public class GoogleKitOne extends Kit {
         public GoogleKitOne(Context context) {
             super(context);
             this.context = context.getApplicationContext();
-            super.setName("Google-Kit I");
+            super.setName("Google I");
             super.setSmallDesc("Material Design ! ");
             super.setShowcase(R.drawable.gmd_kit_1);
             super.setIcon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_google).sizeDp(18));

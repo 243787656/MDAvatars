@@ -23,7 +23,7 @@ public class AndroidKit extends Kit {
     public AndroidKit(Context context) {
         super(context);
         this.context = context.getApplicationContext();
-        super.setName("Android Kit");
+        super.setName("Android");
         super.setSmallDesc("Simple Bugdroid ! ");
         super.setShowcase(R.drawable.android_kit);
         super.setIcon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_android).sizeDp(18));

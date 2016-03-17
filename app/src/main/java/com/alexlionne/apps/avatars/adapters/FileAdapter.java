@@ -65,7 +65,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
         //holder.wall.setImageBitmap(getBitmap(file.getAbsolutePath()));
         holder.name.setText(file.getName().replace(".png",""));
         holder.icon.setImageDrawable(new IconicsDrawable(context, GoogleMaterial.Icon.gmd_face).sizeDp(18).color(Color.BLACK));
-        setAnimation(holder.content, position);
+       // setAnimation(holder.content, position);
 
 
 

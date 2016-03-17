@@ -27,7 +27,7 @@ public class GoogleKitTwo extends Kit {
     public GoogleKitTwo(Context context) {
         super(context);
         this.context = context.getApplicationContext();
-        super.setName("Google-Kit II");
+        super.setName("Google II");
         super.setSmallDesc("Material Design ! V2");
         super.setShowcase(R.drawable.gmd_kit_2);
         super.setIcon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_google).sizeDp(18));
