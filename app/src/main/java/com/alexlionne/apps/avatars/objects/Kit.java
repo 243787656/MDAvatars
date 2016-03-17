@@ -36,6 +36,7 @@ public class Kit {
     private static Context context;
     private WebView webView;
 
+
     public Kit(Context context) {
         Kit.context = context.getApplicationContext();
     }

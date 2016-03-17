@@ -6,6 +6,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -79,6 +80,7 @@ public class AvatarActivity extends AppCompatActivity {
     private static Window window;
     private boolean hidden = true;
     private final String MDSdirectory = "/sdcard/MDAvatar/";
+    private static Activity activity;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -86,7 +88,12 @@ public class AvatarActivity extends AppCompatActivity {
     private GoogleApiClient client;
     private  ProgressBar progressBar;
 
-
+    public void setActivity(Activity activity){
+        AvatarActivity.activity = activity;
+    }
+    public static Activity getActivity(){
+        return AvatarActivity.activity;
+    }
     @SuppressLint("CommitTransaction")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +101,7 @@ public class AvatarActivity extends AppCompatActivity {
         setContentView(R.layout.avatar_layout);
         final RelativeLayout view = (RelativeLayout)findViewById(R.id.layout);
 
-
+        setActivity(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

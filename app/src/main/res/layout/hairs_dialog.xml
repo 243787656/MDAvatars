@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="@color/md_white_1000"
+   >
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingTop="16dp"
+        android:paddingRight="4dp"
+        android:paddingLeft="4dp">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:id="@+id/no_hairs"
+        android:src="@drawable/no_hairs"
+        android:layout_margin="4dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:id="@+id/hairs_short"
+        android:src="@drawable/hairs_short"
+        android:layout_margin="4dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:id="@+id/semi_long"
+        android:src="@drawable/hairs_semi_long"
+        android:layout_margin="4dp" />
+
+</LinearLayout>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="horizontal" android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:gravity="center_horizontal"
+android:paddingTop="16dp"
+android:paddingRight="4dp"
+android:paddingLeft="4dp">
+
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="75dp"
+    android:id="@+id/spike"
+    android:src="@drawable/hairs_spike"
+    android:layout_margin="4dp" />
+
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="75dp"
+    android:id="@+id/long_hairs"
+    android:src="@drawable/hairs_long_short"
+    android:layout_margin="4dp" />
+
+</LinearLayout>
+    </LinearLayout>
