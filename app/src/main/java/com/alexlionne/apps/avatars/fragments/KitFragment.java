@@ -1,5 +1,6 @@
 package com.alexlionne.apps.avatars.fragments;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -39,14 +40,15 @@ public class KitFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.kit_layout,container, false);
+        View view = inflater.inflate(R.layout.kit_layout, container, false);
 
         bottomBar = BottomBar.attach(view, savedInstanceState);
         bottomBar.setFragmentItems(getActivity().getSupportFragmentManager(), R.id.container,
-                        new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_trending_up).sizeDp(18), "Trending"),
-                        new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_newspaper).sizeDp(18), "Latest"),
-                        new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_tag_faces).sizeDp(18), "All")
+                new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_trending_up).sizeDp(18), "Trending"),
+                new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_newspaper).sizeDp(18), "Latest"),
+                new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_tag_faces).sizeDp(18), "All")
         );
+
 
         return bottomBar;
     }
@@ -57,4 +59,5 @@ public class KitFragment extends Fragment {
         super.onSaveInstanceState(outState);
         bottomBar.onSaveInstanceState(outState);
     }
+
 }

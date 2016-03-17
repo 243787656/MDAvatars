@@ -1,8 +1,6 @@
 package com.alexlionne.apps.avatars.adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,16 +11,10 @@ import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alexlionne.apps.avatars.R;
 import com.alexlionne.apps.avatars.objects.Kit;
-import com.larvalabs.svgandroid.SVG;
-import com.larvalabs.svgandroid.SVGParser;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.List;
 
@@ -106,7 +98,7 @@ public class KitAdapter extends RecyclerView.Adapter<KitAdapter.ViewHolder> {
             super(v);
             v.setClickable(true);
             v.setOnClickListener(this);
-            wall = (WebView) v.findViewById(R.id.kit_showcase);
+            wall = (WebView) v.findViewById(R.id.webView1);
             icon = (ImageView) v.findViewById(R.id.kit_icon);
             content = (CardView)v.findViewById(R.id.card);
             name = (TextView) v.findViewById(R.id.kit_name);

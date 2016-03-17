@@ -1,5 +1,6 @@
 package com.alexlionne.apps.avatars;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +9,10 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Base64;
+import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -32,10 +37,10 @@ public class Utils {
             int g = Color.green( color );
             int b = Color.blue( color );
 
-            return Color.argb( a,
-                    Math.max( (int)(r * 0.8f), 0 ),
-                    Math.max( (int)(g * 0.8f), 0 ),
-                    Math.max( (int)(b * 0.8f), 0 ) );
+            return Color.argb(a,
+                    Math.max((int) (r * 0.8f), 0),
+                    Math.max((int) (g * 0.8f), 0),
+                    Math.max((int) (b * 0.8f), 0));
 
          }
 
@@ -52,4 +57,16 @@ public class Utils {
             }
         }
     return mFile;}
+    public static void reveal(View v) {
+        int cx = v.getWidth() / 2;
+        int cy = v.getHeight() / 2;
+        //float finalRadius = (float) Math.hypot(cx, cy);
+        int finalRadius = Math.max(v.getWidth(), v.getHeight());
+        Animator anim =
+                android.view.ViewAnimationUtils.createCircularReveal(v, cx, cy, 0, finalRadius);
+        v.setVisibility(View.VISIBLE);
+        anim.setDuration(800);
+        anim.setInterpolator(new AccelerateDecelerateInterpolator());
+        anim.start();
+    }
 }

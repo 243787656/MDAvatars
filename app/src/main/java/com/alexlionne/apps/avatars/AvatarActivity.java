@@ -30,7 +30,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.transition.Explode;
-import android.transition.Transition;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -120,15 +119,6 @@ public class AvatarActivity extends AppCompatActivity {
         }
         attachKit(kit);
         setWindow(getWindow());
-        webview.setVisibility(View.INVISIBLE);
-        webview.post(new Runnable() {
-
-            @Override
-            public void run() {
-                reveal(webview);
-
-            }
-        });
 
         webview.loadUrl(kit.getSvg());
         webview.setBackgroundColor(kit.getDefaultBgColor());
@@ -240,53 +230,9 @@ public class AvatarActivity extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-        //getWindow().setEnterTransition(new Explode());
-        //getWindow().setExitTransition(new Explode());
-        getWindow().getEnterTransition().addListener( new Transition.TransitionListener(){
-            @Override
-            public void onTransitionStart(Transition transition) {
 
-            }
-
-            @Override
-            public void onTransitionEnd(Transition transition) {
-
-            }
-
-            @Override
-            public void onTransitionCancel(Transition transition) {
-
-            }
-
-            @Override
-            public void onTransitionPause(Transition transition) {
-
-            }
-
-            @Override
-            public void onTransitionResume(Transition transition) {
-
-            }
-        });
     }
 
-    private void reveal(View v) {
-        v.setVisibility(View.INVISIBLE);
-// get the center for the clipping circle
-        int cx = v.getWidth() / 2;
-        int cy = v.getHeight() / 2;
-
-// get the final radius for the clipping circle
-        float finalRadius = (float) Math.hypot(cx, cy);
-
-// create the animator for this view (the start radius is zero)
-        Animator anim =
-                android.view.ViewAnimationUtils.createCircularReveal(v, cx, cy, 0, finalRadius);
-
-// make the view visible and start the animation
-        v.setVisibility(View.VISIBLE);
-        anim.start();
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

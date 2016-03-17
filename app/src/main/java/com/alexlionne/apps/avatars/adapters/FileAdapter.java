@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alexlionne.apps.avatars.R;
-import com.alexlionne.apps.avatars.objects.Kit;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.squareup.picasso.Picasso;
@@ -102,7 +101,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
             super(v);
             v.setClickable(true);
             v.setOnClickListener(this);
-            wall = (ImageView) v.findViewById(R.id.kit_showcase);
+            wall = (ImageView) v.findViewById(R.id.webView1);
             icon = (ImageView) v.findViewById(R.id.kit_icon);
             content = (CardView)v.findViewById(R.id.card);
             name = (TextView) v.findViewById(R.id.kit_name);
