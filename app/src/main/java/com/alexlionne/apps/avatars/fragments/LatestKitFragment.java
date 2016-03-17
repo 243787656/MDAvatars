@@ -79,7 +79,7 @@ public class LatestKitFragment extends Fragment implements KitAdapter.OnItemClic
             kits = new Kit(getActivity().getApplicationContext()).getAllKits();
             kits_result = new ArrayList<>();
             for(int i=kits.size()-1;i>=0;i--){
-                if(i<10) {
+                if(i<5) {
                     kits_result.add(kits.get(i));
                 }
             }
