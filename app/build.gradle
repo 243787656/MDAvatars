@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.alexlionne.apps.avatars"
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 23
         versionCode 2
         versionName "1.0.4"
