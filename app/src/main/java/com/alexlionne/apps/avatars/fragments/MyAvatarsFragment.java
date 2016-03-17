@@ -113,7 +113,7 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
         new MaterialDialog.Builder(getActivity())
                 .title("Avatar")
                 .content("What do you want to do ?")
-                .positiveText("set")
+                .positiveText("rename")
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {

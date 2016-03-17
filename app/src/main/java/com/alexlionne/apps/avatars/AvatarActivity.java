@@ -422,6 +422,7 @@ public class AvatarActivity extends AppCompatActivity {
     }
 
     public void save() {
+        int count = Utils.getAllSavedAvatars().size()+1;
         new MaterialDialog.Builder(AvatarActivity.this)
                 .title("Name")
                 .content("Set a name for your Avatar")
@@ -430,7 +431,7 @@ public class AvatarActivity extends AppCompatActivity {
                         InputType.TYPE_TEXT_FLAG_CAP_WORDS)
                 .inputMaxLength(20)
                 .positiveText("go")
-                .input("name", "my_avatar_"+Utils.getAllSavedAvatars().size()+1, false, new MaterialDialog.InputCallback() {
+                .input("name", "my_avatar_"+count, false, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
                         Picture picture = webview.capturePicture();
