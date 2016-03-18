@@ -5,9 +5,12 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Picture;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -25,6 +28,7 @@ import com.alexlionne.apps.avatars.adapters.KitAdapter;
 import com.alexlionne.apps.avatars.objects.Kit;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
@@ -124,7 +128,22 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
+                        File tmpFile = new File(file.getPath());
+                        final String photoUri;
+                        try {
+                            photoUri = MediaStore.Images.Media.insertImage(
+                                    getActivity().getContentResolver(), tmpFile.getAbsolutePath(), null, null);
 
+                            Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity())
+                                    .setText("Woaw its my new Avatar ! free and open sourced ! : https://github.com/AlexLionne/MDAvatars ")
+                                    .setType("image/jpeg")
+                                    .setStream(Uri.parse(photoUri))
+                                    .getIntent()
+                                    .setPackage("com.google.android.apps.plus");
+                            startActivity(shareIntent);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
                     }
                 })
                 .neutralText("delete")
