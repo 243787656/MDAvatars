@@ -44,7 +44,7 @@ public class GoogleKitOne extends Kit {
             super(context);
             this.context = context.getApplicationContext();
             super.setName("Google I");
-            super.setSmallDesc("Material Design ! ");
+            super.setSmallDesc("In progress ");
             super.setShowcase(R.drawable.gmd_kit_1);
             super.setIcon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_google).sizeDp(18));
             super.setSvg("file:///android_asset/gmd_kit_1.html");
