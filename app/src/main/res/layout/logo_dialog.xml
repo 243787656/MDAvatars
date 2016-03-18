@@ -25,7 +25,8 @@
         android:layout_height="75dp"
         android:id="@+id/android"
         android:src="@drawable/logo_android"
-        android:layout_margin="4dp" />
+        android:layout_margin="4dp"
+        android:visibility="invisible" />
 
 </LinearLayout>
 

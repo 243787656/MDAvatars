@@ -221,6 +221,7 @@ public class GoogleKitTwo extends Kit {
             @Override
             public void onItemClick(AdapterView<?> arg0, View v, int p, long arg3) {
                 final String default_color = "#F89921";
+                final int color =  Color.parseColor(default_color);
 
 
                 switch (p) {
@@ -250,11 +251,11 @@ public class GoogleKitTwo extends Kit {
                             public void onClick(View v) {
                                 String javascript_more = "javascript:document.getElementById('uparm').setAttribute('fill','" + default_color+ "');";
                                 GoogleKitTwo.super.getWebView().loadUrl(javascript_more);
-                                String javascript_shadow_one = "javascript:var svgElement=document.getElementById('shadow1');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.getAccentDarkColor(Color.parseColor(default_color)) + "');};";
+                                String javascript_shadow_one = "javascript:var svgElement=document.getElementById('shadow1');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(Utils.getAccentDarkColor(color)) + "');};";
                                 GoogleKitTwo.super.getWebView().loadUrl(javascript_shadow_one);
-                                String javascript_shadow_two = "javascript:var svgElement=document.getElementById('shadow2');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.getAccentDarkColor(Color.parseColor(default_color)) + "');};";
+                                String javascript_shadow_two = "javascript:var svgElement=document.getElementById('shadow2');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(Utils.getAccentDarkColor(color))+ "');};";
                                 GoogleKitTwo.super.getWebView().loadUrl(javascript_shadow_two);
-                                String javascript_shadow_three = "javascript:var svgElement=document.getElementById('shadow3');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" +Utils.getAccentDarkColor(Color.parseColor(default_color))   + "');};";
+                                String javascript_shadow_three = "javascript:var svgElement=document.getElementById('shadow3');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" +Utils.convertHexColorString(Utils.getAccentDarkColor(color))   + "');};";
                                 GoogleKitTwo.super.getWebView().loadUrl(javascript_shadow_three);
 
 
@@ -273,11 +274,11 @@ public class GoogleKitTwo extends Kit {
                             public void onClick(View v) {
                                 String javascript_more = "javascript:document.getElementById('uparm').setAttribute('fill','" + default_color+ "');";
                                 GoogleKitTwo.super.getWebView().loadUrl(javascript_more);
-                                String javascript_shadow_one = "javascript:var svgElement=document.getElementById('shadow1');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.getAccentDarkColor(Color.parseColor(default_color))  + "');};";
+                                String javascript_shadow_one = "javascript:var svgElement=document.getElementById('shadow1');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(Utils.getAccentDarkColor(color))  + "');};";
                                 GoogleKitTwo.super.getWebView().loadUrl(javascript_shadow_one);
-                                String javascript_shadow_two = "javascript:var svgElement=document.getElementById('shadow2');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.getAccentDarkColor(Color.parseColor(default_color)) + "');};";
+                                String javascript_shadow_two = "javascript:var svgElement=document.getElementById('shadow2');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(Utils.getAccentDarkColor(color)) + "');};";
                                 GoogleKitTwo.super.getWebView().loadUrl(javascript_shadow_two);
-                                String javascript_shadow_three = "javascript:var svgElement=document.getElementById('shadow3');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.getAccentDarkColor(Color.parseColor(default_color)) + "');};";
+                                String javascript_shadow_three = "javascript:var svgElement=document.getElementById('shadow3');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(Utils.getAccentDarkColor(color)) + "');};";
                                 GoogleKitTwo.super.getWebView().loadUrl(javascript_shadow_three);
 
 
@@ -295,11 +296,11 @@ public class GoogleKitTwo extends Kit {
                             public void onClick(View v) {
                                 String javascript_more = "javascript:document.getElementById('uparm').setAttribute('fill','" + default_color + "');";
                                 GoogleKitTwo.super.getWebView().loadUrl(javascript_more);
-                                String javascript_shadow_one = "javascript:var svgElement=document.getElementById('shadow1');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.getAccentDarkColor(Color.parseColor(default_color)) + "');};";
+                                String javascript_shadow_one = "javascript:var svgElement=document.getElementById('shadow1');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" +Utils.convertHexColorString(Utils.getAccentDarkColor(color)) + "');};";
                                 GoogleKitTwo.super.getWebView().loadUrl(javascript_shadow_one);
-                                String javascript_shadow_two = "javascript:var svgElement=document.getElementById('shadow2');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.getAccentDarkColor(Color.parseColor(default_color)) + "');};";
+                                String javascript_shadow_two = "javascript:var svgElement=document.getElementById('shadow2');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(Utils.getAccentDarkColor(color)) + "');};";
                                 GoogleKitTwo.super.getWebView().loadUrl(javascript_shadow_two);
-                                String javascript_shadow_three = "javascript:var svgElement=document.getElementById('shadow3');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.getAccentDarkColor(Color.parseColor(default_color)) + "');};";
+                                String javascript_shadow_three = "javascript:var svgElement=document.getElementById('shadow3');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(Utils.getAccentDarkColor(color)) + "');};";
                                 GoogleKitTwo.super.getWebView().loadUrl(javascript_shadow_three);
 
 
@@ -318,11 +319,11 @@ public class GoogleKitTwo extends Kit {
 
                                 String javascript_more = "javascript:document.getElementById('uparm').setAttribute('fill','" + default_color+ "');";
                                 GoogleKitTwo.super.getWebView().loadUrl(javascript_more);
-                                String javascript_shadow_one = "javascript:var svgElement=document.getElementById('shadow1');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.getAccentDarkColor(Color.parseColor(default_color))  + "');};";
+                                String javascript_shadow_one = "javascript:var svgElement=document.getElementById('shadow1');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(Utils.getAccentDarkColor(color))  + "');};";
                                 GoogleKitTwo.super.getWebView().loadUrl(javascript_shadow_one);
-                                String javascript_shadow_two = "javascript:var svgElement=document.getElementById('shadow2');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.getAccentDarkColor(Color.parseColor(default_color))  + "');};";
+                                String javascript_shadow_two = "javascript:var svgElement=document.getElementById('shadow2');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(Utils.getAccentDarkColor(color))  + "');};";
                                 GoogleKitTwo.super.getWebView().loadUrl(javascript_shadow_two);
-                                String javascript_shadow_three = "javascript:var svgElement=document.getElementById('shadow3');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.getAccentDarkColor(Color.parseColor(default_color))  + "');};";
+                                String javascript_shadow_three = "javascript:var svgElement=document.getElementById('shadow3');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(Utils.getAccentDarkColor(color))  + "');};";
                                 GoogleKitTwo.super.getWebView().loadUrl(javascript_shadow_three);
 
                                 String javascript_e = " javascript:document.getElementById('"+getClothes()+"').setAttribute('fill','transparent');";
@@ -342,7 +343,7 @@ public class GoogleKitTwo extends Kit {
                                 .listener((new ColorChooserDialog.ColorListener() {
                                     @Override
                                     public void onColorSelect(int color) {
-                                        String javascript = "javascript:document.getElementById('body').setAttribute('fill','" + Utils.convertHexColorString(color) + "');";
+                                        String javascript = "javascript:document.getElementById('"+getClothes()+"').setAttribute('fill','" + Utils.convertHexColorString(color) + "');";
                                         GoogleKitTwo.super.getWebView().loadUrl(javascript);
                                         String javascript_more = "javascript:document.getElementById('uparm').setAttribute('fill','" + Utils.convertHexColorString(color) + "');";
                                         GoogleKitTwo.super.getWebView().loadUrl(javascript_more);
@@ -387,29 +388,46 @@ public class GoogleKitTwo extends Kit {
                         google.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                new ColorChooserDialog.Builder(context.getApplicationContext())
+                                        .colors(R.array.md_colors)
+                                        .listener((new ColorChooserDialog.ColorListener() {
+                                            @Override
+                                            public void onColorSelect(int color) {
 
-                                String javascript_e = " javascript:document.getElementById('"+getLogo()+"').setAttribute('fill','transparent');";
-                                GoogleKitTwo.super.getWebView().loadUrl(javascript_e);
-                                setClothes("logogoogle");
-                                String javascript = " javascript:document.getElementById('"+getLogo()+"').setAttribute('fill','"+Utils.getAccentDarkColor(Color.parseColor(default_color))+"');";
-                                GoogleKitTwo.super.getWebView().loadUrl(javascript);
-                                mBottomSheetDialog2.dismiss();
+                                                String javascript_e = " javascript:document.getElementById('"+getLogo()+"').setAttribute('fill','transparent');";
+                                                GoogleKitTwo.super.getWebView().loadUrl(javascript_e);
+                                                setClothes("logogoogle");
+                                                String javascript = " javascript:document.getElementById('"+getLogo()+"').setAttribute('fill','"+Utils.convertHexColorString(color)+"');";
+                                                GoogleKitTwo.super.getWebView().loadUrl(javascript);
+                                                mBottomSheetDialog2.dismiss();
+
+
+
+                                            }}))
+
+                                        .positiveButton("Okay")
+                                        .negativeButton("Cancel")
+                                        .title("Select Color")
+                                        .positiveButtonColor(Color.BLUE)
+                                        .build()
+                                        .show(AvatarActivity.fragmentManager, null);
+
 
                             }
                         });
 
-                        android.setOnClickListener(new View.OnClickListener() {
+                        /*android.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                String javascript_e = " javascript:document.getElementById('"+getClothes()+"').setAttribute('fill','transparent');";
+                                String javascript_e = " javascript:document.getElementById('"+getLogo()+"').setAttribute('fill','transparent');";
                                 GoogleKitTwo.super.getWebView().loadUrl(javascript_e);
                                 setLogo("logoandroid");
-                                String javascript = " javascript:document.getElementById('"+getClothes()+"').setAttribute('fill','"+Utils.getAccentDarkColor(Color.parseColor(default_color))+"');";
+                                String javascript= "javascript:var svgElement=document.getElementById('"+getLogo()+"');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(Utils.getAccentDarkColor(color)) + "');};";
                                 GoogleKitTwo.super.getWebView().loadUrl(javascript);
                                 mBottomSheetDialog2.dismiss();
 
                             }
-                        });
+                        });*/
 
 
 
