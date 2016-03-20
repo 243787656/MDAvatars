@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -18,12 +19,17 @@ import android.graphics.Matrix;
 import android.graphics.Picture;
 import android.graphics.PorterDuff;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -41,23 +47,29 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.alexlionne.apps.avatars.fragments.EditionFragment;
 import com.alexlionne.apps.avatars.objects.Kit;
+import com.alexlionne.apps.avatars.objects.ListItem;
 import com.alexlionne.apps.avatars.objects.kits.AndroidKit;
 import com.alexlionne.apps.avatars.objects.kits.GoogleKitOne;
 import com.alexlionne.apps.avatars.objects.kits.GoogleKitTwo;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import io.codetail.animation.SupportAnimator;
@@ -67,12 +79,12 @@ import io.codetail.animation.ViewAnimationUtils;
 public class AvatarActivity extends AppCompatActivity {
     private static int accentPreselect;
     private int currentFragment;
-    private WebView webview;
+    private static WebView webview;
     public static Kit kit;
     private FragmentManager fm;
     private FragmentTransaction fragmentTransaction;
     private EditionFragment fragment[];
-    private ArrayList<ArrayList<String>> list;
+    private ArrayList<ListItem> list;
     private EditionFragment pre;
     private EditionFragment post;
     private EditionFragment current;
@@ -81,6 +93,10 @@ public class AvatarActivity extends AppCompatActivity {
     private boolean hidden = true;
     private final String MDSdirectory = "/sdcard/MDAvatar/";
     private static Activity activity;
+    private Bitmap bitmap;
+    public static RelativeLayout view;
+    public static Button button;
+    public static Button back;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -99,7 +115,7 @@ public class AvatarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.avatar_layout);
-        final RelativeLayout view = (RelativeLayout)findViewById(R.id.layout);
+       view = (RelativeLayout)findViewById(R.id.bottom_tasks);
 
         setActivity(this);
 
@@ -129,6 +145,7 @@ public class AvatarActivity extends AppCompatActivity {
 
         webview.loadUrl(kit.getSvg());
         webview.setBackgroundColor(kit.getDefaultBgColor());
+        view.setBackgroundColor(kit.getDefaultBgColor());
         webview.getSettings().setBuiltInZoomControls(true);
         webview.getSettings().setDisplayZoomControls(false);
         webview.getSettings().setUseWideViewPort(true);
@@ -169,11 +186,20 @@ public class AvatarActivity extends AppCompatActivity {
         setNextFragment(fragment[getCurrentFragment().getPosition() + 1]);
         progressBar.setProgress(getCurrentFragment().getProgress());
 
-        final Button button = (Button) findViewById(R.id.change);
-        final Button back = (Button) findViewById(R.id.change_back);
+        button = (Button) findViewById(R.id.change);
+        back = (Button) findViewById(R.id.change_back);
         assert button != null;
         assert back != null;
         button.setText(getNextFragment().getTitle());
+        Drawable left_arrow = new IconicsDrawable(this, GoogleMaterial.Icon.gmd_keyboard_arrow_left).sizeDp(16).paddingDp(4).color(Color.WHITE);
+        Drawable right_arrow = new IconicsDrawable(this, GoogleMaterial.Icon.gmd_keyboard_arrow_right).sizeDp(16).paddingDp(4).color(Color.WHITE);
+        button.setCompoundDrawablesWithIntrinsicBounds(null, null, right_arrow,null);
+        back.setCompoundDrawablesWithIntrinsicBounds(left_arrow, null, null, null);
+        //button.setTextColor(Utils.getAccentDarkColor(kit.getDefaultBgColor()));
+        //back.setTextColor(Utils.getAccentDarkColor(kit.getDefaultBgColor()));
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setNavigationBarColor(kit.getDefaultBgColor());
+
         back.setVisibility(View.INVISIBLE);
         button.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         back.setBackgroundColor(getResources().getColor(android.R.color.transparent));
@@ -254,14 +280,14 @@ public class AvatarActivity extends AppCompatActivity {
 
     public void addFragment(int i) {
         int UNIT_SIZE = (i + 1) * (100 / fragment.length);
-        String title = list.get(i).get(0);
+        String title = list.get(i).getTitle();
         fragment[i] = new EditionFragment();
         fragment[i].setPosition(i);
         fragment[i].setListener(kit.getListeners());
         fragment[i].setTitle(title);
-        fragment[i].setList(list.get(i));
+        fragment[i].setList(list);
         fragment[i].setProgress(UNIT_SIZE);
-        list.get(i).remove(0);
+        //fragment[i].setContext(this);
 
     }
 
@@ -299,6 +325,7 @@ public class AvatarActivity extends AppCompatActivity {
 
 
     }
+
 
     public void switchBackFragment(EditionFragment to) {
         if (getCurrentFragment().getPosition() != 0) {
@@ -373,28 +400,35 @@ public class AvatarActivity extends AppCompatActivity {
                 .positiveText("go")
                 .input("name", "my_avatar_"+count, false, new MaterialDialog.InputCallback() {
                     @Override
-                    public void onInput(MaterialDialog dialog, CharSequence input) {
-                        Picture picture = webview.capturePicture();
-                        Bitmap b = Bitmap.createBitmap(
-                                picture.getWidth(), picture.getHeight(), Bitmap.Config.ARGB_8888);
-                        Canvas c = new Canvas(b);
-                        picture.draw(c);
+                    public void onInput(MaterialDialog dialog, final CharSequence input) {
 
-                        FileOutputStream fos = null;
-                        try {
-                            fos = new FileOutputStream(MDSdirectory + input.toString() + ".png");
-                            if (fos != null) {
-                                b.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                                fos.close();
+                        webview.postDelayed(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                // TODO Auto-generated method stub
+                                bitmap = Bitmap.createBitmap( webview.getWidth(), webview.getHeight(), Bitmap.Config.ARGB_8888);
+                                final Canvas c = new Canvas(bitmap);
+                                webview.draw(c);
+                                FileOutputStream fos = null;
+                                try {
+                                    fos = new FileOutputStream(MDSdirectory + input.toString() + ".png");
+                                    if (fos != null) {
+                                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                        fos.close();
+                                    }
+                                } catch (Exception e) {
+                                    System.out.println("-----error--" + e);
+                                }
                             }
-                        } catch (Exception e) {
-                            System.out.println("-----error--" + e);
-                        }
+                        }, 100);
+
 
                     }
                 })
                 .show();
     }
+
 
     @Override
     public void onStart() {
@@ -440,4 +474,118 @@ public class AvatarActivity extends AppCompatActivity {
 
 
     }*/
+
+
+    public static void selectImageBackground(){
+
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                activity.startActivityForResult(photoPickerIntent, 1);
+
+    }
+    public static void selectImageBodyBackground(){
+
+        new MaterialDialog.Builder(AvatarActivity.getActivity())
+                .title("Name")
+                .content("Set a name for your Avatar")
+                .inputType(InputType.TYPE_CLASS_TEXT |
+                        InputType.TYPE_TEXT_VARIATION_PERSON_NAME |
+                        InputType.TYPE_TEXT_FLAG_CAP_WORDS)
+                .positiveText("go")
+                .input("link", null, false, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, final CharSequence input) {
+                        AvatarActivity.getActivity().runOnUiThread(new Runnable() {
+                            public void run() {
+                                Utils.getPalettefromBitmapUrl(input.toString());
+                            }
+                        });
+
+                            String javascript = "javascript:addSvgStuff('body','" + input.toString() + "')";
+                            String javascript2 = " javascript:document.getElementById('uparm').setAttribute('fill','transparent');";
+                            webview.loadUrl(javascript);
+                            webview.loadUrl(javascript2);
+
+                        }
+                    }
+
+                    )
+
+
+                            .
+
+                    show();
+
+                }
+
+        @Override
+    public void onActivityResult(int requestCode, int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                try {
+                    Uri selectedImage = data.getData();
+
+                    String filePath = getPath(selectedImage);
+                    String file_extn = filePath.substring(filePath.lastIndexOf(".") + 1);
+                    File file_bitmap = new File(filePath);
+
+
+                    if (file_extn.equals("img") || file_extn.equals("jpg") || file_extn.equals("jpeg") || file_extn.equals("gif") || file_extn.equals("png")) {
+
+
+                        int targetW = webview.getWidth();
+                        int targetH = webview.getHeight();
+                        // Get the dimensions of the bitmap
+                        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                        bmOptions.inJustDecodeBounds = true;
+                        BitmapFactory.decodeFile(file_bitmap.getAbsolutePath(), bmOptions);
+                        int photoW = bmOptions.outWidth;
+                        int photoH = bmOptions.outHeight;
+
+                        // Determine how much to scale down the image
+                        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+
+                        // Decode the image file into a Bitmap sized to fill the View
+                        bmOptions.inJustDecodeBounds = false;
+                        bmOptions.inSampleSize = scaleFactor;
+                        bmOptions.inPurgeable = true;
+
+                        Bitmap bitmap = BitmapFactory.decodeFile(file_bitmap.getAbsolutePath(), bmOptions);
+
+
+                        if (Build.VERSION.SDK_INT >= 21) {
+                            Window window = AvatarActivity.getWindowView();
+                            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                            window.setStatusBarColor(Utils.getPalettefromBitmap(bitmap));
+                            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                            window.setNavigationBarColor(Utils.getPalettefromBitmap(bitmap));
+                        }
+                        Drawable drawable = new BitmapDrawable(bitmap);
+                        webview.setBackgroundColor(Color.TRANSPARENT);
+                        webview.setBackground(drawable);
+                    } else {
+                        //NOT IN REQUIRED FORMAT
+                    }
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    }
+
+
+    public String getPath(Uri uri) {
+        String[] projection = { MediaStore.MediaColumns.DATA };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        cursor.moveToFirst();
+
+        return cursor.getString(column_index);
+    }
+
 }

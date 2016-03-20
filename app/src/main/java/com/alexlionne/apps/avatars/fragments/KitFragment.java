@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
  */
 public class KitFragment extends Fragment {
     private ViewGroup root;
-    private BottomBar bottomBar;
+    private BottomBar mBottomBar;
 
     public KitFragment() {
         // Required empty public constructor
@@ -42,22 +43,24 @@ public class KitFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.kit_layout, container, false);
 
-        bottomBar = BottomBar.attach(view, savedInstanceState);
-        bottomBar.setFragmentItems(getActivity().getSupportFragmentManager(), R.id.container,
+        mBottomBar = BottomBar.attach(view, savedInstanceState);
+        mBottomBar.setFragmentItems(getActivity().getSupportFragmentManager(), R.id.container,
                 new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_trending_up).sizeDp(18), "Trending"),
                 new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_newspaper).sizeDp(18), "Latest"),
                 new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_tag_faces).sizeDp(18), "All")
         );
+        mBottomBar.mapColorForTab(0, ContextCompat.getColor(getActivity(), R.color.colorAccent));
+        mBottomBar.mapColorForTab(1, ContextCompat.getColor(getActivity(), R.color.primary));
+        mBottomBar.mapColorForTab(2, ContextCompat.getColor(getActivity(), R.color.md_orange_500));
 
-
-        return bottomBar;
+        return mBottomBar;
     }
 
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        bottomBar.onSaveInstanceState(outState);
+        mBottomBar.onSaveInstanceState(outState);
     }
 
 }

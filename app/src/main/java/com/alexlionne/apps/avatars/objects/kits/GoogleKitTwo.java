@@ -5,6 +5,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Build;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -20,7 +24,13 @@ import android.widget.Toast;
 import com.alexlionne.apps.avatars.AvatarActivity;
 import com.alexlionne.apps.avatars.R;
 import com.alexlionne.apps.avatars.Utils;
+import com.alexlionne.apps.avatars.adapters.CustomAdapter;
+import com.alexlionne.apps.avatars.fragments.EditionFragment;
+import com.alexlionne.apps.avatars.fragments.LatestKitFragment;
+import com.alexlionne.apps.avatars.objects.Bubble;
+import com.alexlionne.apps.avatars.objects.Item;
 import com.alexlionne.apps.avatars.objects.Kit;
+import com.alexlionne.apps.avatars.objects.ListItem;
 import com.kennyc.colorchooser.ColorChooserDialog;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -33,6 +43,14 @@ public class GoogleKitTwo extends Kit {
     private String hairs;
     private String clothes;
     private String logo;
+    private static Bubble skin;
+    private static Bubble background;
+    private static Bubble hairs_c;
+    private static Bubble clothes_c;
+    private static Bubble hand_c;
+
+
+
 
 
     public GoogleKitTwo(Context context) {
@@ -49,7 +67,19 @@ public class GoogleKitTwo extends Kit {
         setHairs("hairskrillex");
         setClothes("mainbody");
         setLogo("logogoogle");
+
+        skin = new Bubble();
+        skin.setColor(context.getResources().getColor(R.color.md_amber_300));
+        background = new Bubble();
+        background.setColor(context.getResources().getColor(R.color.md_orange_700));
+        hairs_c = new Bubble();
+        hairs_c.setColor(context.getResources().getColor(R.color.md_brown_500));
+        clothes_c = new Bubble();
+        clothes_c.setColor(context.getResources().getColor(R.color.md_amber_500));
+        hand_c = new Bubble();
+        hand_c.setColor(context.getResources().getColor(R.color.md_amber_300));
     }
+
 
     public void setHairs(String hairs){
         this.hairs = hairs;
@@ -71,53 +101,64 @@ public class GoogleKitTwo extends Kit {
     }
 
 
-    private ArrayList<ArrayList<String>> getGoogleKitTwoCategories() {
-        ArrayList<String> background = new ArrayList<>();
-        background.add("Background");
-        background.add("Color");
+    private ArrayList<ListItem> getGoogleKitTwoCategories() {
 
-        ArrayList<String> head = new ArrayList<>();
-        head.add("Head");
-        head.add("Color");
+        ListItem background = new ListItem();
+        background.setTitle("Background");
+        background.addItem(new Item("Color", false, true, GoogleKitTwo.background));
+        background.addItem(new Item("Image", false, false, null));
 
-        ArrayList<String> hand = new ArrayList<>();
-        hand.add("Hand");
-        hand.add("hand");
+        ListItem head= new ListItem();
+        head.setTitle("Head");
+        head.addItem(new Item("Skin color", false, true, GoogleKitTwo.skin));
 
-        ArrayList<String> hairs = new ArrayList<>();
-        hairs.add("Hairs");
-        hairs.add("Style");
-        hairs.add("Color");
+        ListItem hand = new ListItem();
+        hand.setTitle("Hand");
+        hand.addItem(new Item("Match with skin color", true, false, null));
+        hand.addItem(new Item("Color", false, true, GoogleKitTwo.hand_c));
+
+        ListItem hairs = new ListItem();
+        hairs.setTitle("Hairs");
+        hairs.addItem(new Item("Style", false, false,null));
+        hairs.addItem(new Item("Color", false, true, GoogleKitTwo.hairs_c));
+
+        ListItem clothes = new ListItem();
+        clothes.setTitle("Clothes");
+        clothes.addItem(new Item("Style", false, false, null));
+        clothes.addItem(new Item("Color", false, true,GoogleKitTwo.clothes_c));
+        clothes.addItem(new Item("Image", false, false,null));
+        clothes.addItem(new Item("Logo", false, false,null));
+
+        ListItem accessories = new ListItem();
+        accessories.setTitle("Accessories");
+        accessories.addItem(new Item("SmartPhone", true, false,null));
+        accessories.addItem(new Item("Watch", true,false,null));
+        accessories.addItem(new Item("Headphones", true,false,null));
+
+        ListItem save = new ListItem();
+        save.setTitle("Save and options");
+        save.addItem(new Item("Save to sd card", true, false,null));
+        save.addItem(new Item("Share", false, false,null));
 
 
-        ArrayList<String> body = new ArrayList<>();
-        body.add("Clothes");
-        body.add("Style");
-        body.add("Color");
-        body.add("Logo");
-
-        ArrayList<String> saves = new ArrayList<>();
-        saves.add("Save and options");
-        saves.add("Save");
-        saves.add("Share");
-
-        ArrayList<ArrayList<String>> result = new ArrayList<>();
+        ArrayList<ListItem> result = new ArrayList<>();
         result.add(background);
         result.add(head);
         result.add(hand);
         result.add(hairs);
-        result.add(body);
-        result.add(saves);
+        result.add(clothes);
+        result.add(accessories);
+        result.add(save);
 
 
         return result;
     }
 
-    public ArrayList<AdapterView.OnItemClickListener> getGoogleKitTwoListeners(){
-        ArrayList<AdapterView.OnItemClickListener> list = new ArrayList<>();
-        AdapterView.OnItemClickListener background = new AdapterView.OnItemClickListener(){
+    public ArrayList<CustomAdapter.OnItemClickListener> getGoogleKitTwoListeners(){
+        ArrayList<CustomAdapter.OnItemClickListener> list = new ArrayList<>();
+        CustomAdapter.OnItemClickListener background = new  CustomAdapter.OnItemClickListener(){
             @Override
-            public void onItemClick(AdapterView<?> arg0, View v, int p, long arg3) {
+            public void onItemClick(View v, final int p) {
 
 
                 switch (p) {
@@ -131,12 +172,12 @@ public class GoogleKitTwo extends Kit {
 
                                         selectedColor = color;
                                         GoogleKitTwo.super.getWebView().setBackgroundColor(color);
-                                        if (Build.VERSION.SDK_INT >= 21) {
-                                            Window window = AvatarActivity.getWindowView();
-                                            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                                            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                                            window.setStatusBarColor(Utils.getAccentDarkColor(color));
-                                        }
+                                        GoogleKitTwo.background.setColor(color);
+                                        AvatarActivity.view.setBackgroundColor(color);
+                                       //AvatarActivity.button.setTextColor(Utils.getAccentDarkColor(color));
+                                        //AvatarActivity.back.setTextColor(Utils.getAccentDarkColor(color));
+
+
                                     }
                                 }))
                                 .positiveButton("Okay")
@@ -149,6 +190,9 @@ public class GoogleKitTwo extends Kit {
 
 
                         break;
+                    case 1 :
+                        AvatarActivity.selectImageBackground();
+                        break;
 
                 }
 
@@ -157,9 +201,9 @@ public class GoogleKitTwo extends Kit {
 
 
 
-        AdapterView.OnItemClickListener head = new AdapterView.OnItemClickListener(){
+        CustomAdapter.OnItemClickListener head = new CustomAdapter.OnItemClickListener(){
             @Override
-            public void onItemClick(AdapterView<?> arg0, View v, int p, long arg3) {
+            public void onItemClick(View v, int p) {
 
 
                 switch (p) {
@@ -187,10 +231,9 @@ public class GoogleKitTwo extends Kit {
                 }
             }
         };
-        AdapterView.OnItemClickListener hand = new AdapterView.OnItemClickListener(){
+        CustomAdapter.OnItemClickListener hand = new CustomAdapter.OnItemClickListener(){
             @Override
-            public void onItemClick(AdapterView<?> arg0, View v, int p, long arg3) {
-
+            public void onItemClick(View v, int p) {
 
                 switch (p) {
                     case 0:
@@ -217,9 +260,9 @@ public class GoogleKitTwo extends Kit {
                 }
             }
         };
-        AdapterView.OnItemClickListener clothes = new AdapterView.OnItemClickListener(){
+        CustomAdapter.OnItemClickListener clothes = new CustomAdapter.OnItemClickListener(){
             @Override
-            public void onItemClick(AdapterView<?> arg0, View v, int p, long arg3) {
+            public void onItemClick(View v, int p) {
                 final String default_color = "#F89921";
                 final int color =  Color.parseColor(default_color);
 
@@ -432,14 +475,17 @@ public class GoogleKitTwo extends Kit {
 
 
                         break;
+                    case 3 :
+                        AvatarActivity.selectImageBodyBackground();
+
+                        break;
 
                 }
             }
         };
-        AdapterView.OnItemClickListener hairs = new AdapterView.OnItemClickListener(){
+        CustomAdapter.OnItemClickListener hairs = new CustomAdapter.OnItemClickListener(){
             @Override
-            public void onItemClick(AdapterView<?> arg0, View v, int p, long arg3) {
-
+            public void onItemClick(View v, int p) {
 
                 switch (p) {
                     case 0:
@@ -551,10 +597,21 @@ public class GoogleKitTwo extends Kit {
                 }
             }
         };
-        AdapterView.OnItemClickListener saves = new AdapterView.OnItemClickListener(){
+        CustomAdapter.OnItemClickListener accessories = new CustomAdapter.OnItemClickListener(){
             @Override
-            public void onItemClick(AdapterView<?> arg0, View v, int p, long arg3) {
+            public void onItemClick(View v, int p) {
 
+                switch (p) {
+                    case 0:
+
+                        break;
+
+                }
+            }
+        };
+        CustomAdapter.OnItemClickListener saves = new CustomAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(View v, int p) {
 
                 switch (p) {
                     case 0:
@@ -572,9 +629,11 @@ public class GoogleKitTwo extends Kit {
         list.add(hand);
         list.add(hairs);
         list.add(clothes);
+        list.add(accessories);
         list.add(saves);
 
         return list;
     }
+
 
 }

@@ -10,6 +10,7 @@ import android.webkit.WebView;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 
+import com.alexlionne.apps.avatars.adapters.CustomAdapter;
 import com.alexlionne.apps.avatars.adapters.KitAdapter;
 import com.alexlionne.apps.avatars.objects.kits.AndroidKit;
 import com.alexlionne.apps.avatars.objects.kits.GoogleKitOne;
@@ -17,6 +18,7 @@ import com.alexlionne.apps.avatars.objects.kits.GoogleKitTwo;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 /**
@@ -29,12 +31,13 @@ public class Kit {
     private String smalldesc;
     private int bgcolor;
     private int showcase;
-    private ArrayList<AdapterView.OnItemClickListener> listeners;
+    private ArrayList<CustomAdapter.OnItemClickListener> listeners;
     private IconicsDrawable icon;
     private String svg_path;
-    private ArrayList<ArrayList<String>> category;
+    private ArrayList<ListItem> category;
     private static Context context;
     private WebView webView;
+    private int backgrouncolor;
 
 
     public Kit(Context context) {
@@ -93,20 +96,25 @@ public class Kit {
         return this.icon;
     }
 
-    public void setCategories(ArrayList<ArrayList<String>> category) {
+    public void setCategories(ArrayList<ListItem> category) {
         this.category = category;
     }
 
-    public void setListener(ArrayList<AdapterView.OnItemClickListener> listener) {
+    public void setListener(ArrayList<CustomAdapter.OnItemClickListener> listener) {
         this.listeners = listener;
 
     }
+    public void setBubbleColor(int color){
+        this.backgrouncolor = color;
+    }public int getBubbleColor(){
+        return this.backgrouncolor;
+    }
 
-    public ArrayList<AdapterView.OnItemClickListener> getListeners() {
+    public ArrayList<CustomAdapter.OnItemClickListener> getListeners() {
         return this.listeners;
     }
 
-    public ArrayList<ArrayList<String>> getAllcategories() {
+    public ArrayList<ListItem> getAllcategories() {
         return this.category;
     }
 

@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v7.graphics.Palette;
 import android.util.Base64;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -16,6 +17,9 @@ import android.view.animation.AccelerateInterpolator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,4 +73,38 @@ public class Utils {
         anim.setInterpolator(new AccelerateDecelerateInterpolator());
         anim.start();
     }
+    public static int getPalettefromBitmapUrl(String url){
+
+        Bitmap bitmap = getBitmapFromURL(url);
+        Palette p = Palette.from(bitmap).generate();
+        Palette.Swatch vibrantSwatch = p.getDarkVibrantSwatch();
+        if (vibrantSwatch != null) {
+            return vibrantSwatch.getRgb();
+        }
+        return 0;
+    }
+    public static int getPalettefromBitmap(Bitmap bitmap){
+        Palette p = Palette.from(bitmap).generate();
+        Palette.Swatch vibrantSwatch = p.getDarkVibrantSwatch();
+        if (vibrantSwatch != null) {
+            return vibrantSwatch.getRgb();
+        }
+        return 0;
+    }
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            java.net.URL url = new java.net.URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url
+                    .openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

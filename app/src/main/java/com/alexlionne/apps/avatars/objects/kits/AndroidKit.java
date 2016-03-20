@@ -31,10 +31,12 @@ public class AndroidKit extends Kit {
         super.setShowcase(R.drawable.android_kit);
         super.setIcon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_android).sizeDp(18));
         super.setSvg("file:///android_asset/android_kit.html");
-        super.setCategories(getAndroidKitCategories());
-        super.setListener(getAndroidKitListeners());
+        //super.setCategories(getAndroidKitCategories());
+        //super.setListener(getAndroidKitListeners());
         super.setDefaultBgColor(context.getResources().getColor(R.color.md_green_300));
     }
+
+
 
     private ArrayList<ArrayList<String>> getAndroidKitCategories() {
         ArrayList<String> background = new ArrayList<>();

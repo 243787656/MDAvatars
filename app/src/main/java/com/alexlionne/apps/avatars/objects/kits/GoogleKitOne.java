@@ -48,8 +48,8 @@ public class GoogleKitOne extends Kit {
             super.setShowcase(R.drawable.gmd_kit_1);
             super.setIcon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_google).sizeDp(18));
             super.setSvg("file:///android_asset/gmd_kit_1.html");
-            super.setCategories(getGoogleKitOneCategories());
-            super.setListener(getGoogleKitOneListeners());
+            //super.setCategories(getGoogleKitOneCategories());
+            //super.setListener(getGoogleKitOneListeners());
             super.setDefaultBgColor(context.getResources().getColor(R.color.md_green_200));
 
 
