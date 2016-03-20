@@ -64,22 +64,24 @@ public class GoogleKitTwo extends Kit {
         super.setCategories(getGoogleKitTwoCategories());
         super.setListener(getGoogleKitTwoListeners());
         super.setDefaultBgColor(context.getResources().getColor(R.color.md_orange_700));
-        setHairs("hairskrillex");
-        setClothes("mainbody");
-        setLogo("logogoogle");
-
-        skin = new Bubble();
-        skin.setColor(context.getResources().getColor(R.color.md_amber_300));
-        background = new Bubble();
-        background.setColor(context.getResources().getColor(R.color.md_orange_700));
-        hairs_c = new Bubble();
-        hairs_c.setColor(context.getResources().getColor(R.color.md_brown_500));
-        clothes_c = new Bubble();
-        clothes_c.setColor(context.getResources().getColor(R.color.md_amber_500));
-        hand_c = new Bubble();
-        hand_c.setColor(context.getResources().getColor(R.color.md_amber_300));
+        init();
     }
+void init(){
+    setHairs("hairskrillex");
+    setClothes("mainbody");
+    setLogo("logogoogle");
 
+    skin = new Bubble();
+    skin.setColor(context.getResources().getColor(R.color.md_amber_300));
+    background = new Bubble();
+    background.setColor(context.getResources().getColor(R.color.md_orange_700));
+    hairs_c = new Bubble();
+    hairs_c.setColor(context.getResources().getColor(R.color.md_brown_500));
+    clothes_c = new Bubble();
+    clothes_c.setColor(context.getResources().getColor(R.color.md_amber_500));
+    hand_c = new Bubble();
+    hand_c.setColor(context.getResources().getColor(R.color.md_amber_300));
+}
 
     public void setHairs(String hairs){
         this.hairs = hairs;
@@ -105,40 +107,40 @@ public class GoogleKitTwo extends Kit {
 
         ListItem background = new ListItem();
         background.setTitle("Background");
-        background.addItem(new Item("Color", false, true, GoogleKitTwo.background));
-        background.addItem(new Item("Image", false, false, null));
+        background.addItem(new Item("Color", false,false, true, GoogleKitTwo.background));
+        background.addItem(new Item("Image", false,false, false, null));
 
         ListItem head= new ListItem();
         head.setTitle("Head");
-        head.addItem(new Item("Skin color", false, true, GoogleKitTwo.skin));
+        head.addItem(new Item("Skin color", false,false, true, GoogleKitTwo.skin));
 
         ListItem hand = new ListItem();
         hand.setTitle("Hand");
-        hand.addItem(new Item("Match with skin color", true, false, null));
-        hand.addItem(new Item("Color", false, true, GoogleKitTwo.hand_c));
+        hand.addItem(new Item("Match with skin color", true,true, false, null));
+        hand.addItem(new Item("Color", false,false, true, GoogleKitTwo.hand_c));
 
         ListItem hairs = new ListItem();
-        hairs.setTitle("Hairs");
-        hairs.addItem(new Item("Style", false, false,null));
-        hairs.addItem(new Item("Color", false, true, GoogleKitTwo.hairs_c));
+        hairs.setTitle("Hair");
+        hairs.addItem(new Item("Style", false,false, false,null));
+        hairs.addItem(new Item("Color", false,false,true, GoogleKitTwo.hairs_c));
 
         ListItem clothes = new ListItem();
         clothes.setTitle("Clothes");
-        clothes.addItem(new Item("Style", false, false, null));
-        clothes.addItem(new Item("Color", false, true,GoogleKitTwo.clothes_c));
-        clothes.addItem(new Item("Image", false, false,null));
-        clothes.addItem(new Item("Logo", false, false,null));
+        clothes.addItem(new Item("Style", false,false, false, null));
+        clothes.addItem(new Item("Color", false,false, true,GoogleKitTwo.clothes_c));
+        clothes.addItem(new Item("Image", false,false,false,null));
+        clothes.addItem(new Item("Logo", false,false, false,null));
 
         ListItem accessories = new ListItem();
         accessories.setTitle("Accessories");
-        accessories.addItem(new Item("SmartPhone", true, false,null));
-        accessories.addItem(new Item("Watch", true,false,null));
-        accessories.addItem(new Item("Headphones", true,false,null));
+        accessories.addItem(new Item("SmartPhone", true,true, false,null));
+        accessories.addItem(new Item("Watch", true,true,false,null));
+        accessories.addItem(new Item("Headphones", true,false,false,null));
 
         ListItem save = new ListItem();
         save.setTitle("Save and options");
-        save.addItem(new Item("Save to sd card", true, false,null));
-        save.addItem(new Item("Share", false, false,null));
+        save.addItem(new Item("Save to sd card", false,false,false,null));
+        save.addItem(new Item("Share", false,false,false,null));
 
 
         ArrayList<ListItem> result = new ArrayList<>();
@@ -174,10 +176,19 @@ public class GoogleKitTwo extends Kit {
                                         GoogleKitTwo.super.getWebView().setBackgroundColor(color);
                                         GoogleKitTwo.background.setColor(color);
                                         AvatarActivity.view.setBackgroundColor(color);
-                                       //AvatarActivity.button.setTextColor(Utils.getAccentDarkColor(color));
+                                        Drawable background = getAllcategories().get(0).getItem(0).getImageView().getBackground();
+                                        updateColor(background,GoogleKitTwo.background.getColor());
+                                        //AvatarActivity.button.setTextColor(Utils.getAccentDarkColor(color));
                                         //AvatarActivity.back.setTextColor(Utils.getAccentDarkColor(color));
 
-
+                                        if (Build.VERSION.SDK_INT >= 21) {
+                                            Window window = AvatarActivity.getWindowView();
+                                            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                                            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                                            window.setStatusBarColor(Utils.getAccentDarkColor(color));
+                                            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                                            window.setNavigationBarColor(color);
+                                        }
                                     }
                                 }))
                                 .positiveButton("Okay")
@@ -214,6 +225,9 @@ public class GoogleKitTwo extends Kit {
                                 .listener((new ColorChooserDialog.ColorListener() {
                                     @Override
                                     public void onColorSelect(int color) {
+                                        GoogleKitTwo.skin.setColor(color);
+                                        Drawable background = getAllcategories().get(1).getItem(0).getImageView().getBackground();
+                                        updateColor(background,GoogleKitTwo.skin.getColor());
                                         String javascript = " javascript:document.getElementById('head').setAttribute('fill','" + Utils.convertHexColorString(color) + "');";
                                         GoogleKitTwo.super.getWebView().loadUrl(javascript);
                                     }
@@ -476,7 +490,7 @@ public class GoogleKitTwo extends Kit {
 
                         break;
                     case 3 :
-                        AvatarActivity.selectImageBodyBackground();
+                        AvatarActivity.selectImageBodyBackground(getClothes());
 
                         break;
 
@@ -602,8 +616,13 @@ public class GoogleKitTwo extends Kit {
             public void onItemClick(View v, int p) {
 
                 switch (p) {
-                    case 0:
-
+                    case 2:
+                        //if(!getAllcategories().get(5).getItem(3).getCheckbox()){
+                            String javascript = " javascript:document.getElementById('archspeakers').setAttribute('fill','" + Utils.convertHexColorString(context.getResources().getColor(R.color.md_orange_400)) + "');";
+                            GoogleKitTwo.super.getWebView().loadUrl(javascript);
+                            String javascript_shadow_one = "javascript:var svgElement=document.getElementById('headspeakers');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(context.getResources().getColor(R.color.md_orange_700))  + "');};";
+                            GoogleKitTwo.super.getWebView().loadUrl(javascript_shadow_one);
+                        //}
                         break;
 
                 }
@@ -634,6 +653,15 @@ public class GoogleKitTwo extends Kit {
 
         return list;
     }
+    public void updateColor(Drawable background,int color){
 
+        if (background instanceof ShapeDrawable) {
+            ((ShapeDrawable) background).getPaint().setColor(color);
+        } else if (background instanceof GradientDrawable) {
+            ((GradientDrawable) background).setColor(color);
+        } else if (background instanceof ColorDrawable) {
+            ((ColorDrawable) background).setColor(color);
+        }
+    }
 
 }

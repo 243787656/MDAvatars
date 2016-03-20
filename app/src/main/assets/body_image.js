@@ -1,4 +1,4 @@
-function addSvgStuff(id,link) {
+function addSvgStuff(body,id,link) {
     var svg = document.getElementById('Layer_1');
     var svgNS = svg.namespaceURI;
     var pattern = document.createElementNS(svgNS, 'pattern');
@@ -20,7 +20,7 @@ function addSvgStuff(id,link) {
     var defs = svg.querySelector('defs') ||
     svg.insertBefore( document.createElementNS(svgNS,'defs'), svg.firstChild);
 
-    document.getElementById('mainbody').setAttribute('fill','url(#' + id + ')');
+    document.getElementById(body).setAttribute('fill','url(#' + id + ')');
 
     return defs.appendChild(pattern);
 }

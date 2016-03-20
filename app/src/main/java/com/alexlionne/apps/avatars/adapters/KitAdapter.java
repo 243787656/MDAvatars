@@ -58,6 +58,8 @@ public class KitAdapter extends RecyclerView.Adapter<KitAdapter.ViewHolder> {
         holder.wall.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         holder.wall.getSettings().setLoadWithOverviewMode(true);
         holder.wall.getSettings().setUseWideViewPort(true);
+        holder.wall.setVerticalScrollBarEnabled(false);
+        holder.wall.setHorizontalScrollBarEnabled(false);
         holder.icon.setImageDrawable(kit.getIcon());
         //setAnimation(holder.content, position);
 

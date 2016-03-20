@@ -1,58 +1,41 @@
 package com.alexlionne.apps.avatars;
 
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Picture;
 import android.graphics.PorterDuff;
-import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.transition.Explode;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.alexlionne.apps.avatars.fragments.EditionFragment;
 import com.alexlionne.apps.avatars.objects.Kit;
@@ -69,11 +52,10 @@ import com.mikepenz.iconics.IconicsDrawable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
-
-import io.codetail.animation.SupportAnimator;
-import io.codetail.animation.ViewAnimationUtils;
+import java.util.concurrent.ExecutionException;
 
 
 public class AvatarActivity extends AppCompatActivity {
@@ -97,25 +79,28 @@ public class AvatarActivity extends AppCompatActivity {
     public static RelativeLayout view;
     public static Button button;
     public static Button back;
+    public static int buttonColor;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-    private  ProgressBar progressBar;
+    private ProgressBar progressBar;
 
-    public void setActivity(Activity activity){
+    public void setActivity(Activity activity) {
         AvatarActivity.activity = activity;
     }
-    public static Activity getActivity(){
+
+    public static Activity getActivity() {
         return AvatarActivity.activity;
     }
+
     @SuppressLint("CommitTransaction")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.avatar_layout);
-       view = (RelativeLayout)findViewById(R.id.bottom_tasks);
+        view = (RelativeLayout) findViewById(R.id.bottom_tasks);
 
         setActivity(this);
 
@@ -130,10 +115,8 @@ public class AvatarActivity extends AppCompatActivity {
         webview.getSettings().setJavaScriptEnabled(true);
 
 
-
-
         String current = getIntent().getStringExtra("kit");
-         if (current.equals("Google I")) {
+        if (current.equals("Google I")) {
             kit = new GoogleKitOne(this);
         } else if (current.equals("Android")) {
             kit = new AndroidKit(this);
@@ -150,6 +133,14 @@ public class AvatarActivity extends AppCompatActivity {
         webview.getSettings().setDisplayZoomControls(false);
         webview.getSettings().setUseWideViewPort(true);
         webview.setWebChromeClient(new WebChromeClient());
+        webview.setVerticalScrollBarEnabled(false);
+        webview.setHorizontalScrollBarEnabled(false);
+        webview.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return (event.getAction() == MotionEvent.ACTION_MOVE);
+            }
+        });
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -164,8 +155,6 @@ public class AvatarActivity extends AppCompatActivity {
 
 
         });
-
-
 
 
         fragmentManager = getFragmentManager();
@@ -193,13 +182,12 @@ public class AvatarActivity extends AppCompatActivity {
         button.setText(getNextFragment().getTitle());
         Drawable left_arrow = new IconicsDrawable(this, GoogleMaterial.Icon.gmd_keyboard_arrow_left).sizeDp(16).paddingDp(4).color(Color.WHITE);
         Drawable right_arrow = new IconicsDrawable(this, GoogleMaterial.Icon.gmd_keyboard_arrow_right).sizeDp(16).paddingDp(4).color(Color.WHITE);
-        button.setCompoundDrawablesWithIntrinsicBounds(null, null, right_arrow,null);
+        button.setCompoundDrawablesWithIntrinsicBounds(null, null, right_arrow, null);
         back.setCompoundDrawablesWithIntrinsicBounds(left_arrow, null, null, null);
         //button.setTextColor(Utils.getAccentDarkColor(kit.getDefaultBgColor()));
         //back.setTextColor(Utils.getAccentDarkColor(kit.getDefaultBgColor()));
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setNavigationBarColor(kit.getDefaultBgColor());
-
         back.setVisibility(View.INVISIBLE);
         button.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         back.setBackgroundColor(getResources().getColor(android.R.color.transparent));
@@ -227,8 +215,6 @@ public class AvatarActivity extends AppCompatActivity {
 
 
                     }
-
-
 
 
                 }
@@ -292,11 +278,11 @@ public class AvatarActivity extends AppCompatActivity {
     }
 
 
-
-    public static void setWindow(Window window){
-       AvatarActivity.window = window;
+    public static void setWindow(Window window) {
+        AvatarActivity.window = window;
     }
-    public static Window getWindowView(){
+
+    public static Window getWindowView() {
         return AvatarActivity.window;
     }
 
@@ -304,14 +290,13 @@ public class AvatarActivity extends AppCompatActivity {
         if (getCurrentFragment().getPosition() != 0) {
             setPreviousFragment(fragment[getCurrentFragment().getPosition() - 1]);
         }
-        if(android.os.Build.VERSION.SDK_INT >= 11){
+        if (android.os.Build.VERSION.SDK_INT >= 11) {
             // will update the "progress" propriety of seekbar until it reaches progress
             ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", to.getProgress());
             animation.setDuration(500); // 0.5 second
             animation.setInterpolator(new DecelerateInterpolator());
             animation.start();
-        }
-        else
+        } else
 
             progressBar.setProgress(getNextFragment().getProgress());
 
@@ -332,7 +317,7 @@ public class AvatarActivity extends AppCompatActivity {
             setPreviousFragment(fragment[getCurrentFragment().getPosition() - 1]);
         }
 
-        if(android.os.Build.VERSION.SDK_INT >= 11){
+        if (android.os.Build.VERSION.SDK_INT >= 11) {
             // will update the "progress" propriety of seekbar until it reaches progress
             ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", to.getProgress());
             animation.setDuration(500); // 0.5 second
@@ -389,7 +374,7 @@ public class AvatarActivity extends AppCompatActivity {
     }
 
     public void save() {
-        int count = Utils.getAllSavedAvatars().size()+1;
+        int count = Utils.getAllSavedAvatars().size() + 1;
         new MaterialDialog.Builder(AvatarActivity.this)
                 .title("Name")
                 .content("Set a name for your Avatar")
@@ -398,7 +383,7 @@ public class AvatarActivity extends AppCompatActivity {
                         InputType.TYPE_TEXT_FLAG_CAP_WORDS)
                 .inputMaxLength(20)
                 .positiveText("go")
-                .input("name", "my_avatar_"+count, false, new MaterialDialog.InputCallback() {
+                .input("name", "my_avatar_" + count, false, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, final CharSequence input) {
 
@@ -407,7 +392,7 @@ public class AvatarActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 // TODO Auto-generated method stub
-                                bitmap = Bitmap.createBitmap( webview.getWidth(), webview.getHeight(), Bitmap.Config.ARGB_8888);
+                                bitmap = Bitmap.createBitmap(webview.getWidth(), webview.getHeight(), Bitmap.Config.ARGB_8888);
                                 final Canvas c = new Canvas(bitmap);
                                 webview.draw(c);
                                 FileOutputStream fos = null;
@@ -476,14 +461,15 @@ public class AvatarActivity extends AppCompatActivity {
     }*/
 
 
-    public static void selectImageBackground(){
+    public static void selectImageBackground() {
 
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                photoPickerIntent.setType("image/*");
-                activity.startActivityForResult(photoPickerIntent, 1);
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        activity.startActivityForResult(photoPickerIntent, 1);
 
     }
-    public static void selectImageBodyBackground(){
+
+    public static void selectImageBodyBackground(final String bodyType) {
 
         new MaterialDialog.Builder(AvatarActivity.getActivity())
                 .title("Name")
@@ -493,32 +479,39 @@ public class AvatarActivity extends AppCompatActivity {
                         InputType.TYPE_TEXT_FLAG_CAP_WORDS)
                 .positiveText("go")
                 .input("link", null, false, new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(MaterialDialog dialog, final CharSequence input) {
-                        AvatarActivity.getActivity().runOnUiThread(new Runnable() {
-                            public void run() {
-                                Utils.getPalettefromBitmapUrl(input.toString());
+                            @Override
+                            public void onInput(MaterialDialog dialog, final CharSequence input) {
+
+                                try {
+                                    Bitmap bitmap = getBitmapFromURL(input.toString());
+
+                                    int color = Utils.getLightPalettefromBitmap(bitmap);
+
+                                    String javascript = "javascript:addSvgStuff('" + bodyType + "','body','" + input.toString() + "')";
+                                    String javascript2 = " javascript:document.getElementById('uparm').setAttribute('fill','transparent');";
+                                    String javascript_shadow_one = "javascript:var svgElement=document.getElementById('shadow1');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(color) + "');};";
+                                    String javascript_shadow_two = "javascript:var svgElement=document.getElementById('shadow2');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(color) + "');};";
+                                    String javascript_shadow_three = "javascript:var svgElement=document.getElementById('shadow3');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(color) + "');};";
+
+                                    webview.loadUrl(javascript_shadow_one);
+                                    webview.loadUrl(javascript_shadow_two);
+                                    webview.loadUrl(javascript_shadow_three);
+                                    webview.loadUrl(javascript);
+                                    webview.loadUrl(javascript2);
+
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        });
-
-                            String javascript = "javascript:addSvgStuff('body','" + input.toString() + "')";
-                            String javascript2 = " javascript:document.getElementById('uparm').setAttribute('fill','transparent');";
-                            webview.loadUrl(javascript);
-                            webview.loadUrl(javascript2);
-
                         }
-                    }
 
-                    )
+                ).show();
 
+    }
 
-                            .
-
-                    show();
-
-                }
-
-        @Override
+    @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
@@ -558,10 +551,12 @@ public class AvatarActivity extends AppCompatActivity {
                             Window window = AvatarActivity.getWindowView();
                             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                            window.setStatusBarColor(Utils.getPalettefromBitmap(bitmap));
+                            window.setStatusBarColor(Utils.getLightPalettefromBitmap(bitmap));
                             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                            window.setNavigationBarColor(Utils.getPalettefromBitmap(bitmap));
+                            window.setNavigationBarColor(Utils.getLightPalettefromBitmap(bitmap));
                         }
+
+                        updateViews(bitmap);
                         Drawable drawable = new BitmapDrawable(bitmap);
                         webview.setBackgroundColor(Color.TRANSPARENT);
                         webview.setBackground(drawable);
@@ -579,7 +574,7 @@ public class AvatarActivity extends AppCompatActivity {
 
 
     public String getPath(Uri uri) {
-        String[] projection = { MediaStore.MediaColumns.DATA };
+        String[] projection = {MediaStore.MediaColumns.DATA};
         Cursor cursor = managedQuery(uri, projection, null, null, null);
         int column_index = cursor
                 .getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
@@ -588,4 +583,55 @@ public class AvatarActivity extends AppCompatActivity {
         return cursor.getString(column_index);
     }
 
+    public static Bitmap getBitmapFromURL(final String src) throws ExecutionException, InterruptedException {
+        class BitmapLoader extends AsyncTask<Bitmap, Void, Bitmap> {
+            private Bitmap myBitmap;
+
+            @Override
+            protected Bitmap doInBackground(Bitmap... params) {
+                try {
+                    java.net.URL url = new java.net.URL(src);
+                    HttpURLConnection connection = (HttpURLConnection) url
+                            .openConnection();
+                    connection.setDoInput(true);
+                    connection.connect();
+                    InputStream input = connection.getInputStream();
+                    myBitmap = BitmapFactory.decodeStream(input);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+                return myBitmap;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap result) {
+                setBitmap(result);
+            }
+
+            private void setBitmap(Bitmap bitmap) {
+                this.myBitmap = bitmap;
+            }
+
+            private Bitmap getMyBitmap() {
+                return this.myBitmap;
+            }
+
+        }
+
+        return new BitmapLoader().execute().get();
+    }
+
+    public void updateViews(Bitmap bitmap) {
+        Drawable left_arrow = new IconicsDrawable(this, GoogleMaterial.Icon.gmd_keyboard_arrow_left).sizeDp(16).paddingDp(4).color(Utils.getTitleTextColor(bitmap));
+        Drawable right_arrow = new IconicsDrawable(this, GoogleMaterial.Icon.gmd_keyboard_arrow_right).sizeDp(16).paddingDp(4).color(Utils.getTitleTextColor(bitmap));
+        button.setCompoundDrawablesWithIntrinsicBounds(null, null, right_arrow, null);
+        back.setCompoundDrawablesWithIntrinsicBounds(left_arrow, null, null, null);
+        view.setBackgroundColor(Utils.getLightPalettefromBitmap(bitmap));
+        button.setTextColor(Utils.getTitleTextColor(bitmap));
+        back.setTextColor(Utils.getTitleTextColor(bitmap));
+    }
 }
+

@@ -65,10 +65,15 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         holder.text.setText(list.getItem(position).getName());
         boolean checkbox = list.getItem(position).getCheckbox();
         boolean color = list.getItem(position).getColorchooser();
+        boolean state = list.getItem(position).isEnable();
         if (checkbox) {
             holder.icon.setVisibility(View.VISIBLE);
         }
+        if(state){
+            holder.icon.setChecked(true);
+        }
         if (color) {
+            list.getItem(position).attachImageView(holder.color);
             holder.color.setVisibility(View.VISIBLE);
             if (background instanceof ShapeDrawable) {
                 ((ShapeDrawable) background).getPaint().setColor(list.getItem(position).getBubble().getColor());
@@ -97,7 +102,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
         final CheckBox icon;
         final TextView text;
-        public static ImageView color;
+        final ImageView color;
         final OnItemClickListener onItemClickListener;
         final RelativeLayout content;
 

@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v7.graphics.Palette;
 import android.util.Base64;
 import android.view.View;
@@ -31,6 +32,7 @@ public class Utils {
 
     private static String directory ="/sdcard/MDAvatar/";
     private static ArrayList<File> mFile;
+
 
     public static String convertHexColorString(int color) {
         return String.format("#%06X", (0xFFFFFF & color));
@@ -73,38 +75,23 @@ public class Utils {
         anim.setInterpolator(new AccelerateDecelerateInterpolator());
         anim.start();
     }
-    public static int getPalettefromBitmapUrl(String url){
 
-        Bitmap bitmap = getBitmapFromURL(url);
+    public static int getLightPalettefromBitmap(Bitmap bitmap){
         Palette p = Palette.from(bitmap).generate();
-        Palette.Swatch vibrantSwatch = p.getDarkVibrantSwatch();
+        Palette.Swatch vibrantSwatch = p.getLightVibrantSwatch();
         if (vibrantSwatch != null) {
             return vibrantSwatch.getRgb();
         }
         return 0;
     }
-    public static int getPalettefromBitmap(Bitmap bitmap){
+    public static int getTitleTextColor(Bitmap bitmap){
         Palette p = Palette.from(bitmap).generate();
-        Palette.Swatch vibrantSwatch = p.getDarkVibrantSwatch();
+        Palette.Swatch vibrantSwatch = p.getLightVibrantSwatch();
         if (vibrantSwatch != null) {
-            return vibrantSwatch.getRgb();
+            return vibrantSwatch.getTitleTextColor();
         }
         return 0;
     }
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            java.net.URL url = new java.net.URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url
-                    .openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+
 
 }
