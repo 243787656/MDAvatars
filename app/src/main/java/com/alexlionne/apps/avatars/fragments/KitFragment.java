@@ -49,9 +49,9 @@ public class KitFragment extends Fragment {
                 new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_newspaper).sizeDp(18), "Latest"),
                 new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_tag_faces).sizeDp(18), "All")
         );
-        mBottomBar.mapColorForTab(0, ContextCompat.getColor(getActivity(), R.color.colorAccent));
-        mBottomBar.mapColorForTab(1, ContextCompat.getColor(getActivity(), R.color.primary));
-        mBottomBar.mapColorForTab(2, ContextCompat.getColor(getActivity(), R.color.md_orange_500));
+        mBottomBar.mapColorForTab(0,getActivity().getResources().getColor(R.color.accent));
+        mBottomBar.mapColorForTab(1, getActivity().getResources().getColor(R.color.primary));
+        mBottomBar.mapColorForTab(2, getActivity().getResources().getColor(R.color.accent));
 
         return mBottomBar;
     }

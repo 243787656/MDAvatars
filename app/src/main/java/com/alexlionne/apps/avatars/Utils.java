@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.TranslateAnimation;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -37,6 +38,14 @@ public class Utils {
     public static String convertHexColorString(int color) {
         return String.format("#%06X", (0xFFFFFF & color));
     }
+
+    public static int getAccentLightColor(int color) {
+        int red = (int) ((Color.red(color) * (1 - 0.8f) / 255 + 0.8f) * 255);
+        int green = (int) ((Color.green(color) * (1 - 0.8f) / 255 + 0.8f) * 255);
+        int blue = (int) ((Color.blue(color) * (1 - 0.8f) / 255 + 0.8f) * 255);
+        return Color.argb(Color.alpha(color), red, green, blue);
+    }
+
     public static int getAccentDarkColor(int color){
             int a = Color.alpha(color);
             int r = Color.red( color );
@@ -71,7 +80,7 @@ public class Utils {
         Animator anim =
                 android.view.ViewAnimationUtils.createCircularReveal(v, cx, cy, 0, finalRadius);
         v.setVisibility(View.VISIBLE);
-        anim.setDuration(800);
+        anim.setDuration(400);
         anim.setInterpolator(new AccelerateDecelerateInterpolator());
         anim.start();
     }
@@ -93,5 +102,38 @@ public class Utils {
         return 0;
     }
 
+    // To animate view slide out from left to right
+    public static void slideToRight(View view){
+        TranslateAnimation animate = new TranslateAnimation(0,view.getWidth(),0,0);
+        animate.setDuration(500);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
+        view.setVisibility(View.GONE);
+    }
+    // To animate view slide out from right to left
+    public static void slideToLeft(View view){
+        TranslateAnimation animate = new TranslateAnimation(0,-view.getWidth(),0,0);
+        animate.setDuration(500);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
+        view.setVisibility(View.GONE);
+    }
 
+    // To animate view slide out from top to bottom
+    public static void slideToBottom(View view){
+        TranslateAnimation animate = new TranslateAnimation(0,0,0,view.getHeight());
+        animate.setDuration(500);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
+        view.setVisibility(View.GONE);
+    }
+
+    // To animate view slide out from bottom to top
+    public static void slideToTop(View view){
+        TranslateAnimation animate = new TranslateAnimation(0,0,0,-view.getHeight());
+        animate.setDuration(500);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
+        view.setVisibility(View.GONE);
+    }
 }

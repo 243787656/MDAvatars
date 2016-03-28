@@ -2,6 +2,7 @@ package com.alexlionne.apps.avatars;
 
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     public Drawer result = null;
     public String version;
     final String directory ="/MDAvatar/";
+    private SharedPreferences prefs;
+    public static boolean FIRST_RUN;
 
 
 
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
+        prefs = getSharedPreferences("com.alexlionne.apps.avatars", MODE_PRIVATE);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setElevation(3);
@@ -123,6 +127,16 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        if (prefs.getBoolean("firstrun", true)) {
+            FIRST_RUN = true;
+            prefs.edit().putBoolean("firstrun", false).commit();
+        }else {
+            FIRST_RUN = false;
+        }
+    }
 
 }

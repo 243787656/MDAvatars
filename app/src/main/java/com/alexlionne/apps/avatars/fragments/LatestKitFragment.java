@@ -15,11 +15,16 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import com.alexlionne.apps.avatars.AvatarActivity;
+import com.alexlionne.apps.avatars.MainActivity;
 import com.alexlionne.apps.avatars.R;
 import com.alexlionne.apps.avatars.Utils;
 import com.alexlionne.apps.avatars.adapters.KitAdapter;
 import com.alexlionne.apps.avatars.objects.Kit;
 import java.util.ArrayList;
+
+import co.mobiwise.materialintro.shape.Focus;
+import co.mobiwise.materialintro.shape.FocusGravity;
+import co.mobiwise.materialintro.view.MaterialIntroView;
 
 
 /**
@@ -71,6 +76,20 @@ public class LatestKitFragment extends Fragment implements KitAdapter.OnItemClic
         }
 
         UI();
+        if(MainActivity.FIRST_RUN){
+            new MaterialIntroView.Builder(getActivity())
+                    .enableDotAnimation(true)
+                    .enableIcon(false)
+                    .setFocusGravity(FocusGravity.CENTER)
+                    .setFocusType(Focus.MINIMUM)
+                    .setDelayMillis(500)
+                    .enableFadeAnimation(true)
+                    .performClick(true)
+                    .setInfoText("Avatars Kits")
+                    .setTarget(recyclerView)
+                    .setUsageId("intro_card") //THIS SHOULD BE UNIQUE ID
+                    .show();
+        }
         return root;
 
     }

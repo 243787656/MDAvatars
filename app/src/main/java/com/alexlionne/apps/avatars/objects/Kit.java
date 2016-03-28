@@ -39,7 +39,9 @@ public class Kit {
     private WebView webView;
     private int backgrouncolor;
 
+    public Kit() {
 
+    }
     public Kit(Context context) {
         Kit.context = context.getApplicationContext();
     }
@@ -71,7 +73,9 @@ public class Kit {
     public int getDefaultBgColor(){
         return this.bgcolor;
     }
-
+    public Context getContext(){
+        return context;
+    }
     public void setName(String name) {
         this.name = name;
     }
@@ -128,8 +132,8 @@ public class Kit {
 
     public static ArrayList<Kit> getAllKits() {
         kitArrayList = new ArrayList<>();
-        kitArrayList.add(new Kit(context).with(new AndroidKit(context)));
-        kitArrayList.add(new Kit(context).with(new GoogleKitOne(context)));
+  //      kitArrayList.add(new Kit(context).with(new AndroidKit(context)));
+//        kitArrayList.add(new Kit(context).with(new GoogleKitOne(context)));
         kitArrayList.add(new Kit(context).with(new GoogleKitTwo(context)));
 
 

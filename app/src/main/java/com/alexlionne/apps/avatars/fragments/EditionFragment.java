@@ -6,15 +6,19 @@ package com.alexlionne.apps.avatars.fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -23,6 +27,7 @@ import android.widget.Toast;
 
 import com.alexlionne.apps.avatars.AvatarActivity;
 import com.alexlionne.apps.avatars.R;
+import com.alexlionne.apps.avatars.Utils;
 import com.alexlionne.apps.avatars.adapters.CustomAdapter;
 import com.alexlionne.apps.avatars.adapters.KitAdapter;
 import com.alexlionne.apps.avatars.objects.Item;
@@ -43,7 +48,7 @@ public class EditionFragment extends Fragment implements CustomAdapter.OnItemCli
     private int numColumns = 1;
     private static int DEFAULT_COLUMNS_PORTRAIT;
     private static int DEFAULT_COLUMNS_LANDSCAPE;
-    private RecyclerView recyclerView;
+    public static RecyclerView recyclerView;
     private CustomAdapter kitAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Kit> kits;
@@ -74,15 +79,17 @@ public EditionFragment(){
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_edition,
                 container, false);
+        UI();
 
-        textView = (TextView) view.findViewById(R.id.text_title);
-        textView.setText(title);
+        //textView = (TextView) view.findViewById(R.id.text_title);
+        //textView.setText(title);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
-
+        setRecyclerView(recyclerView);
+        recylerViewChanged();
         kitAdapter = null;
-        DEFAULT_COLUMNS_PORTRAIT = 1;
-        DEFAULT_COLUMNS_LANDSCAPE = 1;
+        DEFAULT_COLUMNS_PORTRAIT = 2;
+        DEFAULT_COLUMNS_LANDSCAPE = 2;
         final boolean isLandscape = isLandscape();
         int mColumnCountPortrait = DEFAULT_COLUMNS_PORTRAIT;
         int mColumnCountLandscape = DEFAULT_COLUMNS_LANDSCAPE;
@@ -91,10 +98,6 @@ public EditionFragment(){
             mColumnCount = newColumnCount;
             numColumns = mColumnCount;
         }
-
-        UI();
-
-
 
         return view;
     }
@@ -111,6 +114,7 @@ public EditionFragment(){
     public void setProgress(int progress){
         this.progress = progress;
     }
+
     public int getProgress(){
         return this.progress;
     }
@@ -146,8 +150,7 @@ public EditionFragment(){
                 kitAdapter = new CustomAdapter(getActivity(), list.get(position), listener.get(position));
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(kitAdapter);
-
-
+                kitAdapter.notifyDataSetChanged();
             }
         }
         new UpdateUI().execute();
@@ -163,6 +166,41 @@ public EditionFragment(){
         Item item = ((CustomAdapter) recyclerView.getAdapter()).getItemAtPosition(position);
 
     }
+    public void setRecyclerView(RecyclerView recyclerView){
+        this.recyclerView = recyclerView;
+    }
+    public RecyclerView getRecyclerView(){
+        return  recyclerView;
+    }
+    private void recylerViewChanged() {
+
+        getRecyclerView().setOnScrollListener(new RecyclerView.OnScrollListener() {
+
+
+            int mPosition = 0;
+            int mOffset = 0;
+
+            @Override
+            public void onScrollStateChanged(RecyclerView view, int scrollState) {
+                // TODO Auto-generated method stub
+                GridLayoutManager layoutManager = ((GridLayoutManager) view.getLayoutManager());
+                int position = layoutManager.findFirstVisibleItemPosition();
+
+                View v = getRecyclerView().getChildAt(0);
+                int offset = (v == null) ? 0 : v.getTop();
+
+                if (mPosition < position || (mPosition == position && mOffset < offset)) {
+                    AvatarActivity.view.setVisibility(View.GONE);
+
+                } else {
+                    // Scrolled down
+                    AvatarActivity.view.setVisibility(View.VISIBLE);
+
+                }
+            }
+        });
+    }
+
 
 
 }

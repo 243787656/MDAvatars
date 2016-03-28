@@ -5,7 +5,9 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,8 +21,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.FragmentTransaction;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.MenuItem;
@@ -75,15 +80,13 @@ public class AvatarActivity extends AppCompatActivity {
     private boolean hidden = true;
     private final String MDSdirectory = "/sdcard/MDAvatar/";
     private static Activity activity;
-    private Bitmap bitmap;
+    private static Bitmap bitmap;
     public static RelativeLayout view;
     public static Button button;
     public static Button back;
-    public static int buttonColor;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
+    private static SharedPreferences preferences;
+    private static SharedPreferences.Editor editor;
+
     private GoogleApiClient client;
     private ProgressBar progressBar;
 
@@ -101,16 +104,15 @@ public class AvatarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.avatar_layout);
         view = (RelativeLayout) findViewById(R.id.bottom_tasks);
-
         setActivity(this);
-
+        preferences = getSharedPreferences("com.alexlionne.apps.avatars", MODE_PRIVATE);
+        editor = preferences.edit();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.md_grey_900), PorterDuff.Mode.SRC_IN);
-
         webview = (WebView) findViewById(R.id.webView1);
         webview.getSettings().setJavaScriptEnabled(true);
 
@@ -125,6 +127,8 @@ public class AvatarActivity extends AppCompatActivity {
         }
         attachKit(kit);
         setWindow(getWindow());
+        editor.putInt("BackgroundColor", getKit().getDefaultBgColor());
+        editor.apply();
 
         webview.loadUrl(kit.getSvg());
         webview.setBackgroundColor(kit.getDefaultBgColor());
@@ -141,6 +145,7 @@ public class AvatarActivity extends AppCompatActivity {
                 return (event.getAction() == MotionEvent.ACTION_MOVE);
             }
         });
+
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -184,10 +189,9 @@ public class AvatarActivity extends AppCompatActivity {
         Drawable right_arrow = new IconicsDrawable(this, GoogleMaterial.Icon.gmd_keyboard_arrow_right).sizeDp(16).paddingDp(4).color(Color.WHITE);
         button.setCompoundDrawablesWithIntrinsicBounds(null, null, right_arrow, null);
         back.setCompoundDrawablesWithIntrinsicBounds(left_arrow, null, null, null);
-        //button.setTextColor(Utils.getAccentDarkColor(kit.getDefaultBgColor()));
-        //back.setTextColor(Utils.getAccentDarkColor(kit.getDefaultBgColor()));
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setNavigationBarColor(kit.getDefaultBgColor());
+
         back.setVisibility(View.INVISIBLE);
         button.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         back.setBackgroundColor(getResources().getColor(android.R.color.transparent));
@@ -246,9 +250,7 @@ public class AvatarActivity extends AppCompatActivity {
 
             }
         });
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
 
     }
 
@@ -273,8 +275,6 @@ public class AvatarActivity extends AppCompatActivity {
         fragment[i].setTitle(title);
         fragment[i].setList(list);
         fragment[i].setProgress(UNIT_SIZE);
-        //fragment[i].setContext(this);
-
     }
 
 
@@ -415,45 +415,6 @@ public class AvatarActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Avatar Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.alexlionne.apps.avatars/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Avatar Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.alexlionne.apps.avatars/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
-    }
    /* @Override
     public void onBackPressed(){
 
@@ -461,12 +422,18 @@ public class AvatarActivity extends AppCompatActivity {
     }*/
 
 
-    public static void selectImageBackground() {
+    public static Bitmap selectImageBackground() {
 
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
         activity.startActivityForResult(photoPickerIntent, 1);
-
+return AvatarActivity.bitmap;
+    }
+    public static void changeColor(String name, int color){
+        preferences = AvatarActivity.getActivity().getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);
+        editor = preferences.edit();
+        editor.putInt(name, color);
+        editor.apply();
     }
 
     public static void selectImageBodyBackground(final String bodyType) {
@@ -544,7 +511,7 @@ public class AvatarActivity extends AppCompatActivity {
                         bmOptions.inSampleSize = scaleFactor;
                         bmOptions.inPurgeable = true;
 
-                        Bitmap bitmap = BitmapFactory.decodeFile(file_bitmap.getAbsolutePath(), bmOptions);
+                        AvatarActivity.bitmap = BitmapFactory.decodeFile(file_bitmap.getAbsolutePath(), bmOptions);
 
 
                         if (Build.VERSION.SDK_INT >= 21) {
@@ -560,6 +527,12 @@ public class AvatarActivity extends AppCompatActivity {
                         Drawable drawable = new BitmapDrawable(bitmap);
                         webview.setBackgroundColor(Color.TRANSPARENT);
                         webview.setBackground(drawable);
+                        getKit().getAllcategories().get(0).getItem(1).getBackgroundImage().setVisibility(View.VISIBLE);
+                        getKit().getAllcategories().get(0).getItem(1).getBackgroundImage().setImageBitmap(bitmap);
+                        getKit().getAllcategories().get(0).getItem(0).getCard().setCardBackgroundColor(Utils.getLightPalettefromBitmap(bitmap));
+                        getKit().getAllcategories().get(0).getItem(0).getTextView().setTextColor(getResources().getColor(R.color.md_white_1000));
+                        getKit().getAllcategories().get(0).getItem(0).getIcon().color(getResources().getColor(R.color.md_white_1000));
+                        changeColor("BackgroundColor",Utils.getLightPalettefromBitmap(bitmap));
                     } else {
                         //NOT IN REQUIRED FORMAT
                     }
@@ -633,5 +606,6 @@ public class AvatarActivity extends AppCompatActivity {
         button.setTextColor(Utils.getTitleTextColor(bitmap));
         back.setTextColor(Utils.getTitleTextColor(bitmap));
     }
+
 }
 

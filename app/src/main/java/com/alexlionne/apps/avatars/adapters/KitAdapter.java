@@ -18,11 +18,7 @@ import com.alexlionne.apps.avatars.objects.Kit;
 
 import java.util.List;
 
-/**
- * This Class was created by Patrick J
- * on 19.01.16. For more Details and Licensing
- * have a look at the README.md
- */
+
 public class KitAdapter extends RecyclerView.Adapter<KitAdapter.ViewHolder> {
 
     private final List<Kit> itemData;
@@ -52,6 +48,7 @@ public class KitAdapter extends RecyclerView.Adapter<KitAdapter.ViewHolder> {
 
         Kit kit = itemData.get(position);
         holder.name.setText(kit.getName());
+        holder.smalldesc.setText(kit.getSmallDesc());
         holder.smalldesc.setText(kit.getSmallDesc());
         holder.wall.loadUrl(kit.getSvg());
         holder.wall.setBackgroundColor(kit.getDefaultBgColor());

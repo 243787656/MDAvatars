@@ -55,7 +55,7 @@ android:paddingLeft="4dp">
     android:layout_width="wrap_content"
     android:layout_height="75dp"
     android:id="@+id/long_hairs"
-    android:src="@drawable/hairs_long_short"
+    android:src="@drawable/hairskrillex"
     android:layout_margin="4dp" />
 
 </LinearLayout>

@@ -11,9 +11,13 @@ public class ListItem extends ArrayList {
 
     private String title;
     private ArrayList<Item> list;
+    private ArrayList<String> listlabel;
     private Item item;
+
+
     public ListItem() {
         this.list = new ArrayList<>();
+        this.listlabel = new ArrayList<>();
     }
 
     public ListItem setTitle(String title) {
@@ -25,8 +29,13 @@ public class ListItem extends ArrayList {
     public String getTitle() {
         return this.title;
     }
-    public void addItem(Item item) {
+    public void addItem(String label,Item item) {
         list.add(item);
+        listlabel.add(label);
+    }
+
+    public void removeItem(int position){
+        list.remove(position);
     }
 
     @Override
@@ -39,6 +48,9 @@ public class ListItem extends ArrayList {
     }
     public Item getItem(int position){
         return this.list.get(position);
+    }
+    public ArrayList<String> getLabel(){
+        return this.listlabel;
     }
 }
 

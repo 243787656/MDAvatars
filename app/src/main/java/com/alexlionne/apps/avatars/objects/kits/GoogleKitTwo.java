@@ -1,41 +1,37 @@
 package com.alexlionne.apps.avatars.objects.kits;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.os.Build;
+import android.support.v7.widget.CardView;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
-import com.alexlionne.apps.avatars.AvatarActivity;
+import android.widget.TextView;
+import com.alexlionne.apps.avatars.AvatarActivity;;
 import com.alexlionne.apps.avatars.R;
 import com.alexlionne.apps.avatars.Utils;
-import com.alexlionne.apps.avatars.adapters.CustomAdapter;
-import com.alexlionne.apps.avatars.fragments.EditionFragment;
-import com.alexlionne.apps.avatars.fragments.LatestKitFragment;
-import com.alexlionne.apps.avatars.objects.Bubble;
+import com.alexlionne.apps.avatars.adapters.CustomAdapter;;
 import com.alexlionne.apps.avatars.objects.Item;
 import com.alexlionne.apps.avatars.objects.Kit;
 import com.alexlionne.apps.avatars.objects.ListItem;
+import com.alexlionne.apps.avatars.objects.Options;
 import com.kennyc.colorchooser.ColorChooserDialog;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.ArrayList;
+
+
+
 
 public class GoogleKitTwo extends Kit {
     private Context context;
@@ -43,14 +39,14 @@ public class GoogleKitTwo extends Kit {
     private String hairs;
     private String clothes;
     private String logo;
-    private static Bubble skin;
-    private static Bubble background;
-    private static Bubble hairs_c;
-    private static Bubble clothes_c;
-    private static Bubble hand_c;
-
-
-
+    private final Options checkboxNDiasable = new Options().checkboxNDiasable();
+    private final Options checkboxNEnable = new Options().checkboxNEnable();
+    private final Options colorChooser = new Options().colorChooser();
+    private final Options null_options = new Options().null_options();
+    private ListItem backgroundItem;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+    private final int WHITE = 0;
 
 
     public GoogleKitTwo(Context context) {
@@ -66,97 +62,120 @@ public class GoogleKitTwo extends Kit {
         super.setDefaultBgColor(context.getResources().getColor(R.color.md_orange_700));
         init();
     }
+
+
 void init(){
     setHairs("hairskrillex");
     setClothes("mainbody");
     setLogo("logogoogle");
+    preferences = context.getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);
+    editor = preferences.edit();
+    editor.putInt("BackgroundColor", getDefaultBgColor());
+    editor.putInt("SkinColor", context.getResources().getColor(R.color.md_yellow_300));
+    editor.putInt("HandColor", context.getResources().getColor(R.color.md_yellow_300));
+    editor.putInt("ClothesColor", context.getResources().getColor(R.color.md_orange_500));
+    editor.putInt("HairColor", context.getResources().getColor(R.color.md_brown_500));
+    editor.apply();
 
-    skin = new Bubble();
-    skin.setColor(context.getResources().getColor(R.color.md_amber_300));
-    background = new Bubble();
-    background.setColor(context.getResources().getColor(R.color.md_orange_700));
-    hairs_c = new Bubble();
-    hairs_c.setColor(context.getResources().getColor(R.color.md_brown_500));
-    clothes_c = new Bubble();
-    clothes_c.setColor(context.getResources().getColor(R.color.md_amber_500));
-    hand_c = new Bubble();
-    hand_c.setColor(context.getResources().getColor(R.color.md_amber_300));
 }
 
-    public void setHairs(String hairs){
-        this.hairs = hairs;
-    }
-    public String getHairs(){
-       return this.hairs;
-    }
-    public void setClothes(String clothes){
-        this.clothes = clothes;
-    }
-    public String getClothes(){
-        return this.clothes;
-    }
-    public void setLogo(String logo){
-        this.logo = logo;
-    }
-    public String getLogo(){
-        return this.logo;
-    }
+
 
 
     private ArrayList<ListItem> getGoogleKitTwoCategories() {
+        preferences = context.getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);
+        backgroundItem = new ListItem();
+        backgroundItem.setTitle("Background");
+        backgroundItem.addItem("BACKGROUND", new Item("Color", "BackgroundColor",
+                new IconicsDrawable(context,
+                        CommunityMaterial.Icon.cmd_format_color_fill).sizeDp(18).color(context.getResources().getColor(R.color.md_grey_700)), preferences.getInt("BackgroundColor", 0),
+                colorChooser));
+        backgroundItem.addItem(null, new Item("Image", R.drawable.image, new IconicsDrawable(context,
+                GoogleMaterial.Icon.gmd_camera).sizeDp(18).color(context.getResources().getColor(R.color.md_grey_700)), WHITE,
+                colorChooser));
 
-        ListItem background = new ListItem();
-        background.setTitle("Background");
-        background.addItem(new Item("Color", false,false, true, GoogleKitTwo.background));
-        background.addItem(new Item("Image", false,false, false, null));
-
-        ListItem head= new ListItem();
+        ListItem head = new ListItem();
         head.setTitle("Head");
-        head.addItem(new Item("Skin color", false,false, true, GoogleKitTwo.skin));
-
+        head.addItem("HEAD", new Item("Skin color", "SkinColor", new IconicsDrawable(context,
+                GoogleMaterial.Icon.gmd_face).sizeDp(18).color(context.getResources().getColor(R.color.md_grey_700)), preferences.getInt("SkinColor", 0),
+                colorChooser));
+        head.addItem(null, null);
+        head.addItem("HAIR", new Item("Hair style", R.drawable.hair_style, new IconicsDrawable(context,
+                CommunityMaterial.Icon.cmd_content_cut).sizeDp(18), WHITE,
+                colorChooser));
+        head.addItem(null, new Item("Hair color", "HairColor", new IconicsDrawable(context,
+                CommunityMaterial.Icon.cmd_invert_colors).sizeDp(18).color(context.getResources().getColor(R.color.md_grey_700)), preferences.getInt("HairColor", 0),
+                colorChooser));
         ListItem hand = new ListItem();
         hand.setTitle("Hand");
-        hand.addItem(new Item("Match with skin color", true,true, false, null));
-        hand.addItem(new Item("Color", false,false, true, GoogleKitTwo.hand_c));
+        hand.addItem("HAND", new Item("Match with skin", preferences.getInt("SkinColor", 0), checkboxNEnable));
+        hand.addItem(null, new Item("Color", "HandColor", new IconicsDrawable(context,
+                CommunityMaterial.Icon.cmd_format_color_fill).sizeDp(18), preferences.getInt("HandColor", 0),
+                colorChooser));
 
-        ListItem hairs = new ListItem();
-        hairs.setTitle("Hair");
-        hairs.addItem(new Item("Style", false,false, false,null));
-        hairs.addItem(new Item("Color", false,false,true, GoogleKitTwo.hairs_c));
+
 
         ListItem clothes = new ListItem();
         clothes.setTitle("Clothes");
-        clothes.addItem(new Item("Style", false,false, false, null));
-        clothes.addItem(new Item("Color", false,false, true,GoogleKitTwo.clothes_c));
-        clothes.addItem(new Item("Image", false,false,false,null));
-        clothes.addItem(new Item("Logo", false,false, false,null));
+        clothes.addItem("CLOTHES", new Item("Style",R.drawable.clothes_style,
+                new IconicsDrawable(context, CommunityMaterial.Icon.cmd_tshirt_crew).sizeDp(18), WHITE, colorChooser));
+        clothes.addItem(null, new Item("Color", "ClothesColor", new IconicsDrawable(context,  CommunityMaterial.Icon.cmd_format_color_fill).sizeDp(18), preferences.getInt("ClothesColor", 0),
+                colorChooser));
+        clothes.addItem("MORE", new Item("Image", R.drawable.image, new IconicsDrawable(context,
+                GoogleMaterial.Icon.gmd_camera).sizeDp(18), WHITE, colorChooser));
+        clothes.addItem(null, new Item("Logo", R.drawable.logo, new IconicsDrawable(context,
+                CommunityMaterial.Icon.cmd_google).sizeDp(18), WHITE, colorChooser));
+
 
         ListItem accessories = new ListItem();
+
         accessories.setTitle("Accessories");
-        accessories.addItem(new Item("SmartPhone", true,true, false,null));
-        accessories.addItem(new Item("Watch", true,true,false,null));
-        accessories.addItem(new Item("Headphones", true,false,false,null));
+        accessories.addItem("PHONE", new Item("Nexus 5X",  R.drawable.phone_nexus_5x, new IconicsDrawable(context,
+                GoogleMaterial.Icon.gmd_smartphone).sizeDp(18), WHITE,
+                colorChooser));
+        accessories.addItem(null, new Item("Nexus 6P", R.drawable.phone_nexus_6p, new IconicsDrawable(context,
+                GoogleMaterial.Icon.gmd_smartphone).sizeDp(18), WHITE,
+                colorChooser));
+        accessories.addItem(null, new Item("OnePlus 2", R.drawable.phone_op_2, new IconicsDrawable(context,
+                GoogleMaterial.Icon.gmd_smartphone).sizeDp(18), WHITE,
+                colorChooser));
+        accessories.addItem(null, new Item("XperiaZ5", R.drawable.phone_speria_z5, new IconicsDrawable(context,
+                GoogleMaterial.Icon.gmd_smartphone).sizeDp(18), WHITE,
+                colorChooser));
+
+
+        accessories.addItem("WATCHES", new Item("Moto 360", R.drawable.moto360, new IconicsDrawable(context,
+                GoogleMaterial.Icon.gmd_watch).sizeDp(18), WHITE,
+                colorChooser));
+        accessories.addItem(null, new Item("LG GWatch", R.drawable.lg_watch, new IconicsDrawable(context,
+                GoogleMaterial.Icon.gmd_watch).sizeDp(18), WHITE,
+                colorChooser));
+
+        accessories.addItem("HEADPHONES", new Item("Classic", R.drawable.headphones, new IconicsDrawable(context,
+                GoogleMaterial.Icon.gmd_headset).sizeDp(18), WHITE,
+                colorChooser));
+
 
         ListItem save = new ListItem();
         save.setTitle("Save and options");
-        save.addItem(new Item("Save to sd card", false,false,false,null));
-        save.addItem(new Item("Share", false,false,false,null));
+        save.addItem("Saving", new Item("Save to /sdcard", WHITE, checkboxNDiasable));
+        save.addItem(null, new Item("Share", WHITE, null_options));
 
 
         ArrayList<ListItem> result = new ArrayList<>();
-        result.add(background);
+        result.add(backgroundItem);
         result.add(head);
         result.add(hand);
-        result.add(hairs);
         result.add(clothes);
         result.add(accessories);
         result.add(save);
 
-
         return result;
+
     }
 
     public ArrayList<CustomAdapter.OnItemClickListener> getGoogleKitTwoListeners(){
+
         ArrayList<CustomAdapter.OnItemClickListener> list = new ArrayList<>();
         CustomAdapter.OnItemClickListener background = new  CustomAdapter.OnItemClickListener(){
             @Override
@@ -174,12 +193,18 @@ void init(){
 
                                         selectedColor = color;
                                         GoogleKitTwo.super.getWebView().setBackgroundColor(color);
-                                        GoogleKitTwo.background.setColor(color);
                                         AvatarActivity.view.setBackgroundColor(color);
-                                        Drawable background = getAllcategories().get(0).getItem(0).getImageView().getBackground();
-                                        updateColor(background,GoogleKitTwo.background.getColor());
-                                        //AvatarActivity.button.setTextColor(Utils.getAccentDarkColor(color));
-                                        //AvatarActivity.back.setTextColor(Utils.getAccentDarkColor(color));
+
+                                        TextView text = getAllcategories().get(0).getItem(0).getTextView();
+                                        text.setTextColor(Utils.getAccentLightColor(color));
+                                        CardView card = getAllcategories().get(0).getItem(0).getCard();
+                                        getAllcategories().get(0).getItem(0).getIcon().color(Utils.getAccentLightColor(color));
+                                        card.setVisibility(View.INVISIBLE);
+                                        card.setCardBackgroundColor(color);
+                                        Utils.reveal(card);
+                                        AvatarActivity.changeColor("BackgroundColor",color);
+
+
 
                                         if (Build.VERSION.SDK_INT >= 21) {
                                             Window window = AvatarActivity.getWindowView();
@@ -215,8 +240,6 @@ void init(){
         CustomAdapter.OnItemClickListener head = new CustomAdapter.OnItemClickListener(){
             @Override
             public void onItemClick(View v, int p) {
-
-
                 switch (p) {
                     case 0:
 
@@ -225,11 +248,19 @@ void init(){
                                 .listener((new ColorChooserDialog.ColorListener() {
                                     @Override
                                     public void onColorSelect(int color) {
-                                        GoogleKitTwo.skin.setColor(color);
-                                        Drawable background = getAllcategories().get(1).getItem(0).getImageView().getBackground();
-                                        updateColor(background,GoogleKitTwo.skin.getColor());
-                                        String javascript = " javascript:document.getElementById('head').setAttribute('fill','" + Utils.convertHexColorString(color) + "');";
+
+                                        String javascript = " javascript:document.getElementById('head').setAttribute('fill','"+ Utils.convertHexColorString(color)  +"');";
                                         GoogleKitTwo.super.getWebView().loadUrl(javascript);
+
+                                        TextView text = getAllcategories().get(1).getItem(0).getTextView();
+                                        text.setTextColor(Utils.getAccentLightColor(color));
+                                        CardView card = getAllcategories().get(1).getItem(0).getCard();
+                                        getAllcategories().get(1).getItem(0).getIcon().color(Utils.getAccentLightColor(color));
+                                        card.setVisibility(View.INVISIBLE);
+                                        card.setCardBackgroundColor(color);
+                                        Utils.reveal(card);
+                                        AvatarActivity.changeColor("SkinColor", color);
+
                                     }
                                 }))
                                 .positiveButton("Okay")
@@ -238,6 +269,119 @@ void init(){
                                 .positiveButtonColor(Color.BLUE)
                                 .build()
                                 .show(AvatarActivity.fragmentManager, null);
+
+
+
+                        break;
+                    case 2:
+
+                        LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                        View view =  inflater.inflate(R.layout.hairs_dialog, null);
+                        final Dialog mBottomSheetDialog = new Dialog (AvatarActivity.getActivity(),
+                                R.style.MaterialDialogSheet);
+                        mBottomSheetDialog.setContentView(view);
+                        mBottomSheetDialog.setCancelable(true);
+                        mBottomSheetDialog.getWindow ().setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
+                                Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, context.getResources().getDisplayMetrics())));
+                        mBottomSheetDialog.getWindow().setGravity(Gravity.BOTTOM);
+                        mBottomSheetDialog.show();
+
+
+                        ImageView no_hairs = (ImageView)mBottomSheetDialog.findViewById(R.id.no_hairs);
+                        ImageView hairs_short = (ImageView)mBottomSheetDialog.findViewById(R.id.hairs_short);
+                        ImageView semi_long = (ImageView)mBottomSheetDialog.findViewById(R.id.semi_long);
+                        ImageView spiky = (ImageView)mBottomSheetDialog.findViewById(R.id.spike);
+                        ImageView long_h = (ImageView)mBottomSheetDialog.findViewById(R.id.long_hairs);
+
+
+                        final String hairs = getHairs();
+                        no_hairs.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String javascript = " javascript:document.getElementById('"+hairs+"').setAttribute('fill','transparent');";
+                                GoogleKitTwo.super.getWebView().loadUrl(javascript);
+                                mBottomSheetDialog.dismiss();
+
+                            }
+                        });
+
+                        semi_long.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String javascript_e = " javascript:document.getElementById('"+getHairs()+"').setAttribute('fill','transparent');";
+                                GoogleKitTwo.super.getWebView().loadUrl(javascript_e);
+                                setHairs("hairssemilong");
+                                String javascript = " javascript:document.getElementById('"+getHairs()+"').setAttribute('fill','#795548');";
+                                GoogleKitTwo.super.getWebView().loadUrl(javascript);
+                                mBottomSheetDialog.dismiss();
+                            }
+                        });
+
+                        hairs_short.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String javascript_e = " javascript:document.getElementById('"+getHairs()+"').setAttribute('fill','transparent');";
+                                GoogleKitTwo.super.getWebView().loadUrl(javascript_e);
+                                setHairs("hairsshort");
+                                String javascript = " javascript:document.getElementById('"+getHairs()+"').setAttribute('fill','#795548');";
+                                GoogleKitTwo.super.getWebView().loadUrl(javascript);
+                                mBottomSheetDialog.dismiss();
+
+                            }
+                        });
+
+                        spiky.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String javascript_e = " javascript:document.getElementById('"+getHairs()+"').setAttribute('fill','transparent');";
+                                GoogleKitTwo.super.getWebView().loadUrl(javascript_e);
+                                setHairs("hairsspiky");
+                                String javascript = " javascript:document.getElementById('"+getHairs()+"').setAttribute('fill','#795548');";
+                                GoogleKitTwo.super.getWebView().loadUrl(javascript);
+                                mBottomSheetDialog.dismiss();
+                            }
+                        });
+
+                        long_h.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String javascript_e = " javascript:document.getElementById('"+getHairs()+"').setAttribute('fill','transparent');";
+                                GoogleKitTwo.super.getWebView().loadUrl(javascript_e);
+                                setHairs("hairskrillex");
+                                String javascript = " javascript:document.getElementById('"+getHairs()+"').setAttribute('fill','#795548');";
+                                GoogleKitTwo.super.getWebView().loadUrl(javascript);
+                                mBottomSheetDialog.dismiss();
+                            }
+                        });
+break;
+                    case  3 :
+
+                        new ColorChooserDialog.Builder(context.getApplicationContext())
+                                .colors(R.array.md_colors)
+                                .listener((new ColorChooserDialog.ColorListener() {
+                                    @Override
+                                    public void onColorSelect(int color) {
+
+                                        String javascript = " javascript:document.getElementById('" + getHairs() + "').setAttribute('fill','" + Utils.convertHexColorString(color) + "');";
+                                        GoogleKitTwo.super.getWebView().loadUrl(javascript);
+                                        TextView text = getAllcategories().get(1).getItem(3).getTextView();
+                                        text.setTextColor(Utils.getAccentLightColor(color));
+                                        CardView card = getAllcategories().get(1).getItem(3).getCard();
+                                        getAllcategories().get(1).getItem(3).getIcon().color(Utils.getAccentLightColor(color));
+                                        card.setVisibility(View.INVISIBLE);
+                                        card.setCardBackgroundColor(color);
+                                        Utils.reveal(card);
+                                        AvatarActivity.changeColor("HairColor", color);
+
+                                    }
+                                }))
+                                .positiveButton("Okay")
+                                .negativeButton("Cancel")
+                                .title("Select Color")
+                                .positiveButtonColor(Color.BLUE)
+                                .build()
+                                .show(AvatarActivity.fragmentManager, null);
+
 
 
                         break;
@@ -251,13 +395,30 @@ void init(){
 
                 switch (p) {
                     case 0:
+                        if (getAllcategories().get(2).getItem(0).isEnable()){
+                            getAllcategories().get(2).getItem(1).getLayout().setClickable(false);
+                            getAllcategories().get(2).getItem(1).getTextView().setTextColor(context.getResources().getColor(R.color.md_grey_500));
+                        }
+                        break;
+                    case 1:
                         new ColorChooserDialog.Builder(context.getApplicationContext())
-                                .colors(R.array.md_colors_skin_plus)
+                                .colors(R.array.md_colors_skin)
                                 .listener((new ColorChooserDialog.ColorListener() {
                                     @Override
                                     public void onColorSelect(int color) {
+
                                         String javascript = " javascript:document.getElementById('hand').setAttribute('fill','"+ Utils.convertHexColorString(color)  +"');";
                                         GoogleKitTwo.super.getWebView().loadUrl(javascript);
+
+                                        TextView text = getAllcategories().get(2).getItem(1).getTextView();
+                                        text.setTextColor(Utils.getAccentLightColor(color));
+                                        CardView card = getAllcategories().get(2).getItem(1).getCard();
+                                        getAllcategories().get(2).getItem(1).getIcon().color(Utils.getAccentLightColor(color));
+                                        card.setVisibility(View.INVISIBLE);
+                                        card.setCardBackgroundColor(color);
+                                        Utils.reveal(card);
+                                        AvatarActivity.changeColor("HandColor", color);
+
                                     }
                                 }))
                                 .positiveButton("Okay")
@@ -411,7 +572,14 @@ void init(){
                                         String javascript_shadow_three = "javascript:var svgElement=document.getElementById('shadow3');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(Utils.getAccentDarkColor(color)) + "');};";
                                         GoogleKitTwo.super.getWebView().loadUrl(javascript_shadow_three);
 
-
+                                        TextView text = getAllcategories().get(3).getItem(1).getTextView();
+                                        text.setTextColor(Utils.getAccentLightColor(color));
+                                        CardView card = getAllcategories().get(3).getItem(1).getCard();
+                                        getAllcategories().get(3).getItem(1).getIcon().color(Utils.getAccentLightColor(color));
+                                        card.setVisibility(View.INVISIBLE);
+                                        card.setCardBackgroundColor(color);
+                                        Utils.reveal(card);
+                                        AvatarActivity.changeColor("ClothesColor", color);
 
                                     }}))
 
@@ -492,122 +660,9 @@ void init(){
                     case 3 :
                         AvatarActivity.selectImageBodyBackground(getClothes());
 
-                        break;
-
-                }
-            }
-        };
-        CustomAdapter.OnItemClickListener hairs = new CustomAdapter.OnItemClickListener(){
-            @Override
-            public void onItemClick(View v, int p) {
-
-                switch (p) {
-                    case 0:
-
-                        LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-                        View view =  inflater.inflate(R.layout.hairs_dialog, null);
-                        final Dialog mBottomSheetDialog = new Dialog (AvatarActivity.getActivity(),
-                                R.style.MaterialDialogSheet);
-                        mBottomSheetDialog.setContentView(view);
-                        mBottomSheetDialog.setCancelable(true);
-                        mBottomSheetDialog.getWindow ().setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
-                                Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, context.getResources().getDisplayMetrics())));
-                        mBottomSheetDialog.getWindow().setGravity(Gravity.BOTTOM);
-                        mBottomSheetDialog.show();
-
-
-                        ImageView no_hairs = (ImageView)mBottomSheetDialog.findViewById(R.id.no_hairs);
-                        ImageView hairs_short = (ImageView)mBottomSheetDialog.findViewById(R.id.hairs_short);
-                        ImageView semi_long = (ImageView)mBottomSheetDialog.findViewById(R.id.semi_long);
-                        ImageView spiky = (ImageView)mBottomSheetDialog.findViewById(R.id.spike);
-                        ImageView long_h = (ImageView)mBottomSheetDialog.findViewById(R.id.long_hairs);
-
-
-                        final String hairs = getHairs();
-                        no_hairs.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                String javascript = " javascript:document.getElementById('"+hairs+"').setAttribute('fill','transparent');";
-                                GoogleKitTwo.super.getWebView().loadUrl(javascript);
-                                mBottomSheetDialog.dismiss();
-
-                            }
-                        });
-
-                        semi_long.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                String javascript_e = " javascript:document.getElementById('"+getHairs()+"').setAttribute('fill','transparent');";
-                                GoogleKitTwo.super.getWebView().loadUrl(javascript_e);
-                                setHairs("hairssemilong");
-                                String javascript = " javascript:document.getElementById('"+getHairs()+"').setAttribute('fill','#795548');";
-                                GoogleKitTwo.super.getWebView().loadUrl(javascript);
-                                mBottomSheetDialog.dismiss();
-                            }
-                        });
-
-                        hairs_short.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                String javascript_e = " javascript:document.getElementById('"+getHairs()+"').setAttribute('fill','transparent');";
-                                GoogleKitTwo.super.getWebView().loadUrl(javascript_e);
-                                setHairs("hairsshort");
-                                String javascript = " javascript:document.getElementById('"+getHairs()+"').setAttribute('fill','#795548');";
-                                GoogleKitTwo.super.getWebView().loadUrl(javascript);
-                                mBottomSheetDialog.dismiss();
-
-                            }
-                        });
-
-                        spiky.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                String javascript_e = " javascript:document.getElementById('"+getHairs()+"').setAttribute('fill','transparent');";
-                                GoogleKitTwo.super.getWebView().loadUrl(javascript_e);
-                                setHairs("hairsspiky");
-                                String javascript = " javascript:document.getElementById('"+getHairs()+"').setAttribute('fill','#795548');";
-                                GoogleKitTwo.super.getWebView().loadUrl(javascript);
-                                mBottomSheetDialog.dismiss();
-                            }
-                        });
-
-                        long_h.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                String javascript_e = " javascript:document.getElementById('"+getHairs()+"').setAttribute('fill','transparent');";
-                                GoogleKitTwo.super.getWebView().loadUrl(javascript_e);
-                                setHairs("hairskrillex");
-                                String javascript = " javascript:document.getElementById('"+getHairs()+"').setAttribute('fill','#795548');";
-                                GoogleKitTwo.super.getWebView().loadUrl(javascript);
-                                mBottomSheetDialog.dismiss();
-                            }
-                        });
-
-
 
                         break;
-                    case 1:
 
-                        new ColorChooserDialog.Builder(context.getApplicationContext())
-                                .colors(R.array.md_colors)
-                                .listener((new ColorChooserDialog.ColorListener() {
-                                    @Override
-                                    public void onColorSelect(int color) {
-
-                                            String javascript = " javascript:document.getElementById('" + getHairs() + "').setAttribute('fill','" + Utils.convertHexColorString(color) + "');";
-                                            GoogleKitTwo.super.getWebView().loadUrl(javascript);
-
-                                    }
-                                }))
-                                .positiveButton("Okay")
-                                .negativeButton("Cancel")
-                                .title("Select Color")
-                                .positiveButtonColor(Color.BLUE)
-                                .build()
-                                .show(AvatarActivity.fragmentManager, null);
-
-
-                        break;
                 }
             }
         };
@@ -615,14 +670,13 @@ void init(){
             @Override
             public void onItemClick(View v, int p) {
 
+
                 switch (p) {
-                    case 2:
-                        //if(!getAllcategories().get(5).getItem(3).getCheckbox()){
-                            String javascript = " javascript:document.getElementById('archspeakers').setAttribute('fill','" + Utils.convertHexColorString(context.getResources().getColor(R.color.md_orange_400)) + "');";
-                            GoogleKitTwo.super.getWebView().loadUrl(javascript);
-                            String javascript_shadow_one = "javascript:var svgElement=document.getElementById('headspeakers');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(context.getResources().getColor(R.color.md_orange_700))  + "');};";
-                            GoogleKitTwo.super.getWebView().loadUrl(javascript_shadow_one);
-                        //}
+                    case 4:
+
+                        break;
+                    case 1:
+
                         break;
 
                 }
@@ -641,27 +695,32 @@ void init(){
             }
         };
 
-
-
         list.add(background);
         list.add(head);
         list.add(hand);
-        list.add(hairs);
         list.add(clothes);
         list.add(accessories);
         list.add(saves);
 
         return list;
     }
-    public void updateColor(Drawable background,int color){
 
-        if (background instanceof ShapeDrawable) {
-            ((ShapeDrawable) background).getPaint().setColor(color);
-        } else if (background instanceof GradientDrawable) {
-            ((GradientDrawable) background).setColor(color);
-        } else if (background instanceof ColorDrawable) {
-            ((ColorDrawable) background).setColor(color);
-        }
+    public void setHairs(String hairs){
+        this.hairs = hairs;
     }
+    public String getHairs(){
+        return this.hairs;
+    }
+    public void setClothes(String clothes){
+        this.clothes = clothes;
+    }
+    public String getClothes(){
+        return this.clothes;
+    }
+    public void setLogo(String logo){
+        this.logo = logo;
+    }
+    public String getLogo(){return this.logo;}
+
 
 }
