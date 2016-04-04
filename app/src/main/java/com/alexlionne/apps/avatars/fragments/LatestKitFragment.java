@@ -22,9 +22,6 @@ import com.alexlionne.apps.avatars.adapters.KitAdapter;
 import com.alexlionne.apps.avatars.objects.Kit;
 import java.util.ArrayList;
 
-import co.mobiwise.materialintro.shape.Focus;
-import co.mobiwise.materialintro.shape.FocusGravity;
-import co.mobiwise.materialintro.view.MaterialIntroView;
 
 
 /**
@@ -53,13 +50,13 @@ public class LatestKitFragment extends Fragment implements KitAdapter.OnItemClic
         final ViewGroup root = (ViewGroup) inflater.inflate(R.layout.latest_kit_layout, container, false);
 
 
-        root.post(new Runnable() {
+        /*root.post(new Runnable() {
             @Override
             public void run() {
 
                 Utils.reveal(root);
 
-            }});
+            }});*/
 
         recyclerView = (RecyclerView) root.findViewById(R.id.recycler);
 
@@ -76,20 +73,7 @@ public class LatestKitFragment extends Fragment implements KitAdapter.OnItemClic
         }
 
         UI();
-        if(MainActivity.FIRST_RUN){
-            new MaterialIntroView.Builder(getActivity())
-                    .enableDotAnimation(true)
-                    .enableIcon(false)
-                    .setFocusGravity(FocusGravity.CENTER)
-                    .setFocusType(Focus.MINIMUM)
-                    .setDelayMillis(500)
-                    .enableFadeAnimation(true)
-                    .performClick(true)
-                    .setInfoText("Avatars Kits")
-                    .setTarget(recyclerView)
-                    .setUsageId("intro_card") //THIS SHOULD BE UNIQUE ID
-                    .show();
-        }
+
         return root;
 
     }
@@ -124,7 +108,7 @@ public class LatestKitFragment extends Fragment implements KitAdapter.OnItemClic
             protected void onPostExecute(Void args) {
 
                 layoutManager = new GridLayoutManager(getContext(), numColumns);
-                kitAdapter = new KitAdapter(getContext(), kits_result, LatestKitFragment.this);
+                kitAdapter = new KitAdapter(getContext(), kits, LatestKitFragment.this);
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(kitAdapter);
 

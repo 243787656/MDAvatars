@@ -86,7 +86,7 @@ public EditionFragment(){
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
         setRecyclerView(recyclerView);
-        recylerViewChanged();
+        //recylerViewChanged();
         kitAdapter = null;
         DEFAULT_COLUMNS_PORTRAIT = 2;
         DEFAULT_COLUMNS_LANDSCAPE = 2;
@@ -147,7 +147,7 @@ public EditionFragment(){
             protected void onPostExecute(Void args) {
 
                 layoutManager = new GridLayoutManager(getActivity(), numColumns);
-                kitAdapter = new CustomAdapter(getActivity(), list.get(position), listener.get(position));
+                kitAdapter = new CustomAdapter(getActivity(), list.get(position), listener.get(position),position);
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(kitAdapter);
                 kitAdapter.notifyDataSetChanged();
@@ -162,7 +162,7 @@ public EditionFragment(){
 
 
     @Override
-    public void onItemClick(View v, int position) {
+    public void onItemClick(View v, int position,int fragp) {
         Item item = ((CustomAdapter) recyclerView.getAdapter()).getItemAtPosition(position);
 
     }

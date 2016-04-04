@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.app.FragmentTransaction;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,15 +34,21 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.alexlionne.apps.avatars.adapters.OnSwipeTouchListener;
 import com.alexlionne.apps.avatars.fragments.EditionFragment;
 import com.alexlionne.apps.avatars.objects.Kit;
 import com.alexlionne.apps.avatars.objects.ListItem;
@@ -82,6 +89,7 @@ public class AvatarActivity extends AppCompatActivity {
     private static Activity activity;
     private static Bitmap bitmap;
     public static RelativeLayout view;
+    public static RelativeLayout view2;
     public static Button button;
     public static Button back;
     private static SharedPreferences preferences;
@@ -89,6 +97,9 @@ public class AvatarActivity extends AppCompatActivity {
 
     private GoogleApiClient client;
     private ProgressBar progressBar;
+    private FloatingActionButton fab;
+    private Boolean isFabOpen = false;
+    private Animation fab_open,fab_close,rotate_forward,rotate_backward;
 
     public void setActivity(Activity activity) {
         AvatarActivity.activity = activity;
@@ -104,6 +115,7 @@ public class AvatarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.avatar_layout);
         view = (RelativeLayout) findViewById(R.id.bottom_tasks);
+        view2 = (RelativeLayout) findViewById(R.id.layout);
         setActivity(this);
         preferences = getSharedPreferences("com.alexlionne.apps.avatars", MODE_PRIVATE);
         editor = preferences.edit();
@@ -117,6 +129,10 @@ public class AvatarActivity extends AppCompatActivity {
         webview.getSettings().setJavaScriptEnabled(true);
 
 
+
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+
         String current = getIntent().getStringExtra("kit");
         if (current.equals("Google I")) {
             kit = new GoogleKitOne(this);
@@ -129,7 +145,7 @@ public class AvatarActivity extends AppCompatActivity {
         setWindow(getWindow());
         editor.putInt("BackgroundColor", getKit().getDefaultBgColor());
         editor.apply();
-
+        fab = (FloatingActionButton)findViewById(R.id.fab);
         webview.loadUrl(kit.getSvg());
         webview.setBackgroundColor(kit.getDefaultBgColor());
         view.setBackgroundColor(kit.getDefaultBgColor());
@@ -172,7 +188,7 @@ public class AvatarActivity extends AppCompatActivity {
 
         }
 
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.container, fragment[0]);
         fragmentTransaction.commit();
         currentFragment = 0;
@@ -193,8 +209,71 @@ public class AvatarActivity extends AppCompatActivity {
         window.setNavigationBarColor(kit.getDefaultBgColor());
 
         back.setVisibility(View.INVISIBLE);
+        fab.setVisibility(View.INVISIBLE);
         button.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         back.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        view2.setOnTouchListener(new OnSwipeTouchListener(AvatarActivity.this) {
+            public void onSwipeTop() {
+            }
+
+            public void onSwipeRight() {
+                boolean isClicked = true;
+                if (getCurrentFragment().getPosition() == fragment.length - 1 && isClicked) {
+                    save();
+                } else {
+
+                    back.setVisibility(View.VISIBLE);
+                    setNextFragment(fragment[getCurrentFragment().getPosition() + 1]);
+                    switchFragment(getNextFragment());
+
+                    for (int i = 0; i <= fragment.length; i++) {
+
+                        if (getCurrentFragment().getPosition() == fragment.length - 1) {
+                            button.setText("Save");
+                            // fab.startAnimation(fab_open);
+                            back.setText(fragment[getCurrentFragment().getPosition() - 1].getTitle());
+
+                        }else {
+                            back.setText(fragment[getCurrentFragment().getPosition() - 1].getTitle());
+                            button.setText(fragment[getCurrentFragment().getPosition() + 1].getTitle());
+                        }
+
+
+                    }
+
+
+                }
+            }
+
+            public void onSwipeLeft() {
+                setNextFragment(fragment[getCurrentFragment().getPosition() - 1]);
+                switchBackFragment(getNextFragment());
+
+                for (int i = 0; i < fragment.length; i++) {
+                    if (getCurrentFragment().getPosition() == 0) {
+                        button.setText(fragment[getCurrentFragment().getPosition() + 1].getTitle());
+                        back.setVisibility(View.INVISIBLE);
+
+                    } else {
+                        back.setText(fragment[getCurrentFragment().getPosition() - 1].getTitle());
+                        button.setText(fragment[getCurrentFragment().getPosition() + 1].getTitle());
+                    }
+
+
+                }
+
+                if (getCurrentFragment().getPosition() != 0) {
+                    setPreviousFragment(fragment[getCurrentFragment().getPosition() + 1]);
+                }
+                progressBar.setProgress(getNextFragment().getProgress());
+
+            }
+
+            public void onSwipeBottom() {
+
+            }
+
+        });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -211,8 +290,10 @@ public class AvatarActivity extends AppCompatActivity {
 
                         if (getCurrentFragment().getPosition() == fragment.length - 1) {
                             button.setText("Save");
+                           // fab.startAnimation(fab_open);
                             back.setText(fragment[getCurrentFragment().getPosition() - 1].getTitle());
-                        } else {
+
+                        }else {
                             back.setText(fragment[getCurrentFragment().getPosition() - 1].getTitle());
                             button.setText(fragment[getCurrentFragment().getPosition() + 1].getTitle());
                         }
@@ -224,6 +305,7 @@ public class AvatarActivity extends AppCompatActivity {
                 }
             }
         });
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,6 +316,7 @@ public class AvatarActivity extends AppCompatActivity {
                     if (getCurrentFragment().getPosition() == 0) {
                         button.setText(fragment[getCurrentFragment().getPosition() + 1].getTitle());
                         back.setVisibility(View.INVISIBLE);
+
                     } else {
                         back.setText(fragment[getCurrentFragment().getPosition() - 1].getTitle());
                         button.setText(fragment[getCurrentFragment().getPosition() + 1].getTitle());
@@ -415,11 +498,8 @@ public class AvatarActivity extends AppCompatActivity {
     }
 
 
-   /* @Override
-    public void onBackPressed(){
 
 
-    }*/
 
 
     public static Bitmap selectImageBackground() {
@@ -433,6 +513,12 @@ return AvatarActivity.bitmap;
         preferences = AvatarActivity.getActivity().getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);
         editor = preferences.edit();
         editor.putInt(name, color);
+        editor.apply();
+    }
+    public static void changePref(String name, String pref){
+        preferences = AvatarActivity.getActivity().getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);
+        editor = preferences.edit();
+        editor.putString(name, pref);
         editor.apply();
     }
 
@@ -490,9 +576,7 @@ return AvatarActivity.bitmap;
                     String file_extn = filePath.substring(filePath.lastIndexOf(".") + 1);
                     File file_bitmap = new File(filePath);
 
-
                     if (file_extn.equals("img") || file_extn.equals("jpg") || file_extn.equals("jpeg") || file_extn.equals("gif") || file_extn.equals("png")) {
-
 
                         int targetW = webview.getWidth();
                         int targetH = webview.getHeight();
@@ -544,7 +628,6 @@ return AvatarActivity.bitmap;
 
         }
     }
-
 
     public String getPath(Uri uri) {
         String[] projection = {MediaStore.MediaColumns.DATA};
@@ -606,6 +689,33 @@ return AvatarActivity.bitmap;
         button.setTextColor(Utils.getTitleTextColor(bitmap));
         back.setTextColor(Utils.getTitleTextColor(bitmap));
     }
+
+    @Override
+    public void onBackPressed(){
+        new MaterialDialog.Builder(AvatarActivity.getActivity())
+                .title("Exit Editor")
+                .content("Are you sure you want to leave ?")
+                .positiveText("Yes")
+                .negativeText("Back")
+                .negativeColor(getResources().getColor(R.color.accent))
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                        Intent i = new Intent(AvatarActivity.this,MainActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+
+    }
+
 
 }
 

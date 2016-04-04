@@ -2,4 +2,11 @@
     <string name="app_name">Avatars</string>
     <string name="color_palette">Color Palette</string>
     <string name="colors">Colors</string>
+    <string name="arc_color">Arc color</string>
+    <string name="coussins_color">Cussins color</string>
+    <string name="choose_color">Choose a color</string>
+    <string name="screen_color">screen_color</string>
+    <string name="long_needle_color">Long needle color</string>
+    <string name="short_needle_color">Short needle color</string>
+    <string name="bracelet_color">Bracelet color</string>
 </resources>

@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         final AccountHeader headerResult = new AccountHeaderBuilder().withHeaderBackground(getResources().getDrawable(R.drawable.header)).withActivity(this).addProfiles(new ProfileDrawerItem().withName("MD Avatar").withIcon(GoogleMaterial.Icon.gmd_face).withIdentifier(1)).build();
-        // Picasso.with(this).load(background_pic).into(headerResult.getHeaderBackgroundView());
+        // Picasso.with(this).loadColor(background_pic).into(headerResult.getHeaderBackgroundView());
 
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("Kits").withIdentifier(1).withIcon(CommunityMaterial.Icon.cmd_key);//.withSelectable(false);
         PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("My Avatars").withIdentifier(2).withIcon(CommunityMaterial.Icon.cmd_tag_faces);

@@ -48,8 +48,8 @@ public class KitAdapter extends RecyclerView.Adapter<KitAdapter.ViewHolder> {
 
         Kit kit = itemData.get(position);
         holder.name.setText(kit.getName());
-        holder.smalldesc.setText(kit.getSmallDesc());
-        holder.smalldesc.setText(kit.getSmallDesc());
+        holder.smalldesc.setVisibility(View.GONE);
+        //holder.smalldesc.setText(kit.getSmallDesc());
         holder.wall.loadUrl(kit.getSvg());
         holder.wall.setBackgroundColor(kit.getDefaultBgColor());
         holder.wall.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);

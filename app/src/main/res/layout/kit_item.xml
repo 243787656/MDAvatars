@@ -17,7 +17,7 @@
 
         android:foreground="?selectableItemBackground"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="190dp"
         android:layout_gravity="center_horizontal"
         card_view:cardElevation="2dp"
         card_view:cardCornerRadius="2dp"
@@ -36,7 +36,7 @@
 
                 android:id="@+id/webView1"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="120dp"
                 android:scaleType="centerCrop"
                 android:transitionName="image"
                 tools:ignore="ContentDescription,UnusedAttribute" >

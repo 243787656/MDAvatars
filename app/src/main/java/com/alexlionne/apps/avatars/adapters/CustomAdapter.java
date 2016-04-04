@@ -42,15 +42,17 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     private final ListItem itemData;
     private final Context context;
     private final OnItemClickListener onItemClickListener;
+    private static int fragmentPosition;
 
 
 
 
     public interface OnItemClickListener {
-        void onItemClick(View v, int position);
+        void onItemClick(View v, int position,int fragmentPosition);
     }
 
-    public CustomAdapter(Context context, ListItem items, OnItemClickListener onItemClickListener) {
+    public CustomAdapter(Context context, ListItem items, OnItemClickListener onItemClickListener,int fragmentPosition) {
+        CustomAdapter.fragmentPosition = fragmentPosition;
         this.itemData = items;
         this.context = context;
         this.onItemClickListener = onItemClickListener;
@@ -99,6 +101,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             }
 
             if (list.getLabel() != null) {
+                holder.label.setVisibility(View.VISIBLE);
                 holder.label.setText(list.getLabel().get(position));
             }
             if (i.getOptions().getCheckBox()) {
@@ -126,6 +129,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     public Item getItemAtPosition(int position) {
         return itemData.getItem(position);
+    }
+    public static int  getFragmentPosition(){
+        return  CustomAdapter.fragmentPosition;
     }
 
     @Override
@@ -162,7 +168,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
         @Override
         public void onClick(View v) {
-            onItemClickListener.onItemClick(v, getAdapterPosition());
+            onItemClickListener.onItemClick(v, getAdapterPosition(),getFragmentPosition());
 
         }
 

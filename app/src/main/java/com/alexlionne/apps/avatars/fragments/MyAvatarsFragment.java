@@ -47,6 +47,7 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
     private  ArrayList<File> myAvatars;
 
 
+
     public MyAvatarsFragment() {
         // Required empty public constructor
     }
@@ -87,6 +88,7 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
             for(int i=0;i<Utils.getAllSavedAvatars().size();i++){
                 myAvatars.add(Utils.getAllSavedAvatars().get(i));
             }
+
 
 
 
