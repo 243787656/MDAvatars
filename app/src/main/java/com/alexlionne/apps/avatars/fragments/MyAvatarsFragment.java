@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.alexlionne.apps.avatars.MainActivity;
 import com.alexlionne.apps.avatars.R;
 import com.alexlionne.apps.avatars.Utils.Utils;
 import com.alexlionne.apps.avatars.adapters.FileAdapter;
@@ -52,7 +54,9 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.latest_kit_layout, container, false);
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.my_avatars_layout, container, false);
+        FloatingActionButton fab = (FloatingActionButton)root.findViewById(R.id.fab);
+
         kitAdapter = null;
         DEFAULT_COLUMNS_PORTRAIT = 2;
         DEFAULT_COLUMNS_LANDSCAPE = 2;
@@ -69,7 +73,15 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
 
         new UpdateUI().execute();
         Log.d("Skinner : ", "Checking permissions");
-        Utils.checkPermission(getActivity(),Manifest.permission.READ_EXTERNAL_STORAGE);
+        Utils.checkPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).result.setSelection(0);
+                ((MainActivity) getActivity()).switchFragment(0, "Kits", "Kit");
+            }
+        });
      return root;
 
     }

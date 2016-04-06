@@ -160,34 +160,7 @@ public EditionFragment(){
     public RecyclerView getRecyclerView(){
         return  recyclerView;
     }
-    private void recylerViewChanged() {
 
-        getRecyclerView().setOnScrollListener(new RecyclerView.OnScrollListener() {
-
-
-            int mPosition = 0;
-            int mOffset = 0;
-
-            @Override
-            public void onScrollStateChanged(RecyclerView view, int scrollState) {
-                // TODO Auto-generated method stub
-                GridLayoutManager layoutManager = ((GridLayoutManager) view.getLayoutManager());
-                int position = layoutManager.findFirstVisibleItemPosition();
-
-                View v = getRecyclerView().getChildAt(0);
-                int offset = (v == null) ? 0 : v.getTop();
-
-                if (mPosition < position || (mPosition == position && mOffset < offset)) {
-                    AvatarActivity.view.setVisibility(View.GONE);
-
-                } else {
-                    // Scrolled down
-                    AvatarActivity.view.setVisibility(View.VISIBLE);
-
-                }
-            }
-        });
-    }
 
 
 

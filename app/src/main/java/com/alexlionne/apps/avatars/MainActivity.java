@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.alexlionne.apps.avatars.fragments.SettingsActivity;
 import com.github.porokoro.paperboy.PaperboyFragment;
 import com.github.porokoro.paperboy.ViewTypes;
 import com.github.porokoro.paperboy.builders.PaperboyChainBuilder;

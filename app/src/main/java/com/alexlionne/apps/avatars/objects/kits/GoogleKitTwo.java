@@ -1,5 +1,6 @@
 package com.alexlionne.apps.avatars.objects.kits;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.app.Dialog;
 import android.content.Context;

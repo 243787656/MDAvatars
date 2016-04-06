@@ -4,14 +4,21 @@ import android.animation.Animator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
+import android.widget.AbsListView;
 import android.widget.Toast;
 
 import com.alexlionne.apps.avatars.AvatarActivity;
+import com.alexlionne.apps.avatars.R;
 import com.alexlionne.apps.avatars.objects.Item;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -218,7 +225,6 @@ public class Utils {
                 .setPermissions(permission)
                 .check();
     }
-
 
 
 }

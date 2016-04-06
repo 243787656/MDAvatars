@@ -1,4 +1,4 @@
-package com.alexlionne.apps.avatars.fragments;
+package com.alexlionne.apps.avatars;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;

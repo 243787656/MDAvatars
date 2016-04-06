@@ -74,12 +74,9 @@ import java.util.concurrent.ExecutionException;
 
 
 public class AvatarActivity extends AppCompatActivity {
-    private static int accentPreselect;
     private int currentFragment;
     private static WebView webview;
     public static Kit kit;
-    private FragmentManager fm;
-    private FragmentTransaction fragmentTransaction;
     private EditionFragment fragment[];
     private ArrayList<ListItem> list;
     private EditionFragment pre;
@@ -87,7 +84,6 @@ public class AvatarActivity extends AppCompatActivity {
     private EditionFragment current;
     public static FragmentManager fragmentManager;
     private static Window window;
-    private boolean hidden = true;
     private static final String MDSdirectory = "/sdcard/MDAvatar/";
     private static Activity activity;
     private static Bitmap bitmap;
@@ -98,11 +94,8 @@ public class AvatarActivity extends AppCompatActivity {
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor editor;
     private static android.support.v4.app.FragmentManager sfm;
-
-    private GoogleApiClient client;
     private ProgressBar progressBar;
     private FloatingActionButton fab;
-    private static String name;
 
 
     public void setActivity(Activity activity) {
@@ -132,6 +125,9 @@ public class AvatarActivity extends AppCompatActivity {
         webview = (WebView) findViewById(R.id.webView1);
         webview.getSettings().setJavaScriptEnabled(true);
 
+        Utils.checkPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        Utils.checkPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
+        Utils.checkPermission(getActivity(), Manifest.permission.INTERNET);
 
         String current = getIntent().getStringExtra("kit");
         if (current.equals("Google I")) {
@@ -145,7 +141,6 @@ public class AvatarActivity extends AppCompatActivity {
         setWindow(getWindow());
         editor.putInt("BackgroundColor", getKit().getDefaultBgColor());
         editor.apply();
-        fab = (FloatingActionButton) findViewById(R.id.fab);
         webview.loadUrl(kit.getSvg());
         webview.setBackgroundColor(kit.getDefaultBgColor());
         view2.setBackgroundColor(kit.getDefaultBgColor());
@@ -211,7 +206,6 @@ public class AvatarActivity extends AppCompatActivity {
         window.setNavigationBarColor(kit.getDefaultBgColor());
 
         back.setVisibility(View.INVISIBLE);
-        fab.setVisibility(View.INVISIBLE);
         button.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         back.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         view2.setOnTouchListener(new OnSwipeTouchListener(AvatarActivity.this) {
@@ -232,7 +226,6 @@ public class AvatarActivity extends AppCompatActivity {
 
                         if (getCurrentFragment().getPosition() == fragment.length - 1) {
                             button.setText("Save");
-                            // fab.startAnimation(fab_open);
                             back.setText(fragment[getCurrentFragment().getPosition() - 1].getTitle());
 
                         } else {
@@ -281,6 +274,7 @@ public class AvatarActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean isClicked = true;
                 if (getCurrentFragment().getPosition() == fragment.length - 1 && isClicked) {
+
                     save();
                 } else {
 
@@ -292,7 +286,7 @@ public class AvatarActivity extends AppCompatActivity {
 
                         if (getCurrentFragment().getPosition() == fragment.length - 1) {
                             button.setText("Save");
-                            // fab.startAnimation(fab_open);
+
                             back.setText(fragment[getCurrentFragment().getPosition() - 1].getTitle());
 
                         } else {
@@ -459,10 +453,6 @@ public class AvatarActivity extends AppCompatActivity {
     }
 
     public static void share() {
-        Utils.checkPermission(AvatarActivity.getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        Utils.checkPermission(AvatarActivity.getActivity(), Manifest.permission.INTERNET);
-
-        final int count = Utils.getAllSavedAvatars().size() + 1;
         webview.postDelayed(new Runnable() {
 
             @Override
@@ -501,14 +491,8 @@ public class AvatarActivity extends AppCompatActivity {
         }
         tmpFile.delete();
     }
-    public static void setFileName(String name){
-        AvatarActivity.name=name;
-    }
-    public static String getFileName(){
-        return AvatarActivity.name;
-    }
+
     public static void  save() {
-       Utils.checkPermission(AvatarActivity.getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int count = Utils.getAllSavedAvatars().size() + 1;
         new MaterialDialog.Builder(AvatarActivity.getActivity())
                 .title("Name")
@@ -532,7 +516,6 @@ public class AvatarActivity extends AppCompatActivity {
                                 webview.draw(c);
                                 FileOutputStream fos = null;
                                 try {
-                                    setFileName(input.toString());
                                     fos = new FileOutputStream(MDSdirectory + input.toString() + ".png");
                                     if (fos != null) {
                                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
@@ -553,7 +536,7 @@ public class AvatarActivity extends AppCompatActivity {
 
 
     public static Bitmap selectImageBackground() {
-
+        Utils.checkPermission(getActivity(),Manifest.permission.READ_EXTERNAL_STORAGE);
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
         activity.startActivityForResult(photoPickerIntent, 1);
@@ -575,8 +558,8 @@ return AvatarActivity.bitmap;
     public static void selectImageBodyBackground(final String bodyType) {
 
         new MaterialDialog.Builder(AvatarActivity.getActivity())
-                .title("Name")
-                .content("Set a name for your Avatar")
+                .title("Link")
+                .content("Provide a link to your image")
                 .inputType(InputType.TYPE_CLASS_TEXT |
                         InputType.TYPE_TEXT_VARIATION_PERSON_NAME |
                         InputType.TYPE_TEXT_FLAG_CAP_WORDS)
