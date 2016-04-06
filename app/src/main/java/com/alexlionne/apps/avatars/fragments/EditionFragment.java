@@ -5,31 +5,19 @@ package com.alexlionne.apps.avatars.fragments;
  */
 
 import android.app.Fragment;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alexlionne.apps.avatars.AvatarActivity;
 import com.alexlionne.apps.avatars.R;
-import com.alexlionne.apps.avatars.Utils;
 import com.alexlionne.apps.avatars.adapters.CustomAdapter;
-import com.alexlionne.apps.avatars.adapters.KitAdapter;
 import com.alexlionne.apps.avatars.objects.Item;
 import com.alexlionne.apps.avatars.objects.Kit;
 import com.alexlionne.apps.avatars.objects.ListItem;

@@ -1,10 +1,8 @@
 package com.alexlionne.apps.avatars.fragments;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Picture;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,23 +11,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.alexlionne.apps.avatars.AvatarActivity;
 import com.alexlionne.apps.avatars.R;
-import com.alexlionne.apps.avatars.Utils;
+import com.alexlionne.apps.avatars.Utils.Utils;
 import com.alexlionne.apps.avatars.adapters.FileAdapter;
-import com.alexlionne.apps.avatars.adapters.KitAdapter;
-import com.alexlionne.apps.avatars.objects.Kit;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -71,6 +68,8 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
 
 
         new UpdateUI().execute();
+        Log.d("Skinner : ", "Checking permissions");
+        Utils.checkPermission(getActivity(),Manifest.permission.READ_EXTERNAL_STORAGE);
      return root;
 
     }
@@ -85,11 +84,15 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
         protected Void doInBackground(Void... params) {
 
             myAvatars = new ArrayList<>();
-            for(int i=0;i<Utils.getAllSavedAvatars().size();i++){
-                myAvatars.add(Utils.getAllSavedAvatars().get(i));
+            if(Utils.getAllSavedAvatars().size()!=0) {
+
+                for (int i = 0; i < Utils.getAllSavedAvatars().size(); i++) {
+                    myAvatars.add(Utils.getAllSavedAvatars().get(i));
+                }
+
+            }else{
+                Log.d("Skinner : ", "No Avatars");
             }
-
-
 
 
             return null;
@@ -103,7 +106,7 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
             layoutManager = new GridLayoutManager(getContext(), numColumns);
             kitAdapter = new FileAdapter(getContext(), myAvatars, MyAvatarsFragment.this);
             recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter( kitAdapter);
+            recyclerView.setAdapter(kitAdapter);
 
         }
     }
@@ -123,7 +126,7 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
-
+                        Log.d("Skinner : ", "Rename the file to : ");
                     }
                 })
                 .negativeText("share")
@@ -145,6 +148,7 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
                             startActivity(shareIntent);
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
+                            Log.d("Skinner : ", "Error while sharing : "+e);
                         }
                     }
                 })

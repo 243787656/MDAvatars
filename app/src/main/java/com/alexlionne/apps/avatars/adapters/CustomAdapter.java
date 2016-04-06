@@ -1,40 +1,24 @@
 package com.alexlionne.apps.avatars.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.preference.PreferenceManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alexlionne.apps.avatars.AvatarActivity;
 import com.alexlionne.apps.avatars.R;
-import com.alexlionne.apps.avatars.Utils;
-import com.alexlionne.apps.avatars.objects.Bubble;
+import com.alexlionne.apps.avatars.Utils.Utils;
 import com.alexlionne.apps.avatars.objects.Item;
-import com.alexlionne.apps.avatars.objects.Kit;
 import com.alexlionne.apps.avatars.objects.ListItem;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder>{

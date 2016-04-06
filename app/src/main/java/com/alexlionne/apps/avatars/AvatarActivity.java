@@ -1,6 +1,7 @@
 package com.alexlionne.apps.avatars;
 
 
+import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -21,12 +22,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.FragmentTransaction;
-import android.preference.PreferenceManager;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.MenuItem;
@@ -34,20 +35,21 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.folderselector.FolderChooserDialog;
+import com.alexlionne.apps.avatars.Utils.DirectoryChooserFragment;
+import com.alexlionne.apps.avatars.Utils.UIManager;
+import com.alexlionne.apps.avatars.Utils.Utils;
 import com.alexlionne.apps.avatars.adapters.OnSwipeTouchListener;
 import com.alexlionne.apps.avatars.fragments.EditionFragment;
 import com.alexlionne.apps.avatars.objects.Kit;
@@ -55,13 +57,14 @@ import com.alexlionne.apps.avatars.objects.ListItem;
 import com.alexlionne.apps.avatars.objects.kits.AndroidKit;
 import com.alexlionne.apps.avatars.objects.kits.GoogleKitOne;
 import com.alexlionne.apps.avatars.objects.kits.GoogleKitTwo;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -85,7 +88,7 @@ public class AvatarActivity extends AppCompatActivity {
     public static FragmentManager fragmentManager;
     private static Window window;
     private boolean hidden = true;
-    private final String MDSdirectory = "/sdcard/MDAvatar/";
+    private static final String MDSdirectory = "/sdcard/MDAvatar/";
     private static Activity activity;
     private static Bitmap bitmap;
     public static RelativeLayout view;
@@ -94,12 +97,13 @@ public class AvatarActivity extends AppCompatActivity {
     public static Button back;
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor editor;
+    private static android.support.v4.app.FragmentManager sfm;
 
     private GoogleApiClient client;
     private ProgressBar progressBar;
     private FloatingActionButton fab;
-    private Boolean isFabOpen = false;
-    private Animation fab_open,fab_close,rotate_forward,rotate_backward;
+    private static String name;
+
 
     public void setActivity(Activity activity) {
         AvatarActivity.activity = activity;
@@ -129,10 +133,6 @@ public class AvatarActivity extends AppCompatActivity {
         webview.getSettings().setJavaScriptEnabled(true);
 
 
-
-        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
-
         String current = getIntent().getStringExtra("kit");
         if (current.equals("Google I")) {
             kit = new GoogleKitOne(this);
@@ -145,9 +145,10 @@ public class AvatarActivity extends AppCompatActivity {
         setWindow(getWindow());
         editor.putInt("BackgroundColor", getKit().getDefaultBgColor());
         editor.apply();
-        fab = (FloatingActionButton)findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         webview.loadUrl(kit.getSvg());
         webview.setBackgroundColor(kit.getDefaultBgColor());
+        view2.setBackgroundColor(kit.getDefaultBgColor());
         view.setBackgroundColor(kit.getDefaultBgColor());
         webview.getSettings().setBuiltInZoomControls(true);
         webview.getSettings().setDisplayZoomControls(false);
@@ -179,6 +180,7 @@ public class AvatarActivity extends AppCompatActivity {
 
 
         fragmentManager = getFragmentManager();
+        sfm = getSupportFragmentManager();
         kit.attachWebView(webview);
         list = kit.getAllcategories();
         fragment = new EditionFragment[list.size()];
@@ -233,7 +235,7 @@ public class AvatarActivity extends AppCompatActivity {
                             // fab.startAnimation(fab_open);
                             back.setText(fragment[getCurrentFragment().getPosition() - 1].getTitle());
 
-                        }else {
+                        } else {
                             back.setText(fragment[getCurrentFragment().getPosition() - 1].getTitle());
                             button.setText(fragment[getCurrentFragment().getPosition() + 1].getTitle());
                         }
@@ -290,10 +292,10 @@ public class AvatarActivity extends AppCompatActivity {
 
                         if (getCurrentFragment().getPosition() == fragment.length - 1) {
                             button.setText("Save");
-                           // fab.startAnimation(fab_open);
+                            // fab.startAnimation(fab_open);
                             back.setText(fragment[getCurrentFragment().getPosition() - 1].getTitle());
 
-                        }else {
+                        } else {
                             back.setText(fragment[getCurrentFragment().getPosition() - 1].getTitle());
                             button.setText(fragment[getCurrentFragment().getPosition() + 1].getTitle());
                         }
@@ -456,9 +458,59 @@ public class AvatarActivity extends AppCompatActivity {
 
     }
 
-    public void save() {
+    public static void share() {
+        Utils.checkPermission(AvatarActivity.getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        Utils.checkPermission(AvatarActivity.getActivity(), Manifest.permission.INTERNET);
+
+        final int count = Utils.getAllSavedAvatars().size() + 1;
+        webview.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                bitmap = Bitmap.createBitmap(webview.getWidth(), webview.getHeight(), Bitmap.Config.ARGB_8888);
+                final Canvas c = new Canvas(bitmap);
+                webview.draw(c);
+                FileOutputStream fos = null;
+                try {
+                    fos = new FileOutputStream(MDSdirectory+"tmp.png");
+                    if (fos != null) {
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                        fos.close();
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error : " + e);
+                }
+            }
+        }, 100);
+        File tmpFile = new File(MDSdirectory+"tmp.png");
+        final String photoUri;
+        try {
+            photoUri = MediaStore.Images.Media.insertImage(
+                    getActivity().getContentResolver(), tmpFile.getAbsolutePath(), null, null);
+
+            Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity())
+                    .setText("Woaw its my new Avatar ! free and open sourced ! : https://github.com/AlexLionne/MDAvatars ")
+                    .setType("image/jpeg")
+                    .setStream(Uri.parse(photoUri))
+                    .getIntent()
+                    .setPackage("com.google.android.apps.plus");
+            AvatarActivity.getActivity().startActivity(shareIntent);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        tmpFile.delete();
+    }
+    public static void setFileName(String name){
+        AvatarActivity.name=name;
+    }
+    public static String getFileName(){
+        return AvatarActivity.name;
+    }
+    public static void  save() {
+       Utils.checkPermission(AvatarActivity.getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int count = Utils.getAllSavedAvatars().size() + 1;
-        new MaterialDialog.Builder(AvatarActivity.this)
+        new MaterialDialog.Builder(AvatarActivity.getActivity())
                 .title("Name")
                 .content("Set a name for your Avatar")
                 .inputType(InputType.TYPE_CLASS_TEXT |
@@ -480,6 +532,7 @@ public class AvatarActivity extends AppCompatActivity {
                                 webview.draw(c);
                                 FileOutputStream fos = null;
                                 try {
+                                    setFileName(input.toString());
                                     fos = new FileOutputStream(MDSdirectory + input.toString() + ".png");
                                     if (fos != null) {
                                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
@@ -496,9 +549,6 @@ public class AvatarActivity extends AppCompatActivity {
                 })
                 .show();
     }
-
-
-
 
 
 
@@ -541,16 +591,14 @@ return AvatarActivity.bitmap;
                                     int color = Utils.getLightPalettefromBitmap(bitmap);
 
                                     String javascript = "javascript:addSvgStuff('" + bodyType + "','body','" + input.toString() + "')";
-                                    String javascript2 = " javascript:document.getElementById('uparm').setAttribute('fill','transparent');";
-                                    String javascript_shadow_one = "javascript:var svgElement=document.getElementById('shadow1');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(color) + "');};";
-                                    String javascript_shadow_two = "javascript:var svgElement=document.getElementById('shadow2');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(color) + "');};";
-                                    String javascript_shadow_three = "javascript:var svgElement=document.getElementById('shadow3');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(color) + "');};";
+                                    UIManager UI = new UIManager(webview);
+                                    UI.loadColor("transparent","uparm");
+                                    UI.loadColorforGroup(Utils.convertHexColorString(color), "shadow1");
+                                    UI.loadColorforGroup(Utils.convertHexColorString(color), "shadow2");
+                                    UI.loadColorforGroup(Utils.convertHexColorString(color), "shadow3");
 
-                                    webview.loadUrl(javascript_shadow_one);
-                                    webview.loadUrl(javascript_shadow_two);
-                                    webview.loadUrl(javascript_shadow_three);
                                     webview.loadUrl(javascript);
-                                    webview.loadUrl(javascript2);
+
 
                                 } catch (ExecutionException e) {
                                     e.printStackTrace();
@@ -626,6 +674,10 @@ return AvatarActivity.bitmap;
                 }
             }
 
+        }else if(requestCode==3){
+            if (resultCode == Activity.RESULT_OK) {
+
+            }
         }
     }
 
@@ -693,7 +745,7 @@ return AvatarActivity.bitmap;
     @Override
     public void onBackPressed(){
         new MaterialDialog.Builder(AvatarActivity.getActivity())
-                .title("Exit Editor")
+                .title("Exit editor")
                 .content("Are you sure you want to leave ?")
                 .positiveText("Yes")
                 .negativeText("Back")
@@ -701,7 +753,7 @@ return AvatarActivity.bitmap;
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
-                        Intent i = new Intent(AvatarActivity.this,MainActivity.class);
+                        Intent i = new Intent(AvatarActivity.this, MainActivity.class);
                         startActivity(i);
                         finish();
                     }
@@ -717,5 +769,59 @@ return AvatarActivity.bitmap;
     }
 
 
+    public static void showDirectoryChooser() {
+        final DirectoryChooserFragment df = DirectoryChooserFragment.newInstance("wall-splash", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath());
+        df.setDirectoryChooserListener(new DirectoryChooserFragment.OnFragmentInteractionListener() {
+            @Override
+            public void onSelectDirectory(@NonNull final String path) {
+
+                int count = Utils.getAllSavedAvatars().size() + 1;
+                new MaterialDialog.Builder(AvatarActivity.getActivity())
+                        .title("Name")
+                        .content("Set a name for your Avatar")
+                        .inputType(InputType.TYPE_CLASS_TEXT |
+                                InputType.TYPE_TEXT_VARIATION_PERSON_NAME |
+                                InputType.TYPE_TEXT_FLAG_CAP_WORDS)
+                        .inputMaxLength(20)
+                        .positiveText("go")
+                        .input("name", "my_avatar_" + count, false, new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(MaterialDialog dialog, final CharSequence input) {
+
+                                webview.postDelayed(new Runnable() {
+
+                                    @Override
+                                    public void run() {
+                                        // TODO Auto-generated method stub
+                                        bitmap = Bitmap.createBitmap(webview.getWidth(), webview.getHeight(), Bitmap.Config.ARGB_8888);
+                                        final Canvas c = new Canvas(bitmap);
+                                        webview.draw(c);
+                                        FileOutputStream fos = null;
+                                        try {
+                                            fos = new FileOutputStream(path +"/"+ input.toString() + ".png");
+                                            if (fos != null) {
+                                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                                fos.close();
+                                            }
+                                        } catch (Exception e) {
+                                            System.out.println("Error : " + e);
+                                        }
+                                    }
+                                }, 100);
+
+
+                            }
+                        })
+                        .show();
+            df.dismiss();
+            }
+
+            @Override
+            public void onCancelChooser() {
+                df.dismiss();
+            }
+        });
+        df.show(sfm, "MyDF");
+    }
 }
 

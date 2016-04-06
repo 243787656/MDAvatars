@@ -1,0 +1,64 @@
+[
+  {
+    "name": "1.0.4",
+    "items": [
+      {
+        "type": "F",
+        "title": "Changing the whole UI"
+      },
+      {
+        "type": "F",
+        "title": "You can now choose images from storage as background and clothe style !"
+      },
+      {
+        "type": "F",
+        "title": "New ColorChooser ! better than the previous one ;)"
+      },
+      {
+        "type": "B",
+        "title": "fixed webview width"
+      },
+      {
+        "type": "B",
+        "title": "fixed webview saves and rendering"
+      },
+      {
+        "type": "I",
+        "title": "App colors changed"
+      }
+    ]
+
+  },{
+  "name": "1.0.2",
+  "items": [
+    {
+      "type": "F",
+      "title": "Adding initial Google Kit"
+    },
+    {
+      "type": "B",
+      "title": "Skin color fixed"
+    },
+    {
+      "type": "I",
+      "title": "improved the ColorChooser"
+    }
+  ]},
+  {
+    "name": "1.0.0",
+    "items": [
+      {
+        "type": "F",
+        "title": "Initial realease !"
+      },
+      {
+        "type": "B",
+        "title": "Detected bugs : Android 6.0 Permissions & Image rendering after saves"
+      },
+      {
+        "type": "I",
+        "title": "Switching listView to custom recycler !"
+      }
+    ]
+  }
+]

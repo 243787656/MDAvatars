@@ -1,31 +1,21 @@
 package com.alexlionne.apps.avatars.fragments;
 
-import android.animation.Animator;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.os.AsyncTask;
-import android.os.Parcelable;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.alexlionne.apps.avatars.AvatarActivity;
 import com.alexlionne.apps.avatars.R;
-import com.alexlionne.apps.avatars.adapters.KitAdapter;
-import com.alexlionne.apps.avatars.objects.Kit;
-import com.alexlionne.apps.avatars.objects.kits.GoogleKitOne;
-import com.mikepenz.community_material_typeface_library.CommunityMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.BottomBarFragment;
-import com.roughike.bottombar.BottomBarTab;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Alex on 08/03/2016.
@@ -33,7 +23,14 @@ import java.util.ArrayList;
 public class KitFragment extends Fragment {
     private ViewGroup root;
     private BottomBar mBottomBar;
-
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private int[] tabIcons = {
+            R.drawable.ic_trending_up_white_18dp,
+            R.drawable.ic_fiber_new_white_18dp,
+            R.drawable.ic_favorite_white_18dp
+    };
     public KitFragment() {
         // Required empty public constructor
     }
@@ -43,29 +40,62 @@ public class KitFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.kit_layout, container, false);
 
-        mBottomBar = BottomBar.attach(view, savedInstanceState);
-        mBottomBar.setFragmentItems(getActivity().getSupportFragmentManager(), R.id.container,
-                new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_trending_up).sizeDp(18), "Trending"),
-                new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_newspaper).sizeDp(18), "Latest"),
-                new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_tag_faces).sizeDp(18), "All"),
-                new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_tag_faces).sizeDp(18), "All"),
-                new BottomBarFragment(new LatestKitFragment(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_tag_faces).sizeDp(18), "All")
-        );
-        mBottomBar.mapColorForTab(0,getActivity().getResources().getColor(R.color.primary));
-        mBottomBar.mapColorForTab(1, getActivity().getResources().getColor(R.color.primary));
-        mBottomBar.mapColorForTab(2, getActivity().getResources().getColor(R.color.primary));
-        mBottomBar.mapColorForTab(3, getActivity().getResources().getColor(R.color.primary));
-        mBottomBar.mapColorForTab(4, getActivity().getResources().getColor(R.color.primary));
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
 
+        viewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
 
-        return mBottomBar;
+        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        setupTabIcons();
+        return view;
+    }
+
+    /***Set up the Icons for Tabs
+     */
+    private void setupTabIcons() {
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+    }
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        adapter.addFragment(new LatestKitFragment(), null);
+        adapter.addFragment(new LatestKitFragment(), null);
+        adapter.addFragment(new LatestKitFragment(), null);
+        viewPager.setAdapter(adapter);
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
     }
 
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mBottomBar.onSaveInstanceState(outState);
-    }
+
 
 }

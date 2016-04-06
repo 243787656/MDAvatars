@@ -4,20 +4,17 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Explode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import com.alexlionne.apps.avatars.AvatarActivity;
-import com.alexlionne.apps.avatars.MainActivity;
 import com.alexlionne.apps.avatars.R;
-import com.alexlionne.apps.avatars.Utils;
+import com.alexlionne.apps.avatars.Utils.Utils;
 import com.alexlionne.apps.avatars.adapters.KitAdapter;
 import com.alexlionne.apps.avatars.objects.Kit;
 import java.util.ArrayList;
@@ -50,13 +47,13 @@ public class LatestKitFragment extends Fragment implements KitAdapter.OnItemClic
         final ViewGroup root = (ViewGroup) inflater.inflate(R.layout.latest_kit_layout, container, false);
 
 
-        /*root.post(new Runnable() {
+        root.post(new Runnable() {
             @Override
             public void run() {
 
                 Utils.reveal(root);
 
-            }});*/
+            }});
 
         recyclerView = (RecyclerView) root.findViewById(R.id.recycler);
 

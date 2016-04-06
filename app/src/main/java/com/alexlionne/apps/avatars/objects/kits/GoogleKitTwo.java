@@ -1,21 +1,25 @@
 package com.alexlionne.apps.avatars.objects.kits;
 
+import android.animation.Animator;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.support.v7.widget.CardView;
+import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.Toast;
+
 import com.alexlionne.apps.avatars.AvatarActivity;;
 import com.alexlionne.apps.avatars.R;
-import com.alexlionne.apps.avatars.UIManager;
-import com.alexlionne.apps.avatars.Utils;
+import com.alexlionne.apps.avatars.Utils.DirectoryChooserFragment;
+import com.alexlionne.apps.avatars.Utils.UIManager;
+import com.alexlionne.apps.avatars.Utils.Utils;
 import com.alexlionne.apps.avatars.adapters.CustomAdapter;;
 import com.alexlionne.apps.avatars.objects.Item;
 import com.alexlionne.apps.avatars.objects.Kit;
@@ -25,12 +29,10 @@ import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
-import org.androidannotations.annotations.Click;
 import org.xdty.preference.colorpicker.ColorPickerDialog;
 import org.xdty.preference.colorpicker.ColorPickerSwatch;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 
 public class GoogleKitTwo extends Kit {
@@ -46,7 +48,7 @@ public class GoogleKitTwo extends Kit {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private final int WHITE = 0;
-    private com.alexlionne.apps.avatars.UIManager UIManager;
+    private com.alexlionne.apps.avatars.Utils.UIManager UIManager;
 
 
 
@@ -159,7 +161,7 @@ void init(){
 
         ListItem save = new ListItem();
         save.setTitle("Save and options");
-        save.addItem("Saving", new Item("Save to /sdcard", WHITE, checkboxNDisable));
+        save.addItem("SAVE", new Item("Save to sdcard", WHITE, null_options));
         save.addItem(null, new Item("Share", WHITE, null_options));
 
 
@@ -667,7 +669,10 @@ break;
 
                 switch (p) {
                     case 0:
-
+                            AvatarActivity.showDirectoryChooser();
+                        break;
+                    case 1:
+                            AvatarActivity.share();
                         break;
 
                 }
