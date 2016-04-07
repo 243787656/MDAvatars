@@ -13,12 +13,11 @@
         android:id="@+id/webView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/fab" />
+        android:layout_alignParentTop="true" />
 
 
     <FrameLayout
-        android:background="#fff"
+
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_alignParentBottom="true"
@@ -78,20 +77,5 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true" />
     </RelativeLayout>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:visibility="invisible"
-        app:backgroundTint="@color/md_cyan_A400"
-        app:elevation="6dp"
-        app:rippleColor="@color/md_cyan_A700"
-        app:pressedTranslationZ="12dp"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="30dp"
-        android:layout_marginLeft="24dp" />
 
 </RelativeLayout>
