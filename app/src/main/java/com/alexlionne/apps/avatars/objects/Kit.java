@@ -253,8 +253,8 @@ public class Kit {
      */
     public static ArrayList<Kit> getAllKits() {
         kitArrayList = new ArrayList<>();
-  //      kitArrayList.add(new Kit(context).with(new AndroidKit(context)));
-//        kitArrayList.add(new Kit(context).with(new GoogleKitOne(context)));
+        kitArrayList.add(new Kit(context).with(new AndroidKit(context)));
+        kitArrayList.add(new Kit(context).with(new GoogleKitOne(context)));
         kitArrayList.add(new Kit(context).with(new GoogleKitTwo(context)));
 
 

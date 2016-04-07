@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -47,6 +48,7 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
     private RecyclerView.LayoutManager layoutManager;
     private  ArrayList<File> myAvatars;
     private Utils utils;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
 
@@ -73,7 +75,6 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
             numColumns = mColumnCount;
         }
         utils = new Utils(getActivity());
-
         new UpdateUI().execute();
         Log.d("Skinner : ", "Checking permissions");
         utils.checkPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -83,6 +84,14 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
             public void onClick(View v) {
                 ((MainActivity) getActivity()).result.setSelection(0);
                 ((MainActivity) getActivity()).switchFragment(0, "Kits", "Kit");
+            }
+        });
+        swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.feed_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new UpdateUI().execute();
             }
         });
      return root;
@@ -122,6 +131,8 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
             kitAdapter = new FileAdapter(getContext(), myAvatars, MyAvatarsFragment.this);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(kitAdapter);
+            if(swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+
 
         }
     }
@@ -174,7 +185,6 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
                         SharedPreferences preferences = getActivity().getSharedPreferences("com.alexlionne.apps.avatars", getActivity().MODE_PRIVATE);
                         utils.removeDirectorySet(getActivity(),file.getAbsolutePath());
                         preferences.edit().remove(file.getAbsolutePath()).apply();
-
                         file.delete();
                         new UpdateUI().execute();
                         dialog.dismiss();

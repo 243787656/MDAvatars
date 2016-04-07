@@ -196,7 +196,6 @@ void init(){
 
                                 AvatarActivity.view.setBackgroundColor(color);
                                 UIManager.setWebViewBgColor(color);
-                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
                                 UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
                                 UIManager.setNavigationBarColor(color);
 
