@@ -37,9 +37,13 @@ public class Utils {
 
     private static String directory = "/sdcard/MDAvatar/";
     private static ArrayList<File> mFile;
-    private SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
+    private static SharedPreferences preferences;
+    private static SharedPreferences.Editor editor;
+    private static Context context;
 
+    public Utils(Context context){
+        this.context = context;
+    }
     /***Tool to convert an HEXADECIMAL color to its String representation
      *
      * @param color
@@ -92,6 +96,8 @@ public class Utils {
     public static ArrayList<File> getAllSavedAvatars() {
         File file = new File(directory);
         mFile = new ArrayList<>();
+        for (String str :  Utils.getSavedDirectories(Utils.context))
+           mFile.add(new File(str));
         if (file.isDirectory()) {
             File[] listFile = file.listFiles();
 
@@ -235,7 +241,7 @@ public class Utils {
      * @param path
      * path to be added
      */
-    public void addDirectorySet(Context context,String path){
+    public static void addDirectorySet(Context context,String path){
         preferences = context.getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);
         Set<String> hs = preferences.getStringSet("directories", new HashSet<String>());
         hs.add(path);
@@ -249,7 +255,7 @@ public class Utils {
      * @return
      * Set<String> of directories
      */
-    public Set<String> getSavedDirectories(Context context){
+    public static Set<String> getSavedDirectories(Context context){
         preferences = context.getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);
         return preferences.getStringSet("directories", new HashSet<String>());
     }
