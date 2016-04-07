@@ -784,7 +784,7 @@ return AvatarActivity.bitmap;
                                         FileOutputStream fos = null;
                                         try {
                                             fos = new FileOutputStream(path +"/"+ input.toString() + ".png");
-                                            Utils.addDirectorySet(getActivity(),path +"/"+ input.toString() + ".png");
+                                            utils.addDirectorySet(getActivity(),path +"/"+ input.toString() + ".png");
                                             if (fos != null) {
                                                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
                                                 fos.close();

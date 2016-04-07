@@ -96,7 +96,7 @@ public class Utils {
     public ArrayList<File> getAllSavedAvatars() {
         File file = new File(directory);
         mFile = new ArrayList<>();
-        for (String str :  Utils.getSavedDirectories(Utils.context))
+        for (String str :  getSavedDirectories(Utils.context))
            mFile.add(new File(str));
         if (file.isDirectory()) {
             File[] listFile = file.listFiles();
@@ -241,7 +241,7 @@ public class Utils {
      * @param path
      * path to be added
      */
-    public static void addDirectorySet(Context context,String path){
+    public void addDirectorySet(Context context,String path){
         preferences = context.getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);
         Set<String> hs = preferences.getStringSet("directories", new HashSet<String>());
         hs.add(path);
@@ -249,13 +249,25 @@ public class Utils {
         editor.putStringSet("directories", hs);
         editor.apply();
     }
-
+    /***Add Directory to scan for saves avatars
+     *
+     * @param path
+     * path to be added
+     */
+    public void removeDirectorySet(Context context,String path){
+        preferences = context.getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);
+        Set<String> hs = preferences.getStringSet("directories", new HashSet<String>());
+        hs.remove(path);
+        editor = preferences.edit();
+        editor.putStringSet("directories", hs);
+        editor.apply();
+    }
     /***get all the saved directories
      *
      * @return
      * Set<String> of directories
      */
-    public static Set<String> getSavedDirectories(Context context){
+    public Set<String> getSavedDirectories(Context context){
         preferences = context.getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);
         return preferences.getStringSet("directories", new HashSet<String>());
     }

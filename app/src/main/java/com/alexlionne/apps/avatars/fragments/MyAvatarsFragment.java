@@ -2,6 +2,7 @@ package com.alexlionne.apps.avatars.fragments;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -30,6 +31,7 @@ import com.gun0912.tedpermission.TedPermission;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Created by Alex on 08/03/2016.
@@ -161,7 +163,7 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
                             startActivity(shareIntent);
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
-                            Log.d("Skinner : ", "Error while sharing : "+e);
+                            Log.d("Skinner : ", "Error while sharing : " + e);
                         }
                     }
                 })
@@ -169,6 +171,10 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
                 .onNeutral(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
+                        SharedPreferences preferences = getActivity().getSharedPreferences("com.alexlionne.apps.avatars", getActivity().MODE_PRIVATE);
+                        utils.removeDirectorySet(getActivity(),file.getAbsolutePath());
+                        preferences.edit().remove(file.getAbsolutePath()).apply();
+
                         file.delete();
                         new UpdateUI().execute();
                         dialog.dismiss();
