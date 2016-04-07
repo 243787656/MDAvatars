@@ -24,9 +24,13 @@ import com.alexlionne.apps.avatars.objects.Item;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.jar.Manifest;
 
@@ -96,9 +100,11 @@ public class Utils {
     public ArrayList<File> getAllSavedAvatars() {
         File file = new File(directory);
         mFile = new ArrayList<>();
-        for (String str :  getSavedDirectories(Utils.context))
-           mFile.add(new File(str));
-        if (file.isDirectory()) {
+        ArrayList<String> list = getSavedDirectories(context);
+        for (int k = 0;k<list.size();k++ ){
+            mFile.add(new File(list.get(k)));
+        }
+                if (file.isDirectory()) {
             File[] listFile = file.listFiles();
 
             for (File aListFile : listFile) {
@@ -242,12 +248,10 @@ public class Utils {
      * path to be added
      */
     public void addDirectorySet(Context context,String path){
-        preferences = context.getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);
-        Set<String> hs = preferences.getStringSet("directories", new HashSet<String>());
-        hs.add(path);
-        editor = preferences.edit();
-        editor.putStringSet("directories", hs);
-        editor.apply();
+        TinyDB tinydb = new TinyDB(context);
+        ArrayList<String> file = tinydb.getListString("directories");
+        file.add(path);
+        tinydb.putListString("directories",file);
     }
     /***Add Directory to scan for saves avatars
      *
@@ -255,21 +259,20 @@ public class Utils {
      * path to be added
      */
     public void removeDirectorySet(Context context,String path){
-        preferences = context.getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);
-        Set<String> hs = preferences.getStringSet("directories", new HashSet<String>());
-        hs.remove(path);
-        editor = preferences.edit();
-        editor.putStringSet("directories", hs);
-        editor.apply();
+        TinyDB tinydb = new TinyDB(context);
+        ArrayList<String> file = tinydb.getListString("directories");
+        file.remove(path);
+        tinydb.putListString("directories", file);
     }
     /***get all the saved directories
      *
      * @return
      * Set<String> of directories
      */
-    public Set<String> getSavedDirectories(Context context){
-        preferences = context.getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);
-        return preferences.getStringSet("directories", new HashSet<String>());
+    public ArrayList<String> getSavedDirectories(Context context){
+        TinyDB tinydb = new TinyDB(context);
+        return tinydb.getListString("directories");
+
     }
 
 

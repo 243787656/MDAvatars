@@ -92,4 +92,5 @@ dependencies {
     compile 'com.github.porokoro.paperboy:paperboy:3.0.0'
     compile 'com.gu:option:1.3'
     compile 'com.github.ParkSangGwon:TedPermission:v1.0.8'
+    compile 'com.google.code.gson:gson:2.2.4'
 }
