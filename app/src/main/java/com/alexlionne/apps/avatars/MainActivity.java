@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         boolean sucess =true;
         if (!md_folder.exists()) {
             sucess = md_folder.mkdir();
-        }
+         }
 
         final AccountHeader headerResult = new AccountHeaderBuilder().withHeaderBackground(getResources().getDrawable(R.drawable.header)).withActivity(this).build();
 

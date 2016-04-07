@@ -78,7 +78,7 @@ dependencies {
     compile 'com.android.support:palette-v7:23.2.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile('com.mikepenz:materialdrawer:4.6.4@aar')
-            {
+             {
         transitive = true
     }
     compile 'com.roughike:bottom-bar:1.2.4'
