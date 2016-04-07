@@ -2,6 +2,7 @@ package com.alexlionne.apps.avatars.Utils;
 
 import android.animation.Animator;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +26,8 @@ import com.gun0912.tedpermission.TedPermission;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.jar.Manifest;
 
 /**
@@ -34,6 +37,8 @@ public class Utils {
 
     private static String directory = "/sdcard/MDAvatar/";
     private static ArrayList<File> mFile;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     /***Tool to convert an HEXADECIMAL color to its String representation
      *
@@ -224,6 +229,29 @@ public class Utils {
                 .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
                 .setPermissions(permission)
                 .check();
+    }
+    /***Add Directory to scan for saves avatars
+     *
+     * @param path
+     * path to be added
+     */
+    public void addDirectorySet(Context context,String path){
+        preferences = context.getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);
+        Set<String> hs = preferences.getStringSet("directories", new HashSet<String>());
+        hs.add(path);
+        editor = preferences.edit();
+        editor.putStringSet("directories", hs);
+        editor.apply();
+    }
+
+    /***get all the saved directories
+     *
+     * @return
+     * Set<String> of directories
+     */
+    public Set<String> getSavedDirectories(Context context){
+        preferences = context.getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);
+        return preferences.getStringSet("directories", new HashSet<String>());
     }
 
 

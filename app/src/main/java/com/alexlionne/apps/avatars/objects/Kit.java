@@ -2,6 +2,7 @@ package com.alexlionne.apps.avatars.objects;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -37,7 +38,8 @@ public class Kit {
     private ArrayList<ListItem> category;
     private static Context context;
     private WebView webView;
-    private int backgrouncolor;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     public Kit() {
 
@@ -257,6 +259,17 @@ public class Kit {
 
 
         return kitArrayList;
+    }
+    public boolean isfavourite(boolean state){
+        preferences = context.getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);
+         preferences.getBoolean(getName(),false);
+        editor = preferences.edit();
+        editor.putBoolean(getName(), state);
+        return preferences.getBoolean(getName(),false);
+    }
+    public boolean isfavourite(){
+        preferences = context.getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);;
+        return preferences.getBoolean(getName(),false);
     }
 
 
