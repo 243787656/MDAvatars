@@ -44,6 +44,7 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
     private FileAdapter kitAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private  ArrayList<File> myAvatars;
+    private Utils utils;
 
 
 
@@ -69,11 +70,11 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
             mColumnCount = newColumnCount;
             numColumns = mColumnCount;
         }
-
+        utils = new Utils(getActivity());
 
         new UpdateUI().execute();
         Log.d("Skinner : ", "Checking permissions");
-        Utils.checkPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
+        utils.checkPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,10 +97,10 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
         protected Void doInBackground(Void... params) {
 
             myAvatars = new ArrayList<>();
-            if(Utils.getAllSavedAvatars().size()!=0) {
+            if(utils.getAllSavedAvatars().size()!=0) {
 
-                for (int i = 0; i < Utils.getAllSavedAvatars().size(); i++) {
-                    myAvatars.add(Utils.getAllSavedAvatars().get(i));
+                for (int i = 0; i < utils.getAllSavedAvatars().size(); i++) {
+                    myAvatars.add(utils.getAllSavedAvatars().get(i));
                 }
 
             }else{

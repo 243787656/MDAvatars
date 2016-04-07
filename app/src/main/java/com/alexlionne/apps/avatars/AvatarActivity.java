@@ -96,6 +96,7 @@ public class AvatarActivity extends AppCompatActivity {
     private static android.support.v4.app.FragmentManager sfm;
     private ProgressBar progressBar;
     private FloatingActionButton fab;
+    private static Utils utils;
 
 
     public void setActivity(Activity activity) {
@@ -125,7 +126,7 @@ public class AvatarActivity extends AppCompatActivity {
         webview = (WebView) findViewById(R.id.webView1);
         webview.getSettings().setJavaScriptEnabled(true);
 
-        Utils utils = new Utils(this);
+        utils = new Utils(this);
         utils.checkPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
         utils.checkPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
         utils.checkPermission(getActivity(), Manifest.permission.INTERNET);
@@ -494,7 +495,7 @@ public class AvatarActivity extends AppCompatActivity {
     }
 
     public static void  save() {
-        int count = Utils.getAllSavedAvatars().size() + 1;
+        int count = utils.getAllSavedAvatars().size() + 1;
         new MaterialDialog.Builder(AvatarActivity.getActivity())
                 .title("Name")
                 .content("Set a name for your Avatar")
@@ -537,7 +538,7 @@ public class AvatarActivity extends AppCompatActivity {
 
 
     public static Bitmap selectImageBackground() {
-        Utils.checkPermission(getActivity(),Manifest.permission.READ_EXTERNAL_STORAGE);
+        utils.checkPermission(getActivity(),Manifest.permission.READ_EXTERNAL_STORAGE);
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
         activity.startActivityForResult(photoPickerIntent, 1);
@@ -759,7 +760,7 @@ return AvatarActivity.bitmap;
             @Override
             public void onSelectDirectory(@NonNull final String path) {
 
-                int count = Utils.getAllSavedAvatars().size() + 1;
+                int count = utils.getAllSavedAvatars().size() + 1;
                 new MaterialDialog.Builder(AvatarActivity.getActivity())
                         .title("Name")
                         .content("Set a name for your Avatar")

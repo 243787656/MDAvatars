@@ -67,8 +67,7 @@ public class MainActivity extends AppCompatActivity {
         final AccountHeader headerResult = new AccountHeaderBuilder().withHeaderBackground(getResources().getDrawable(R.drawable.header)).withActivity(this).build();
 
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("Kits").withIdentifier(1).withIcon(CommunityMaterial.Icon.cmd_package);
-        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("My Avatars").withIdentifier(2).withIcon(GoogleMaterial.Icon.gmd_face);
-        this.result = new DrawerBuilder().withActivity(this).withToolbar(toolbar).withAccountHeader(headerResult).addDrawerItems(item1, item2, new DividerDrawerItem(), new SecondaryDrawerItem().withName("Settings").withIdentifier(3),new SecondaryDrawerItem().withName("Changelog").withIdentifier(4)).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+        this.result = new DrawerBuilder().withActivity(this).withToolbar(toolbar).withAccountHeader(headerResult).addDrawerItems(item1, new DividerDrawerItem(), new SecondaryDrawerItem().withName("Settings").withIdentifier(2),new SecondaryDrawerItem().withName("Changelog").withIdentifier(3)).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                 if (drawerItem != null) {
                     MainActivity.this.a = true;
@@ -77,15 +76,11 @@ public class MainActivity extends AppCompatActivity {
                             MainActivity.this.switchFragment(1, "Kits", "Kit");
                             break;
 
-
                         case 2:
-                            MainActivity.this.switchFragment(2, "My Avatars", "MyAvatars");
-                            break;
-                        case 3:
                             Intent i = new Intent(MainActivity.this, SettingsActivity.class);
                             startActivity(i);
                             break;
-                        case 4:
+                        case 3:
                             showChangeLog();
                             break;
 

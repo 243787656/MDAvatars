@@ -93,7 +93,7 @@ public class Utils {
      * @return
      * the modified ArrayList<File> of all avatars
      */
-    public static ArrayList<File> getAllSavedAvatars() {
+    public ArrayList<File> getAllSavedAvatars() {
         File file = new File(directory);
         mFile = new ArrayList<>();
         for (String str :  Utils.getSavedDirectories(Utils.context))
@@ -216,7 +216,7 @@ public class Utils {
         return AvatarActivity.getKit().getAllcategories().get(p1).getItem(p2);
     }
 
-    public static void checkPermission(final Context context,String permission){
+    public void checkPermission(final Context context,String permission){
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {

@@ -27,8 +27,7 @@ public class KitFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private int[] tabIcons = {
-            R.drawable.ic_trending_up_white_18dp,
-            R.drawable.ic_fiber_new_white_18dp,
+            R.drawable.ic_face_white_24dp,
             R.drawable.ic_favorite_white_18dp
     };
     public KitFragment() {
@@ -56,13 +55,13 @@ public class KitFragment extends Fragment {
     private void setupTabIcons() {
         tabLayout.getTabAt(0).setIcon(tabIcons[0]);
         tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+
     }
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         adapter.addFragment(new LatestKitFragment(), null);
-        adapter.addFragment(new LatestKitFragment(), null);
-        adapter.addFragment(new LatestKitFragment(), null);
+        adapter.addFragment(new MyAvatarsFragment(), null);
+
         viewPager.setAdapter(adapter);
     }
 
