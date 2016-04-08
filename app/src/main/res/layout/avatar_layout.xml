@@ -17,21 +17,21 @@
 
 
     <FrameLayout
-
+        android:background="#fff"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_alignParentBottom="true"
         android:id="@+id/container">
 
         <ProgressBar
+            android:background="#fff"
             android:layout_marginTop="-4dp"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/progressBar"
             android:layout_gravity="left|top"
-            android:minHeight="10dp"
-            android:background="#fff" />
+            android:minHeight="10dp"/>
 
     </FrameLayout>
 
