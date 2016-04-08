@@ -75,6 +75,10 @@ public class UIManager {
         String javascript= "javascript:var svgElement=document.getElementById('"+group+"');var item = svgElement.querySelector('#'+'"+item+"');item.setAttribute('fill', '" + Utils.convertHexColorString(color) + "');";
         getWebView().loadUrl(javascript);
     }
+    public void loadColorforItemInGroup(String color,String group,String item){
+        String javascript= "javascript:var svgElement=document.getElementById('"+group+"');var item = svgElement.querySelector('#'+'"+item+"');item.setAttribute('fill', '" + color + "');";
+        getWebView().loadUrl(javascript);
+    }
     public void loadColorStrokeforItemInGroup(int color,String group,String item){
         String javascript= "javascript:var svgElement=document.getElementById('"+group+"');var item = svgElement.querySelector('#'+'"+item+"');item.setAttribute('stroke', '" + Utils.convertHexColorString(color) + "');";
         getWebView().loadUrl(javascript);
