@@ -75,7 +75,7 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
             numColumns = mColumnCount;
         }
         utils = new Utils(getActivity());
-
+        new UpdateUI().execute();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +109,7 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
             myAvatars = new ArrayList<>();
             if(utils.getAllSavedAvatars().size()!=0) {
 
-                for (int i = 0; i < utils.getAllSavedAvatars().size(); i++) {
+                for (int i = utils.getAllSavedAvatars().size()-1; i >=0; i--) {
                     myAvatars.add(utils.getAllSavedAvatars().get(i));
                 }
 
