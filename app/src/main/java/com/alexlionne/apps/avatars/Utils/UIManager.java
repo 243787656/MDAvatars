@@ -19,6 +19,9 @@ import org.xdty.preference.colorpicker.ColorPickerDialog;
  */
 public class UIManager {
     private WebView webView;
+    public UIManager(){
+
+    }
     public UIManager(WebView webView){
         this.webView = webView;
     }
@@ -26,6 +29,14 @@ public class UIManager {
         this.webView = webView;
     }
     public WebView getWebView(){return this.webView;}
+
+    /***Load a c olor for a specific svg item
+     *
+     * @param color
+     *              color to use
+     * @param item
+     *              item to theme, note :  that this item isn't under a group
+     */
     public void loadColor(int color, String item){
         String javascript = " javascript:document.getElementById('"+item+"').setAttribute('fill','"+ Utils.convertHexColorString(color)  +"');";
         getWebView().loadUrl(javascript);
@@ -42,17 +53,17 @@ public class UIManager {
         String javascript = " javascript:document.getElementById('"+item+"').setAttribute('stroke','"+  color  +"');";
         getWebView().loadUrl(javascript);
     }
-    public void loadColorforGroup(int color,String item){
-        String javascript= "javascript:var svgElement=document.getElementById('"+item+"');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(color) + "');};";
+    public void loadColorforGroup(int color,String group){
+        String javascript= "javascript:var svgElement=document.getElementById('"+group+"');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(color) + "');};";
         getWebView().loadUrl(javascript);
     }
-    public void loadColorforGroup(String color,String item){
-        String javascript= "javascript:var svgElement=document.getElementById('"+item+"');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + color + "');};";
+    public void loadColorforGroup(String color,String group){
+        String javascript= "javascript:var svgElement=document.getElementById('"+group+"');var circles=svgElement.getElementsByTagName('path');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + color + "');};";
         getWebView().loadUrl(javascript);
     }
 
-    public void loadColorforGroup(int color,String tag,String item){
-        String javascript= "javascript:var svgElement=document.getElementById('"+item+"');var circles=svgElement.getElementsByTagName('"+tag+"');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(color) + "');};";
+    public void loadColorforGroup(int color,String tag,String group){
+        String javascript= "javascript:var svgElement=document.getElementById('"+group+"');var circles=svgElement.getElementsByTagName('"+tag+"');for(var i=0;i<circles.length;i++){circles[i].setAttribute('fill', '" + Utils.convertHexColorString(color) + "');};";
         getWebView().loadUrl(javascript);
     }
     public void loadColorforGroup(String color,String tag,String item){
