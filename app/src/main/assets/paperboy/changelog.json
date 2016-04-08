@@ -1,5 +1,55 @@
 [
   {
+    "name": "1.0.8",
+    "items": [
+      {
+        "type": "F",
+        "title": "Adding Swipe to refresh in MyAvatar Tab  "
+      },
+      {
+        "type": "F",
+        "title": "Adding dayNight Mode "
+      },
+      {
+        "type": "F",
+        "title": "Avatar from custom locations are shown into your avatars Tab"
+      },
+
+    ]
+
+  },
+  {
+    "name": "1.0.6",
+    "items": [
+      {
+        "type": "F",
+        "title": "Adding Swipe to refresh in MyAvatar Tab  "
+      },
+      {
+        "type": "F",
+        "title": "Adding dayNight Mode "
+      },
+      {
+        "type": "F",
+        "title": "Android 6.0 Permissions ! "
+      },
+      {
+        "type": "F",
+        "title": "Avatar from custom locations are shown into 'myavatars'"
+      },
+      {
+        "type": "F",
+        "title": "You can know save your avatars to a custom location"
+      },
+
+      {
+        "type": "I",
+        "title": "App colors changed"
+      }
+    ]
+
+  },
+  {
     "name": "1.0.4",
     "items": [
       {
@@ -21,10 +71,6 @@
       {
         "type": "B",
         "title": "fixed webview saves and rendering"
-      },
-      {
-        "type": "I",
-        "title": "App colors changed"
       }
     ]
 

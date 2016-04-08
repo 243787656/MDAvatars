@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <EditTextPreference android:title="Your Name"
+    <PreferenceCategory
+        android:title="General">
+    </PreferenceCategory>
+    <EditTextPreference android:title="Avatar Name"
         android:key="username"
-        android:summary="Please provide your username"></EditTextPreference>
-    <CheckBoxPreference android:title="Application Updates"
+        android:summary="Please provide a default avatar name">
+
+    </EditTextPreference>
+    <CheckBoxPreference android:title="Kits Updates"
         android:defaultValue="false"
-        android:summary="This option if selected will allow the application to check for latest versions."
-        android:key="applicationUpdates" />
-    <ListPreference     android:title="Download Details"
-        android:summary="Select the kind of data that you would like to download"
-        android:key="downloadType"
+        android:summary="This option if selected will allow the application to check for latest Kits versions."
+        android:key="applicationKitsUpdates" >
+    </CheckBoxPreference>
+    <PreferenceCategory
+        android:title="Interface">
+    </PreferenceCategory>
+    <ListPreference
+        android:title="Themes"
+        android:summary="Select a theme to apply "
+        android:key="themeType"
         android:defaultValue="1"
         android:entries="@array/listArray"
-        android:entryValues="@array/listValues" />
+        android:entryValues="@array/listValues">
+
+    </ListPreference>
+    <PreferenceCategory
+        android:title="Data">
+    </PreferenceCategory>
+    <Preference
+        android:title="Cache"
+        android:key="username"
+        android:summary="Delete the cache">
+    </Preference>
+
 </PreferenceScreen>
