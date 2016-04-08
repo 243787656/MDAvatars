@@ -27,8 +27,8 @@ public class KitFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private int[] tabIcons = {
-            R.drawable.ic_face_white_24dp,
-            R.drawable.ic_favorite_white_18dp
+            R.drawable.ic_trending_up_black_24dp,
+            R.drawable.ic_favorite_black_24dp
     };
     public KitFragment() {
         // Required empty public constructor
