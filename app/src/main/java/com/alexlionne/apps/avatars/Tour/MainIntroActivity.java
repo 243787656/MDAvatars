@@ -3,6 +3,8 @@ package com.alexlionne.apps.avatars.Tour;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.alexlionne.apps.avatars.MainActivity;
 import com.alexlionne.apps.avatars.R;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
@@ -63,13 +65,11 @@ public class MainIntroActivity extends IntroActivity {
             permissionsSlide = new SimpleSlide.Builder()
                     .title(R.string.title)
                     .description(R.string.desc)
-                    .image(R.drawable.moto360)
+                    //.image(R.drawable.moto360)
                     .background(R.color.primary)
                     .backgroundDark(R.color.primary_dark)
                     .scrollable(scrollable)
-                    .scrollable(scrollable)
-                    .permissions(new String[]{Manifest.permission.CAMERA,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE})
+                    .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     .build();
             addSlide(permissionsSlide);
         } else {
