@@ -112,14 +112,15 @@ public void loadColorforItemInGroup(String color,String group,String item);
 manager.loadColorforItemInGroup(color,"Nexus5x","BodyColor");
 ```
 
-###Use this class as an SVG Manager and do not forget to contact me if needed ! 
+#####Use this class as an SVG Manager and do not forget to contact me if needed ! 
 
 
-##Making a kit 
-there are two way to add a kit to the app 
-#I) Provide me your AI or png file, I'll add it to the app an mentionned you as contributor 
+###Making a kit from scratch
 
-#II) Help me a bit by making a custom Kit class :
+There are two way to add a kit to the app 
+####I) Provide me your AI or png file, I'll add it to the app an mentionned you as contributor 
+
+####II) Help me a bit by making a custom Kit class :
 
 
 To start you need to know bases of Kit implementation : 
