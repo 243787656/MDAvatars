@@ -38,15 +38,5 @@ public class MainIntroActivity extends IntroActivity {
                 .permission(Manifest.permission.CAMERA)
                 .scrollable(true)
                 .build());
-
-        addSlide(new SimpleSlide.Builder()
-                .title(R.string.title)
-                .description(R.string.desc)
-                .image(R.drawable.accessories_cap)
-                .background(R.color.colorPrimary)
-                .backgroundDark(R.color.colorPrimaryDark)
-                .permission(Manifest.permission.CAMERA)
-                .scrollable(true)
-                .build());
     }
 }
