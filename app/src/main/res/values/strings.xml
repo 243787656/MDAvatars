@@ -22,4 +22,7 @@
     <string name="create_folder_error">Could not create folder</string>
     <string name="up_label">Up</string>
     <string name="github_link">https://github.com/AlexLionne/MDAvatars</string>
+
+    <string name="title">title</string>
+    <string name="desc">description</string>
 </resources>

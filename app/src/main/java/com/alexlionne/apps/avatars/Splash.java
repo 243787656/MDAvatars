@@ -1,4 +1,4 @@
-package com.alexlionne.apps.avatars.Tour;
+package com.alexlionne.apps.avatars;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,8 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 
-import com.alexlionne.apps.avatars.MainActivity;
-import com.alexlionne.apps.avatars.R;
+import com.alexlionne.apps.avatars.Tour.MainIntroActivity;
 
 /**
  * Created by ahmed bakir on 4/8/2016.
