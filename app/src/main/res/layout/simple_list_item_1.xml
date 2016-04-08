@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        android:textColor="@color/primary"
         android:textSize="14dp"
         android:textStyle="bold"
         android:paddingLeft="16dp"
@@ -66,6 +67,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:gravity="center_vertical"
+            android:textColor="@color/md_grey_700"
             android:layout_margin="4dp" />
 
         <CheckBox

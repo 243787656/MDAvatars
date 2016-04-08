@@ -47,7 +47,7 @@
         <activity
             android:name=".AvatarActivity"
             android:label=""
-            android:theme="@style/avatarBG">
+            android:theme="@style/AppTheme2">
         </activity>
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
