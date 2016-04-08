@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.alexlionne.apps.avatars.Utils.Gitty;
 import com.github.porokoro.paperboy.PaperboyFragment;
 import com.github.porokoro.paperboy.ViewTypes;
 import com.github.porokoro.paperboy.builders.PaperboyChainBuilder;
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         final AccountHeader headerResult = new AccountHeaderBuilder().withHeaderBackground(getResources().getDrawable(R.drawable.header)).withActivity(this).build();
 
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("Kits").withIdentifier(1).withIcon(CommunityMaterial.Icon.cmd_package);
-        this.result = new DrawerBuilder().withActivity(this).withToolbar(toolbar).withAccountHeader(headerResult).addDrawerItems(item1, new DividerDrawerItem(), new SecondaryDrawerItem().withName("Settings").withIdentifier(2),new SecondaryDrawerItem().withName("Changelog").withIdentifier(3)).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+        this.result = new DrawerBuilder().withActivity(this).withToolbar(toolbar).withAccountHeader(headerResult).addDrawerItems(item1, new DividerDrawerItem(), new SecondaryDrawerItem().withName("Settings").withIdentifier(2),new SecondaryDrawerItem().withName("Changelog").withIdentifier(3), new SecondaryDrawerItem().withName("Issues").withIdentifier(4)).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                 if (drawerItem != null) {
                     MainActivity.this.a = true;
@@ -82,6 +83,10 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case 3:
                             showChangeLog();
+                            break;
+                        case 4 :
+                            i = new Intent(MainActivity.this, Gitty.class);
+                            startActivity(i);
                             break;
 
                     }

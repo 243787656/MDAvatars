@@ -134,7 +134,7 @@ public class AvatarActivity extends AppCompatActivity {
         String current = getIntent().getStringExtra("kit");
         if (current.equals("Google I")) {
             kit = new GoogleKitOne(this);
-        } else if (current.equals("AndroidKit")) {
+        } else if (current.equals("BugDroid")) {
             kit = new AndroidKit(this);
         } else if (current.equals("Google II")) {
             kit = new GoogleKitTwo(this);

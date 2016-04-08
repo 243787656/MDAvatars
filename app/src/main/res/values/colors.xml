@@ -305,7 +305,7 @@
     <color name="md_blue_grey_700">#455a64</color>
     <color name="md_blue_grey_800">#37474F</color>
     <color name="md_blue_grey_900">#263238</color>
-
+    <color name="colorAccentDark">@color/md_cyan_A700</color>
 
 
 </resources>

@@ -52,7 +52,7 @@ public class AndroidKit extends Kit {
         super(context);
         this.context = context.getApplicationContext();
         //name of the KIT
-        super.setName("AndroidKit");
+        super.setName("BugDroid");
         //Small description of the kit
         super.setSmallDesc("Simple BugDroid");
         //setting up a showcase Drawable (shown in kits list)
