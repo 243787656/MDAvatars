@@ -36,7 +36,8 @@ You can compare the svg code
 
     
 ##Using Standalone SVG Manager
-I've made a UIManager class to work with svgs : 
+I've made a UIManager class to work with svgs that you can use for your projects
+
 I assume you have a working html file with svg in. Check porject Assets folder for more info.
 A working path : 
 ```xml
@@ -61,7 +62,7 @@ To load a color for a single item (not under a group) you can use an int or a St
 public void loadColor(int color, String item);
 public void loadColor(String color, String item);
 ```
-All javascript keywords are working ('transparent','blue'...)
+All javascript keywords are working (`transparent`,`blue`,`red`...)
 ```java
 manager.loadColor("transparent","head");
 ```
@@ -72,20 +73,312 @@ public void loadStrokeColor(int color, String item);
 public void loadStrokeColor(String Color, String item);
 ```
 
-To load a color for a <path> group
+To load a color for a `path` group
 ```java
 public void loadColorforGroup(int color,String group);
 public void loadColorforGroup(String color,String group);
 ```
+If your group does not contain only `path` tag :
+```xml
+<g id="buttons">
+	<ellipse  fill="transparent" cx="190.4" cy="-314.6" rx="6.7" ry="6.7"></ellipse>
+	<ellipse fill="transparent" cx="190.4" cy="-239.9" rx="6.7" ry="6.7"></ellipse>
+	<ellipse  fill="transparent" cx="190.4" cy="-161.1" rx="6.7" ry="6.7"></ellipse>
+	<ellipse fill="transparent" cx="190.4" cy="-86.4" rx="6.7" ry="6.7"></ellipse>
+        </g>
+ ```
+You can color items by :
+```java
+ public void loadColorforGroup(int color,String tag,String group);
+ public void loadColorforGroup(String color,String tag,String item);
+ //eg
+ manager.loadColorforGroup("transparent", "ellipse", "buttons");
+```
+If your group does not contain all items with a same tag you can set color for each item in group separatly
+```xml
+<g id="Nexus5x">
+	<path id="BodyColor" fill="#212121" d="M222.9-219.3h-58c-5.6,0-10.2-4.5-10.2-10.2v-115.3c0-5.6,4.5-10.2,10.2-10.2h58c5.6,0,10.2,4.5,10.2,10.2
+		v115.3C233.3-223.9,228.6-219.3,222.9-219.3z"></path>
+	<circle id="CameraColor"  fill="#010101" cx="194.2" cy="-331.6" r="8"></circle>
+	<circle id="FingerPrintStrokeColor" fill="none" stroke="#444444" stroke-miterlimit="10" cx="194.2" cy="-305.4" r="8"></circle>
+</g>
+```
+Here you have a group @Nexus5X with a #path @BodyColor and two circles @CameraColor & @FingerPrintColor
+they don't have same tagName (path,circle) so theme a single item by using : 
+```java
+public void loadColorforItemInGroup(int color,String group,String item);
+public void loadColorforItemInGroup(String color,String group,String item);
+//eg
+manager.loadColorforItemInGroup(color,"Nexus5x","BodyColor");
+```
 
-To start with Java code you need to know bases of Kit implementation : 
+#####Use this class as an SVG Manager and do not forget to contact me if needed ! 
+
+
+###Making a kit from scratch
+
+There are two way to add a kit to the app 
+####I) Provide me your AI or png file, I'll add it to the app an mentionned you as contributor 
+
+####II) Help me a bit by making a custom Kit class :
+
+
+To start you need to know bases of Kit implementation : 
 - a custom kit extends Kit class and all methods of this class
 - a custom kit is used to generate fragments (categories)
 - a custom kit has 2 main Arrays wich are used for the fragment : `Categories` & `Listener`
 - all item into `Categories` (except the title) MUST HAVE a `Listener` associated
 
-great you will see what I mean
 
 First let's create a new AndroidKit class (or whatever you want) that extends Kit:
+
+####Final Version, Explanations below
+```java
+
+public class AndroidKit extends Kit {
+
+    private Context context;
+    private final Options checkboxNDisable = new Options().checkboxNDiasable();
+    private final Options checkboxNEnable = new Options().checkboxNEnable();
+    private final Options colorChooser = new Options().colorChooser();
+    private final Options null_options = new Options().null_options();
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+    private final int WHITE = 0;
+    private com.alexlionne.apps.avatars.Utils.UIManager UIManager;
+
+
+
+    public AndroidKit(Context context) {
+        super(context);
+        this.context = context.getApplicationContext();
+        super.setName("BugDroid");
+        super.setSmallDesc("Simple BugDroid");
+        super.setShowcase(R.drawable.gmd_kit_2);
+        super.setIcon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_google).sizeDp(18));
+        super.setSvg("file:///android_asset/android_kit.html");
+        super.setCategories(getGoogleKitTwoCategories());
+        super.setListener(getGoogleKitTwoListeners());
+        super.setDefaultBgColor(context.getResources().getColor(R.color.md_green_A200));
+        init();
+    }
+
+void init(){
+    preferences = context.getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);
+    editor = preferences.edit();
+    editor.putInt("BackgroundColor", getDefaultBgColor());
+    editor.putInt("AK_HeadColor", context.getResources().getColor(R.color.md_green_A700));
+    editor.putInt("AK_BodyColor", context.getResources().getColor(R.color.md_green_A700));
+    editor.putInt("AK_LeftArmColor", context.getResources().getColor(R.color.md_green_A700));
+    editor.putInt("AK_RightArmColor", context.getResources().getColor(R.color.md_green_A700));
+    editor.apply();
+
+}
+
+
+    private ArrayList<ListItem> getGoogleKitTwoCategories() {
+        preferences = context.getSharedPreferences("com.alexlionne.apps.avatars", Context.MODE_PRIVATE);
+        ListItem backgroundItem = new ListItem();
+        backgroundItem.setTitle("Background");
+        backgroundItem.addItem("BACKGROUND", new Item("Color", "BackgroundColor",
+                new IconicsDrawable(context,
+                        CommunityMaterial.Icon.cmd_format_color_fill)
+                        .sizeDp(18).color(context.getResources().getColor(R.color.md_grey_700)), preferences.getInt("BackgroundColor", 0),
+                colorChooser));
+        backgroundItem.addItem(null, new Item("Image", R.drawable.image, new IconicsDrawable(context,
+                GoogleMaterial.Icon.gmd_camera).sizeDp(18).color(context.getResources().getColor(R.color.md_grey_700)), WHITE,
+                colorChooser));
+
+        ListItem head = new ListItem();
+        head.setTitle("Head");
+        head.addItem("HEAD", new Item("Head color", "AK_HeadColor", new IconicsDrawable(context,
+                GoogleMaterial.Icon.gmd_face).sizeDp(18).color(context.getResources().getColor(R.color.md_grey_700)), preferences.getInt("AK_HeadColor", 0),
+                colorChooser));
+
+        ListItem body = new ListItem();
+        body.setTitle("Body");
+        body.addItem("BODY", new Item("Body Color", "AK_BodyColor", new IconicsDrawable(context,
+                CommunityMaterial.Icon.cmd_format_color_fill).sizeDp(18), preferences.getInt("AK_BodyColor", 0),
+                colorChooser));
+        body.addItem(null, new Item("Image", R.drawable.image, new IconicsDrawable(context,
+                GoogleMaterial.Icon.gmd_public).sizeDp(18), WHITE, colorChooser));
+
+        ListItem hand = new ListItem();
+        hand.setTitle("Arms");
+        hand.addItem("ARMS", new Item("Right arm Color", "AK_RightArmColor", new IconicsDrawable(context,
+                CommunityMaterial.Icon.cmd_format_color_fill).sizeDp(18), preferences.getInt("AK_RightArmColor", 0),
+                colorChooser));
+        hand.addItem(null, new Item("Left arm Color", "AK_LeftArmColor", new IconicsDrawable(context,
+                CommunityMaterial.Icon.cmd_format_color_fill).sizeDp(18), preferences.getInt("AK_LeftArmColor", 0),
+                colorChooser));
+
+
+        ListItem save = new ListItem();
+        save.setTitle("Save and options");
+        save.addItem("SAVE", new Item("Save to sdcard", WHITE, null_options));
+        save.addItem(null, new Item("Share", WHITE, null_options));
+
+
+        ArrayList<ListItem> result = new ArrayList<>();
+        result.add(backgroundItem);
+        result.add(head);
+        result.add(body);
+        result.add(hand);
+        result.add(save);
+
+        return result;
+
+    }
+
+    public ArrayList<CustomAdapter.OnItemClickListener> getGoogleKitTwoListeners(){
+
+        ArrayList<CustomAdapter.OnItemClickListener> list = new ArrayList<>();
+        CustomAdapter.OnItemClickListener background = new  CustomAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(View v, final int p,final int fp) {
+
+
+                switch (p) {
+                    case 0:
+                        UIManager = new UIManager(AndroidKit.super.getWebView());
+                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
+                            @Override
+                            public void onColorSelected(int color) {
+
+                                AvatarActivity.view.setBackgroundColor(color);
+                                UIManager.setWebViewBgColor(color);
+                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                                UIManager.setNavigationBarColor(color);
+
+                            }
+
+                        });
+
+
+
+                        break;
+                    case 1 :
+                        AvatarActivity.selectImageBackground();
+                        break;
+
+                }
+
+            }
+        };
+
+
+
+        CustomAdapter.OnItemClickListener head = new CustomAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(View v, final int p,final int fp) {
+                UIManager = new UIManager(AndroidKit.super.getWebView());
+                switch (p) {
+                    case 0:
+
+                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color,
+                                context.getResources().getIntArray(R.array.md_colors)
+                                ,preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
+                            @Override
+                            public void onColorSelected(int color) {
+                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
+                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                            }
+
+                        });
+
+                        break;
+
+                }
+            }
+        };
+        CustomAdapter.OnItemClickListener body = new CustomAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(View v, final int p,final int fp) {
+                UIManager = new UIManager(AndroidKit.super.getWebView());
+                switch (p) {
+                    case 0:
+
+                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
+                            @Override
+                            public void onColorSelected(int color) {
+                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
+                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                            }
+
+                        });
+                        break;
+                    case 1 :
+                        AvatarActivity.selectImageBodyBackground(Utils.getItem(fp, 0).getId());
+                        break;
+
+
+                }
+            }
+        };
+        CustomAdapter.OnItemClickListener arms = new CustomAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(View v, final int p,final int fp) {
+                UIManager = new UIManager(AndroidKit.super.getWebView());
+                switch (p) {
+                    case 0:
+
+                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
+                            @Override
+                            public void onColorSelected(int color) {
+                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
+                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                            }
+
+                        });
+                        break;
+                    case 1 :
+                        dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
+                            @Override
+                            public void onColorSelected(int color) {
+                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
+                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                            }
+
+                        });
+                        break;
+
+
+                }
+            }
+        };
+
+        CustomAdapter.OnItemClickListener saves = new CustomAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(View v, int p,int fp) {
+
+                switch (p) {
+                    case 0:
+                            AvatarActivity.showDirectoryChooser();
+                        break;
+                    case 1:
+                            AvatarActivity.share();
+                        break;
+
+                }
+            }
+        };
+
+        list.add(background);
+        list.add(head);
+        list.add(body);
+        list.add(arms);
+        list.add(saves);
+
+        return list;
+    }
+
+
+}
+```
 
 ###All is done do not forget to contact me if needed ! 
