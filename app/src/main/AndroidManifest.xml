@@ -29,10 +29,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Tour.MainIntroActivity"
-            android:theme="@style/Theme.Intro">
-        </activity>
+        <activity android:name=".Tour.MainIntroActivity"
+            android:theme="@style/Theme.Intro"/>
         <activity
             android:name=".SettingsActivity"
             android:label=""

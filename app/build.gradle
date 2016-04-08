@@ -95,4 +95,5 @@ dependencies {
     compile 'com.github.paolorotolo:gitty_reporter:1.2.1'
     compile 'com.thefinestartist:finestwebview:1.1.2'
     compile 'com.heinrichreimersoftware:material-intro:1.2.1'
+
 }
