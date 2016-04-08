@@ -50,6 +50,7 @@ public class GoogleKitTwo extends Kit {
     private SharedPreferences.Editor editor;
     private final int WHITE = 0;
     private com.alexlionne.apps.avatars.Utils.UIManager UIManager;
+    private Utils utils;
 
 
 
@@ -220,6 +221,7 @@ void init(){
         CustomAdapter.OnItemClickListener head = new CustomAdapter.OnItemClickListener(){
             @Override
             public void onItemClick(View v, final int p,final int fp) {
+                utils = new Utils(context);
                 UIManager = new UIManager(GoogleKitTwo.super.getWebView());
                 switch (p) {
                     case 0:
@@ -239,7 +241,7 @@ void init(){
                         break;
                     case 2:
                         final int DEFAULT_BROWN = context.getResources().getColor(R.color.md_brown_500);
-                        final Dialog mBottomSheetDialog = inflateDialog(R.layout.hairs_dialog);
+                        final Dialog mBottomSheetDialog = utils.inflateDialog(R.layout.hairs_dialog);
                         ImageView no_hairs = (ImageView)mBottomSheetDialog.findViewById(R.id.no_hairs);
                         ImageView hairs_short = (ImageView)mBottomSheetDialog.findViewById(R.id.hairs_short);
                         ImageView semi_long = (ImageView)mBottomSheetDialog.findViewById(R.id.semi_long);
@@ -339,6 +341,7 @@ break;
 
             @Override
             public void onItemClick(View v, final int p, final int fp) {
+                utils = new Utils(context);
                 final String default_color = "#F89921";
                 final String default_color_white = "#FFFFFF";
                 final int color =  Color.parseColor(default_color);
@@ -348,7 +351,7 @@ break;
                 switch (p) {
                     case 0:
 
-                        final Dialog mBottomSheetDialog = inflateDialog(R.layout.clothes_dialog);
+                        final Dialog mBottomSheetDialog = utils.inflateDialog(R.layout.clothes_dialog);
 
 
                         ImageView basic = (ImageView)mBottomSheetDialog.findViewById(R.id.basic);
@@ -703,19 +706,7 @@ break;
     }
     public String getLogo(){return preferences.getString("Logo", null);}
 
-    public Dialog inflateDialog(int layout) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(layout, null);
-        final Dialog mBottomSheetDialog = new Dialog(AvatarActivity.getActivity(),
-                R.style.MaterialDialogSheet);
-        mBottomSheetDialog.setContentView(view);
-        mBottomSheetDialog.setCancelable(true);
-        mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
-                Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, context.getResources().getDisplayMetrics())));
-        mBottomSheetDialog.getWindow().setGravity(Gravity.BOTTOM);
-        mBottomSheetDialog.show();
-        return mBottomSheetDialog;
-    }
+
 
 
 }

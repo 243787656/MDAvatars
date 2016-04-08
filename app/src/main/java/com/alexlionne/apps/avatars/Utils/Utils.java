@@ -1,6 +1,7 @@
 package com.alexlionne.apps.avatars.Utils;
 
 import android.animation.Animator;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -10,12 +11,16 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.alexlionne.apps.avatars.AvatarActivity;
@@ -44,6 +49,7 @@ public class Utils {
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor editor;
     private static Context context;
+    private boolean permissions;
 
     public Utils(Context context){
         this.context = context;
@@ -101,17 +107,21 @@ public class Utils {
         File file = new File(directory);
         mFile = new ArrayList<>();
         ArrayList<String> list = getSavedDirectories(context);
-        for (int k = 0;k<list.size();k++ ){
-            mFile.add(new File(list.get(k)));
+
+
+            for (int k = 0; k < list.size(); k++) {
+                mFile.add(new File(list.get(k)));
+
         }
                 if (file.isDirectory()) {
-            File[] listFile = file.listFiles();
+                    File[] listFile = file.listFiles();
 
-            for (File aListFile : listFile) {
-                File fil = new File(aListFile.getAbsolutePath());
-                mFile.add(fil);
-            }
-        }
+                        for (File aListFile : listFile) {
+                            File fil = new File(aListFile.getAbsolutePath());
+                            mFile.add(fil);
+                        }
+
+                }
         return mFile;
     }
 
@@ -222,16 +232,18 @@ public class Utils {
         return AvatarActivity.getKit().getAllcategories().get(p1).getItem(p2);
     }
 
-    public void checkPermission(final Context context,String permission){
+    public boolean checkPermission(final Context context, final String[] permission){
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
                 Log.d("Skinner : ", "Permission granted");
+                permissions = true;
             }
 
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
                 Log.d("Skinner : ", "Permission denied");
+                permissions = false;
             }
 
 
@@ -241,6 +253,30 @@ public class Utils {
                 .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
                 .setPermissions(permission)
                 .check();
+        return permissions;
+    }
+    public boolean checkPermission(final Context context, final String permission){
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Log.d("Skinner : ", "Permission granted");
+                permissions = true;
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Log.d("Skinner : ", "Permission denied");
+                permissions = false;
+            }
+
+
+        };
+        new TedPermission(context)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(permission)
+                .check();
+        return permissions;
     }
     /***Add Directory to scan for saves avatars
      *
@@ -273,6 +309,18 @@ public class Utils {
         TinyDB tinydb = new TinyDB(context);
         return tinydb.getListString("directories");
 
+    }public Dialog inflateDialog(int layout) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(layout, null);
+        final Dialog mBottomSheetDialog = new Dialog(AvatarActivity.getActivity(),
+                R.style.MaterialDialogSheet);
+        mBottomSheetDialog.setContentView(view);
+        mBottomSheetDialog.setCancelable(true);
+        mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
+                Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, context.getResources().getDisplayMetrics())));
+        mBottomSheetDialog.getWindow().setGravity(Gravity.BOTTOM);
+        mBottomSheetDialog.show();
+        return mBottomSheetDialog;
     }
 
 

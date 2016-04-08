@@ -75,9 +75,7 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
             numColumns = mColumnCount;
         }
         utils = new Utils(getActivity());
-        new UpdateUI().execute();
-        Log.d("Skinner : ", "Checking permissions");
-        utils.checkPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
+
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +100,7 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
 
         @Override
         public void onPreExecute() {
+
         }
 
         @Override
@@ -136,6 +135,8 @@ public class MyAvatarsFragment extends Fragment implements FileAdapter.OnItemCli
 
         }
     }
+
+
 
 
     private boolean isLandscape() {

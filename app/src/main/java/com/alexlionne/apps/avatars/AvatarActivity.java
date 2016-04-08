@@ -127,9 +127,6 @@ public class AvatarActivity extends AppCompatActivity {
         webview.getSettings().setJavaScriptEnabled(true);
 
         utils = new Utils(this);
-        utils.checkPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        utils.checkPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
-        utils.checkPermission(getActivity(), Manifest.permission.INTERNET);
 
         String current = getIntent().getStringExtra("kit");
         if (current.equals("Google I")) {
@@ -789,6 +786,8 @@ return AvatarActivity.bitmap;
                                                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
                                                 fos.close();
                                             }
+                                            Intent i = new Intent (AvatarActivity.getActivity(),MainActivity.class);
+                                            getActivity().startActivity(i);
                                         } catch (Exception e) {
                                             System.out.println("Error : " + e);
                                         }

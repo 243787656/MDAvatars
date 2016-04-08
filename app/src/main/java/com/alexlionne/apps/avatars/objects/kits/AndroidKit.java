@@ -187,7 +187,7 @@ void init(){
                     case 0:
 
                         ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color,
-                                context.getResources().getIntArray(R.array.md_colors_skin)
+                                context.getResources().getIntArray(R.array.md_colors)
                                 ,preferences.getInt(Utils.getItem(fp, p).getId(),0));
                         dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
@@ -210,7 +210,7 @@ void init(){
                 switch (p) {
                     case 0:
 
-                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors_skin),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
                         dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
                             public void onColorSelected(int color) {
@@ -235,7 +235,7 @@ void init(){
                 switch (p) {
                     case 0:
 
-                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors_skin),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
                         dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
                             public void onColorSelected(int color) {
@@ -246,7 +246,7 @@ void init(){
                         });
                         break;
                     case 1 :
-                        dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors_skin),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
                         dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
                             public void onColorSelected(int color) {

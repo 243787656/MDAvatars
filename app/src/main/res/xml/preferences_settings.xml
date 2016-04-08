@@ -25,6 +25,11 @@
         android:entryValues="@array/listValues">
 
     </ListPreference>
+    <CheckBoxPreference android:title="Day Night"
+        android:defaultValue="true"
+        android:summary="Automattically switch on day/night theme depending on time"
+        android:key="daynight" >
+    </CheckBoxPreference>
     <PreferenceCategory
         android:title="Data">
     </PreferenceCategory>
@@ -32,6 +37,42 @@
         android:title="Cache"
         android:key="username"
         android:summary="Delete the cache">
+    </Preference>
+    <PreferenceCategory
+        android:title="About">
+    </PreferenceCategory>
+    <Preference
+        android:title="About the project"
+        android:key="about"
+        android:summary="If you want more informations about the author and contributors">
+    </Preference>
+    <Preference
+        android:title="Changelog"
+        android:key="changelog"
+        android:summary="See the latest changes in the app">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.alexlionne.apps.avatar"
+            android:targetClass="com.alexlionne.apps.avatar.ActivityName"
+            />
+    </Preference>
+    <PreferenceCategory
+        android:title="Github">
+    </PreferenceCategory>
+    <Preference
+        android:title="Report an issue"
+        android:key="issue"
+        android:summary="You can report an issue here">
+        </Preference>
+    <Preference
+        android:title="Open Source"
+        android:key="github"
+        android:summary="This project is open source ! Contribute now ;)">
+    </Preference>
+    <Preference
+        android:title="Librairies"
+        android:key="username"
+        android:summary="Let see amazing libs used in this app">
     </Preference>
 
 </PreferenceScreen>

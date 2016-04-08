@@ -1,6 +1,7 @@
 package com.alexlionne.apps.avatars;
 
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,9 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.alexlionne.apps.avatars.Utils.Gitty;
-import com.github.porokoro.paperboy.PaperboyFragment;
-import com.github.porokoro.paperboy.ViewTypes;
-import com.github.porokoro.paperboy.builders.PaperboyChainBuilder;
+import com.alexlionne.apps.avatars.Utils.Utils;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -37,10 +36,13 @@ public class MainActivity extends AppCompatActivity {
     final String directory ="/MDAvatar/";
     private SharedPreferences prefs;
     public static boolean FIRST_RUN;
+    private Utils utils;
+    private boolean permissions;
 
     static {
         AppCompatDelegate.setDefaultNightMode(
                 AppCompatDelegate.MODE_NIGHT_AUTO);
+
     }
 
     @SuppressLint("NewApi")
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
             window.setNavigationBarColor(getResources().getColor(R.color.primary));
         }*/
 
+
         //create the sdcard directory
         File md_folder = new File(Environment.getExternalStorageDirectory()+directory);
         boolean sucess =true;
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         final AccountHeader headerResult = new AccountHeaderBuilder().withHeaderBackground(getResources().getDrawable(R.drawable.header)).withActivity(this).build();
 
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("Kits").withIdentifier(1).withIcon(CommunityMaterial.Icon.cmd_package);
-        this.result = new DrawerBuilder().withActivity(this).withToolbar(toolbar).withAccountHeader(headerResult).addDrawerItems(item1, new DividerDrawerItem(), new SecondaryDrawerItem().withName("Settings").withIdentifier(2),new SecondaryDrawerItem().withName("Changelog").withIdentifier(3), new SecondaryDrawerItem().withName("Issues").withIdentifier(4)).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+        this.result = new DrawerBuilder().withActivity(this).withToolbar(toolbar).withAccountHeader(headerResult).addDrawerItems(item1, new DividerDrawerItem(), new SecondaryDrawerItem().withName("Settings").withIdentifier(2)).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                 if (drawerItem != null) {
                     MainActivity.this.a = true;
@@ -81,13 +84,7 @@ public class MainActivity extends AppCompatActivity {
                             Intent i = new Intent(MainActivity.this, SettingsActivity.class);
                             startActivity(i);
                             break;
-                        case 3:
-                            showChangeLog();
-                            break;
-                        case 4 :
-                            i = new Intent(MainActivity.this, Gitty.class);
-                            startActivity(i);
-                            break;
+
 
                     }
                 }
@@ -101,25 +98,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void showChangeLog() {
-        PaperboyFragment paperboyFragment =  new PaperboyChainBuilder(MainActivity.this)
-                .viewType(ViewTypes.LABEL)
 
-                .buildFragment();
-
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main, paperboyFragment)
-                .commit();
-        if (this.currentItem != 4) {
-            this.currentItem = 4;
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setTitle("News");
-            }
-            if (this.result.isDrawerOpen()) {
-                this.result.closeDrawer();
-            }
-        }
-    }
 
     public void switchFragment(int itemId, String title, String fragment) {
         if (this.currentItem != itemId) {
