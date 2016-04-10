@@ -38,6 +38,7 @@ public class MCKit extends Kit {
     private SharedPreferences.Editor editor;
     private final int WHITE = 0;
     private com.alexlionne.apps.avatars.Utils.UIManager UIManager;
+    private int color_old;
 
 
 
@@ -105,17 +106,16 @@ void init(){
         head.addItem(null, new Item("Mouth color", "MC_mouth", new IconicsDrawable(context,
                 GoogleMaterial.Icon.gmd_face).sizeDp(18).color(context.getResources().getColor(R.color.md_grey_700)), preferences.getInt("MC_mouth", 0),
                 colorChooser));
-        head.addItem(null, new Item("Noise color", "MC_noise", new IconicsDrawable(context,
+        head.addItem("MORE", new Item("Noise color", "MC_noise", new IconicsDrawable(context,
                 GoogleMaterial.Icon.gmd_face).sizeDp(18).color(context.getResources().getColor(R.color.md_grey_700)), preferences.getInt("MC_noise", 0),
                 colorChooser));
         head.addItem(null, new Item("Eyes color", "MC_eyes", new IconicsDrawable(context,
                 GoogleMaterial.Icon.gmd_face).sizeDp(18).color(context.getResources().getColor(R.color.md_grey_700)), preferences.getInt("MC_eyes", 0),
                 colorChooser));
-        head.addItem("HAIR", new Item("Hair color", "MC_hair", new IconicsDrawable(context,
+        head.addItem("HAIR &", new Item("Hair color", "MC_hair", new IconicsDrawable(context,
                 GoogleMaterial.Icon.gmd_face).sizeDp(18).color(context.getResources().getColor(R.color.md_grey_700)), preferences.getInt("MC_hair", 0),
                 colorChooser));
-        head.addItem(null,null);
-        head.addItem("OTHER", new Item("Beard color", "MC_beard", new IconicsDrawable(context,
+        head.addItem(null, new Item("Beard color", "MC_beard", new IconicsDrawable(context,
                 GoogleMaterial.Icon.gmd_face).sizeDp(18).color(context.getResources().getColor(R.color.md_grey_700)), preferences.getInt("MC_hair", 0),
                 colorChooser));
 
@@ -212,6 +212,73 @@ void init(){
                             }
 
                         });
+                        break;
+                    case 1:
+
+                        ColorPickerDialog dialog1 =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        dialog1.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
+                            @Override
+                            public void onColorSelected(int color) {
+                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
+                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                            }
+
+                        });
+                        break;
+                    case 2:
+
+                        ColorPickerDialog dialog2 =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        dialog2.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
+                            @Override
+                            public void onColorSelected(int color) {
+                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
+                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                            }
+
+                        });
+                        break;
+                    case 3:
+
+                        ColorPickerDialog dialog3 =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        dialog3.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
+                            @Override
+                            public void onColorSelected(int color) {
+                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
+                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                            }
+
+                        });
+
+                        break;
+                    case 5:
+                        ColorPickerDialog dialog5 =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        dialog5.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
+                            @Override
+                            public void onColorSelected(int color) {
+                                if (color_old == color) {
+                                    UIManager.loadColor("transparent", Utils.getItem(fp, p).getId());
+                                    UIManager.updateView(fp, p, R.color.md_white_1000, Utils.getItem(fp, p).getId());
+                                } else {
+                                    color_old = color;
+                                    UIManager.loadColor(color, Utils.getItem(fp, p).getId());
+                                    UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                            }
+                            }
+
+                        });
+
+                        break;
+                    case 4:
+
+                        ColorPickerDialog dialog4 =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        dialog4.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
+                            @Override
+                            public void onColorSelected(int color) {
+                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
+                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                            }
+
+                        });
 
                         break;
 
@@ -236,7 +303,7 @@ void init(){
                         });
                         break;
                     case 1 :
-                        AvatarActivity.selectImageBodyBackground(Utils.getItem(fp, 0).getId());
+                        AvatarActivity.selectImageBodyBackground("MC_body");
                         break;
 
 

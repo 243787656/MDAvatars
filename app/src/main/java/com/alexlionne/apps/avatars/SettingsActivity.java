@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 
 import com.alexlionne.apps.avatars.Utils.Gitty;
 import com.alexlionne.apps.avatars.Utils.Utils;
+import com.mikepenz.aboutlibraries.Libs;
+import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.thefinestartist.finestwebview.FinestWebView;
 
 
@@ -41,6 +43,7 @@ private Utils utils;
         Preference changelog = (Preference) findPreference("changelog");
         Preference github = (Preference) findPreference("github");
         Preference issue = (Preference) findPreference("issue");
+        Preference libs = (Preference) findPreference("libs");
 
 
 
@@ -60,6 +63,16 @@ private Utils utils;
                 showIssue();
                 return true;}
         });
+        libs.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                showLibs();
+                return true;}
+        });
+    }
+    private void showLibs(){
+        new LibsBuilder()
+                .withActivityStyle(Libs.ActivityStyle.DARK)
+                .start(this);
     }
     private void showIssue(){
         Intent i = new Intent(SettingsActivity.this, Gitty.class);

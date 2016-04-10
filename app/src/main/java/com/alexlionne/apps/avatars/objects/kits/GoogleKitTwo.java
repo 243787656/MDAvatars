@@ -222,7 +222,7 @@ void init(){
             @Override
             public void onItemClick(View v, final int p,final int fp) {
                 utils = new Utils(context);
-                UIManager = new UIManager(GoogleKitTwo.super.getWebView());
+                UIManager = new UIManager(getWebView());
                 switch (p) {
                     case 0:
 
@@ -282,7 +282,7 @@ void init(){
                             @Override
                             public void onClick(View v) {
                                 UIManager.loadColor("transparent", preferences.getString(getHairs(), null));
-                                UIManager.update(getHairs(), "hairspiky");
+                                UIManager.update(getHairs(), "hairspikky");
                                 UIManager.loadColor(DEFAULT_BROWN, preferences.getString(getHairs(),null));
                                 mBottomSheetDialog.dismiss();
                             }
@@ -341,6 +341,7 @@ break;
 
             @Override
             public void onItemClick(View v, final int p, final int fp) {
+
                 utils = new Utils(context);
                 final String default_color = "#F89921";
                 final String default_color_white = "#FFFFFF";
@@ -556,7 +557,11 @@ break;
                         break;
                     case 2 :
                         AvatarActivity.selectImageBodyBackground(preferences.getString(getClothes(),null));
-
+                        UIManager UI = new UIManager(getWebView());
+                        UI.loadColor("transparent","uparm");
+                        UI.loadColorforGroup("transparent", "shadow1");
+                        UI.loadColorforGroup("transparent", "shadow2");
+                        UI.loadColorforGroup("transparent", "shadow3");
 
                         break;
 

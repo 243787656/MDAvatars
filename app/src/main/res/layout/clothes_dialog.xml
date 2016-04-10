@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-   >
+    android:background="#fff"
+    >
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,15 +37,7 @@
         android:src="@drawable/v_col"
         android:layout_margin="4dp" />
 
-</LinearLayout>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:orientation="horizontal" android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:gravity="center_horizontal"
-android:paddingTop="16dp"
-android:paddingRight="4dp"
-android:paddingLeft="4dp">
 
 <ImageView
     android:layout_width="wrap_content"
@@ -51,4 +47,5 @@ android:paddingLeft="4dp">
     android:layout_margin="4dp" />
 
 </LinearLayout>
+    </HorizontalScrollView>
     </LinearLayout>

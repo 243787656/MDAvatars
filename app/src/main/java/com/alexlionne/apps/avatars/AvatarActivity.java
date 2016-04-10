@@ -574,15 +574,9 @@ return AvatarActivity.bitmap;
                                 try {
                                     Bitmap bitmap = getBitmapFromURL(input.toString());
 
-                                    int color = Utils.getLightPalettefromBitmap(bitmap);
+                                    //int color = Utils.getLightPalettefromBitmap(bitmap);
 
                                     String javascript = "javascript:addSvgStuff('" + bodyType + "','body','" + input.toString() + "')";
-                                    UIManager UI = new UIManager(webview);
-                                    UI.loadColor("transparent","uparm");
-                                    UI.loadColorforGroup(Utils.convertHexColorString(color), "shadow1");
-                                    UI.loadColorforGroup(Utils.convertHexColorString(color), "shadow2");
-                                    UI.loadColorforGroup(Utils.convertHexColorString(color), "shadow3");
-
                                     webview.loadUrl(javascript);
 
 

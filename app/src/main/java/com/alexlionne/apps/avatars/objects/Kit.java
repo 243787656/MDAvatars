@@ -256,7 +256,7 @@ public class Kit {
         kitArrayList = new ArrayList<>();
         kitArrayList.add(new Kit(context).with(new MCKit(context)));
         kitArrayList.add(new Kit(context).with(new AndroidKit(context)));
-        kitArrayList.add(new Kit(context).with(new GoogleKitOne(context)));
+        //kitArrayList.add(new Kit(context).with(new GoogleKitOne(context)));
         kitArrayList.add(new Kit(context).with(new GoogleKitTwo(context)));
 
 

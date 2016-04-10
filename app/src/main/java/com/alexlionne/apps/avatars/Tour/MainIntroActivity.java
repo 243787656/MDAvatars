@@ -33,7 +33,7 @@ public class MainIntroActivity extends IntroActivity {
         boolean customFragments = intent.getBooleanExtra(EXTRA_CUSTOM_FRAGMENTS, true);
         boolean permissions = intent.getBooleanExtra(EXTRA_PERMISSIONS, true);
         boolean skipEnabled = intent.getBooleanExtra(EXTRA_SKIP_ENABLED, false);
-        boolean finishEnabled = intent.getBooleanExtra(EXTRA_FINISH_ENABLED, true);
+        boolean finishEnabled = intent.getBooleanExtra(EXTRA_FINISH_ENABLED, false);
 
         setFullscreen(fullscreen);
 
@@ -41,6 +41,7 @@ public class MainIntroActivity extends IntroActivity {
 
         setSkipEnabled(skipEnabled);
         setFinishEnabled(finishEnabled);
+        startNextMatchingActivity(new Intent(MainIntroActivity.this, MainActivity.class));
 
         addSlide(new SimpleSlide.Builder()
                 .title(R.string.title)
@@ -64,8 +65,7 @@ public class MainIntroActivity extends IntroActivity {
         if (permissions) {
             permissionsSlide = new SimpleSlide.Builder()
                     .title(R.string.title)
-                    .description(R.string.desc)
-                    //.image(R.drawable.moto360)
+                    .description(R.string.intro_latest_step)
                     .background(R.color.primary)
                     .backgroundDark(R.color.primary_dark)
                     .scrollable(scrollable)

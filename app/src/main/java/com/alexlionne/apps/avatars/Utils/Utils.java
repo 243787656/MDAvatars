@@ -19,10 +19,12 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
+import android.webkit.WebView;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.alexlionne.apps.avatars.AvatarActivity;
 import com.alexlionne.apps.avatars.R;
 import com.alexlionne.apps.avatars.objects.Item;
@@ -115,10 +117,11 @@ public class Utils {
         }
                 if (file.isDirectory()) {
                     File[] listFile = file.listFiles();
-
-                        for (File aListFile : listFile) {
-                            File fil = new File(aListFile.getAbsolutePath());
-                            mFile.add(fil);
+                        if(listFile != null) {
+                            for (File aListFile : listFile) {
+                                File fil = new File(aListFile.getAbsolutePath());
+                                mFile.add(fil);
+                            }
                         }
 
                 }
@@ -317,7 +320,7 @@ public class Utils {
         mBottomSheetDialog.setContentView(view);
         mBottomSheetDialog.setCancelable(true);
         mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
-                Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, context.getResources().getDisplayMetrics())));
+                Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, context.getResources().getDisplayMetrics())));
         mBottomSheetDialog.getWindow().setGravity(Gravity.BOTTOM);
         mBottomSheetDialog.show();
         return mBottomSheetDialog;

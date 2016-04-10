@@ -71,7 +71,7 @@
     </Preference>
     <Preference
         android:title="Librairies"
-        android:key="username"
+        android:key="libs"
         android:summary="Let see amazing libs used in this app">
     </Preference>
 

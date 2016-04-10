@@ -10,8 +10,8 @@ function addSvgStuff(body,id,link) {
 
         var image = document.createElementNS(svgNS, 'image');
         image.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', link);
-        image.setAttribute('x', -z);
-        image.setAttribute('y', 50);
+        image.setAttribute('x', 0);
+        image.setAttribute('y', 200);
         image.setAttribute('width', 800);
         image.setAttribute('height', 800);
 
