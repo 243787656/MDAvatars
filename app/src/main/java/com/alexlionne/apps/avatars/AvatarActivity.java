@@ -57,6 +57,7 @@ import com.alexlionne.apps.avatars.objects.ListItem;
 import com.alexlionne.apps.avatars.objects.kits.AndroidKit;
 import com.alexlionne.apps.avatars.objects.kits.GoogleKitOne;
 import com.alexlionne.apps.avatars.objects.kits.GoogleKitTwo;
+import com.alexlionne.apps.avatars.objects.kits.MCKit;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -135,7 +136,10 @@ public class AvatarActivity extends AppCompatActivity {
             kit = new AndroidKit(this);
         } else if (current.equals("Google II")) {
             kit = new GoogleKitTwo(this);
-        }
+
+    } else if (current.equals("MC Kit")) {
+        kit = new MCKit(this);
+    }
         attachKit(kit);
         setWindow(getWindow());
         editor.putInt("BackgroundColor", getKit().getDefaultBgColor());

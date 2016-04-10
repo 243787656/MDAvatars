@@ -16,6 +16,7 @@ import com.alexlionne.apps.avatars.adapters.KitAdapter;
 import com.alexlionne.apps.avatars.objects.kits.AndroidKit;
 import com.alexlionne.apps.avatars.objects.kits.GoogleKitOne;
 import com.alexlionne.apps.avatars.objects.kits.GoogleKitTwo;
+import com.alexlionne.apps.avatars.objects.kits.MCKit;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.ArrayList;
@@ -253,6 +254,7 @@ public class Kit {
      */
     public static ArrayList<Kit> getAllKits() {
         kitArrayList = new ArrayList<>();
+        kitArrayList.add(new Kit(context).with(new MCKit(context)));
         kitArrayList.add(new Kit(context).with(new AndroidKit(context)));
         kitArrayList.add(new Kit(context).with(new GoogleKitOne(context)));
         kitArrayList.add(new Kit(context).with(new GoogleKitTwo(context)));

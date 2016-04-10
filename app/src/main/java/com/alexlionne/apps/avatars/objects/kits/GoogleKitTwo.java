@@ -555,7 +555,7 @@ break;
 
                         break;
                     case 2 :
-                        AvatarActivity.selectImageBodyBackground(getClothes());
+                        AvatarActivity.selectImageBodyBackground(preferences.getString(getClothes(),null));
 
 
                         break;
