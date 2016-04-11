@@ -123,6 +123,7 @@ public class UIManager {
     public void update(String item, String pref){
         AvatarActivity.changePref(item, pref);
     }
+
     public ColorPickerDialog colorChooser(int title,int colors[], int selected) {
         ColorPickerDialog dialog = ColorPickerDialog.newInstance(title,
                 colors,
