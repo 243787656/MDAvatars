@@ -32,30 +32,20 @@ public class Splash extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    startActivity(new Intent(Splash.this, MainIntroActivity.class));
+                    Intent intent = new Intent(Splash.this, MainActivity.class);
+                    intent.setAction(MainActivity.ACTION_START_INTRO);
+                    startActivity(intent);
+                    finish();
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    new Handler().postDelayed(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            finish();
-                        }
-                    }, 750);
                 }
             }, 1500);
-        }else {
+        } else {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     startActivity(new Intent(Splash.this, MainActivity.class));
+                    finish();
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    new Handler().postDelayed(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            finish();
-                        }
-                    }, 750);
                 }
             }, 1500);
 

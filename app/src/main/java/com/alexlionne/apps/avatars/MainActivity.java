@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.alexlionne.apps.avatars.Tour.MainIntroActivity;
 import com.alexlionne.apps.avatars.Utils.Gitty;
 import com.alexlionne.apps.avatars.Utils.Utils;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
                 AppCompatDelegate.MODE_NIGHT_AUTO);
 
     }
+    
+    public static final String ACTION_START_INTRO = "com.alexlionne.apps.avatars.ACTION_START_INTRO";
 
     @SuppressLint("NewApi")
     @Override
@@ -59,6 +62,13 @@ public class MainActivity extends AppCompatActivity {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setNavigationBarColor(getResources().getColor(R.color.primary));
         }*/
+        
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        if (action != null && action.equals(ACTION_START_INTRO)) {
+            Intent introIntent = new Intent(this, MainIntroActivity.class);
+            startActivity(introIntent);
+        }
 
 
         //create the sdcard directory
