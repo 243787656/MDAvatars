@@ -1,7 +1,9 @@
 package com.alexlionne.apps.avatars;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,13 +24,16 @@ import com.thefinestartist.finestwebview.FinestWebView;
 
 public class SettingsActivity extends PreferenceActivity {
 private Utils utils;
-
+    private static SharedPreferences preferences;
+    private static SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences_settings);
 
+        preferences = getSharedPreferences("com.alexlionne.apps.avatars", MODE_PRIVATE);
+        editor = preferences.edit();
         LinearLayout root = (LinearLayout) findViewById(android.R.id.list).getParent().getParent().getParent();
         Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
         root.addView(bar, 0); // insert at top
@@ -46,12 +51,12 @@ private Utils utils;
         Preference libs = (Preference) findPreference("libs");
 
 
-
         github.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 showGithub();
                 return true;}
         });
+
 
         changelog.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {

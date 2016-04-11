@@ -23,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.app.FragmentTransaction;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -505,7 +506,7 @@ public class AvatarActivity extends AppCompatActivity {
                         InputType.TYPE_TEXT_FLAG_CAP_WORDS)
                 .inputMaxLength(20)
                 .positiveText("go")
-                .input("name", "my_avatar_" + count, false, new MaterialDialog.InputCallback() {
+                .input("name", PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("AvatarName", null)+"_" + count, false, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, final CharSequence input) {
 
@@ -524,6 +525,9 @@ public class AvatarActivity extends AppCompatActivity {
                                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
                                         fos.close();
                                     }
+                                    Intent i = new Intent (AvatarActivity.getActivity(),MainActivity.class);
+                                    getActivity().startActivity(i);
+                                    getActivity().finish();
                                 } catch (Exception e) {
                                     System.out.println("-----error--" + e);
                                 }
@@ -654,11 +658,12 @@ return AvatarActivity.bitmap;
                 }
             }
 
-        }else if(requestCode==3){
+        }
+        /*else if(requestCode==3){
             if (resultCode == Activity.RESULT_OK) {
 
             }
-        }
+        }*/
     }
 
     public String getPath(Uri uri) {
@@ -786,6 +791,7 @@ return AvatarActivity.bitmap;
                                             }
                                             Intent i = new Intent (AvatarActivity.getActivity(),MainActivity.class);
                                             getActivity().startActivity(i);
+                                            getActivity().finish();
                                         } catch (Exception e) {
                                             System.out.println("Error : " + e);
                                         }

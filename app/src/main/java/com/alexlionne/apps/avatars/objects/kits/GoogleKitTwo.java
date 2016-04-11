@@ -29,6 +29,7 @@ import com.alexlionne.apps.avatars.objects.Options;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.squareup.picasso.Picasso;
 
 import org.xdty.preference.colorpicker.ColorPickerDialog;
 import org.xdty.preference.colorpicker.ColorPickerSwatch;
@@ -62,7 +63,7 @@ public class GoogleKitTwo extends Kit {
         //Small description of the kit
         super.setSmallDesc("Material Design ! V2");
         //setting up a showcase Drawable (shown in kits list)
-        super.setShowcase(R.drawable.gmd_kit_2);
+        //super.setShowcase(R.drawable.gmd_kit_2);
         //Icon fo the kit
         super.setIcon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_google).sizeDp(18));
         //link to html file (that contain svg), into @assets
@@ -89,7 +90,7 @@ void init(){
     editor.putInt("HairColor", context.getResources().getColor(R.color.md_brown_500));
     editor.putInt("ArcColor", context.getResources().getColor(R.color.md_orange_400));
     editor.putString("Hair", "hairskrillex");
-    editor.putString("Clothes", "mainbody");
+    editor.putString("Clothes", "ubody");
     editor.putString("Watch", "moto360");
     editor.apply();
 
@@ -247,7 +248,40 @@ void init(){
                         ImageView semi_long = (ImageView)mBottomSheetDialog.findViewById(R.id.semi_long);
                         ImageView spiky = (ImageView)mBottomSheetDialog.findViewById(R.id.spike);
                         ImageView long_h = (ImageView)mBottomSheetDialog.findViewById(R.id.long_hairs);
+                        ImageView woman1 = (ImageView)mBottomSheetDialog.findViewById(R.id.woman1);
+                        ImageView woman2 = (ImageView)mBottomSheetDialog.findViewById(R.id.woman2);
 
+                        Picasso.with(context)
+                                .load(R.drawable.hair_woman1)
+                                .resize(500, 500)
+                                .into(woman1);
+                        woman1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                UIManager.loadColor("transparent", preferences.getString(getHairs(), null));
+                                UIManager.update(getHairs(), "hairwoman1");
+                                UIManager.loadColor(DEFAULT_BROWN, preferences.getString(getHairs(),null));
+                                mBottomSheetDialog.dismiss();
+                            }
+                        });
+                        Picasso.with(context)
+                                .load(R.drawable.hair_woman2)
+                                .resize(500, 500)
+                                .into(woman2);
+                        woman2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                UIManager.loadColor("transparent", preferences.getString(getHairs(), null));
+                                UIManager.update(getHairs(), "hairwoman2");
+                                UIManager.loadColor(DEFAULT_BROWN, preferences.getString(getHairs(),null));
+                                mBottomSheetDialog.dismiss();
+                            }
+                        });
+
+                        Picasso.with(context)
+                                .load(R.drawable.no_hair)
+                                .resize(500, 500)
+                                .into(no_hairs);
                         no_hairs.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -256,7 +290,10 @@ void init(){
 
                             }
                         });
-
+                        Picasso.with(context)
+                                .load(R.drawable.hair_short2)
+                                .resize(500, 500)
+                                .into(semi_long);
                         semi_long.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -266,7 +303,10 @@ void init(){
                                 mBottomSheetDialog.dismiss();
                             }
                         });
-
+                        Picasso.with(context)
+                                .load(R.drawable.hair_short)
+                                .resize(500, 500)
+                                .into(hairs_short);
                         hairs_short.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -278,6 +318,11 @@ void init(){
                             }
                         });
 
+                        Picasso.with(context)
+                                .load(R.drawable.hair_spiky)
+                                .resize(500, 500)
+                                .resize(500, 500)
+                                .into(spiky);
                         spiky.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -288,6 +333,10 @@ void init(){
                             }
                         });
 
+                        Picasso.with(context)
+                                .load(R.drawable.hair_long)
+                                .resize(500, 500)
+                                .into(long_h);
                         long_h.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -356,12 +405,15 @@ break;
 
 
                         ImageView basic = (ImageView)mBottomSheetDialog.findViewById(R.id.basic);
-                        ImageView straight = (ImageView)mBottomSheetDialog.findViewById(R.id.straignt);
-                        ImageView round = (ImageView)mBottomSheetDialog.findViewById(R.id.round);
+                        ImageView straight = (ImageView)mBottomSheetDialog.findViewById(R.id.vbody);
+                        ImageView round = (ImageView)mBottomSheetDialog.findViewById(R.id.ubody);
                         ImageView chemise = (ImageView)mBottomSheetDialog.findViewById(R.id.chemise);
 
 
-
+                        Picasso.with(context)
+                                .load(R.drawable.main_body)
+                                .resize(500, 500)
+                                .into(basic);
                         basic.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -370,7 +422,7 @@ break;
                                 //making previous clothes transparent
                                 UIManager.loadColor("transparent", preferences.getString(getClothes(), null));
                                 //setting new clothes
-                                UIManager.update(getClothes(), "mainbody");
+                                UIManager.update(getClothes(), "BodyColor");
                                 UIManager.loadColor(default_color, preferences.getString(getClothes(),null));
                                 UIManager.loadColor(default_color, "uparm");
                                 //dealing with shadows
@@ -383,7 +435,10 @@ break;
 
                             }
                         });
-
+                        Picasso.with(context)
+                                .load(R.drawable.vbody)
+                                .resize(500, 500)
+                                .into(straight);
                         straight.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -405,6 +460,10 @@ break;
                             }
                         });
 
+                        Picasso.with(context)
+                                .load(R.drawable.ubody)
+                                .resize(500, 500)
+                                .into(round);
                         round.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -426,6 +485,10 @@ break;
 
                             }
                         });
+                        Picasso.with(context)
+                                .load(R.drawable.chemise)
+                                .resize(500, 500)
+                                .into(chemise);
                         chemise.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -510,7 +573,7 @@ break;
 
 
                         ImageView google = (ImageView)mBottomSheetDialog2.findViewById(R.id.google);
-                        ImageView android = (ImageView)mBottomSheetDialog2.findViewById(R.id.android);
+                       // ImageView android = (ImageView)mBottomSheetDialog2.findViewById(R.id.android);
 
 
                         /*google.setOnClickListener(new View.OnClickListener() {

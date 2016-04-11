@@ -8,47 +8,53 @@
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal" android:layout_width="match_parent"
+    <LinearLayout
+        android:orientation="horizontal" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:paddingTop="16dp"
         android:paddingRight="4dp"
         android:paddingLeft="4dp">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="75dp"
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:id="@+id/woman1"
+            android:layout_margin="4dp"/>
+
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:id="@+id/woman2"
+            android:layout_margin="4dp"/>
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
         android:id="@+id/no_hairs"
-        android:src="@drawable/no_hairs"
         android:layout_margin="4dp" />
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="75dp"
         android:layout_height="75dp"
         android:id="@+id/hairs_short"
-        android:src="@drawable/hairs_short"
         android:layout_margin="4dp" />
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="75dp"
         android:layout_height="75dp"
         android:id="@+id/semi_long"
-        android:src="@drawable/hairs_semi_long"
         android:layout_margin="4dp" />
 
 <ImageView
-    android:layout_width="wrap_content"
+    android:layout_width="75dp"
     android:layout_height="75dp"
     android:id="@+id/spike"
-    android:src="@drawable/hairs_spike"
     android:layout_margin="4dp" />
 
 <ImageView
-    android:layout_width="wrap_content"
+    android:layout_width="75dp"
     android:layout_height="75dp"
     android:id="@+id/long_hairs"
-    android:src="@drawable/hairskrillex"
     android:layout_margin="4dp" />
 
 </LinearLayout>

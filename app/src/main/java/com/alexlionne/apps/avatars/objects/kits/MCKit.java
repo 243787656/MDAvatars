@@ -52,7 +52,7 @@ public class MCKit extends Kit {
         //setting up a showcase Drawable (shown in kits list)
         //super.setShowcase(R.drawable.gmd_kit_2);
         //Icon fo the kit
-        super.setIcon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_google).sizeDp(18));
+        super.setIcon(new IconicsDrawable(context, GoogleMaterial.Icon.gmd_face).sizeDp(18));
         //link to html file (that contain svg), into @assets
         super.setSvg("file:///android_asset/mc_kit.html");
         //two listeners, one for categories properties
@@ -243,7 +243,7 @@ void init(){
                         dialog3.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
                             public void onColorSelected(int color) {
-                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
+                                UIManager.loadColorforGroup(color,"circle", Utils.getItem(fp, p).getId());
                                 UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
                             }
 
@@ -257,7 +257,7 @@ void init(){
                             public void onColorSelected(int color) {
                                 if (color_old == color) {
                                     UIManager.loadColor("transparent", Utils.getItem(fp, p).getId());
-                                    UIManager.updateView(fp, p, R.color.md_white_1000, Utils.getItem(fp, p).getId());
+                                    UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
                                 } else {
                                     color_old = color;
                                     UIManager.loadColor(color, Utils.getItem(fp, p).getId());

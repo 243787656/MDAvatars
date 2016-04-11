@@ -17,33 +17,29 @@
         android:paddingLeft="4dp">
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="75dp"
         android:layout_height="75dp"
         android:id="@+id/basic"
-        android:src="@drawable/no_hairs"
         android:layout_margin="4dp" />
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="75dp"
         android:layout_height="75dp"
-        android:id="@+id/round"
-        android:src="@drawable/u_col"
+        android:id="@+id/ubody"
         android:layout_margin="4dp" />
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="75dp"
         android:layout_height="75dp"
-        android:id="@+id/straignt"
-        android:src="@drawable/v_col"
+        android:id="@+id/vbody"
         android:layout_margin="4dp" />
 
 
 
 <ImageView
-    android:layout_width="wrap_content"
+    android:layout_width="75dp"
     android:layout_height="75dp"
     android:id="@+id/chemise"
-    android:src="@drawable/body_chemise"
     android:layout_margin="4dp" />
 
 </LinearLayout>

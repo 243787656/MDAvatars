@@ -56,9 +56,9 @@ public class AndroidKit extends Kit {
         //Small description of the kit
         super.setSmallDesc("Simple BugDroid");
         //setting up a showcase Drawable (shown in kits list)
-        super.setShowcase(R.drawable.gmd_kit_2);
+        //super.setShowcase(R.drawable.gmd_kit_2);
         //Icon fo the kit
-        super.setIcon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_google).sizeDp(18));
+        super.setIcon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_android).sizeDp(18));
         //link to html file (that contain svg), into @assets
         super.setSvg("file:///android_asset/android_kit.html");
         //two listeners, one for categories properties
