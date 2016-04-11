@@ -385,8 +385,8 @@ public class AvatarActivity extends AppCompatActivity {
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        transaction.setCustomAnimations(R.anim.slide_in_left,
-                R.anim.slide_out_right, 0, 0);
+        transaction.setCustomAnimations(R.animator.slide_in_left,
+                R.animator.slide_out_right, 0, 0);
         transaction.replace(R.id.container, to);
         transaction.commit();
         setCurrentFragment(to);
@@ -411,7 +411,7 @@ public class AvatarActivity extends AppCompatActivity {
         }
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        transaction.setCustomAnimations(R.anim.slide_out_left, R.anim.slide_in_right,
+        transaction.setCustomAnimations(R.animator.slide_out_left, R.animator.slide_in_right,
                 0, 0);
         transaction.replace(R.id.container, to);
         transaction.commit();

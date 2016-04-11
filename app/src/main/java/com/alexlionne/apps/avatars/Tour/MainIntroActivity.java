@@ -2,11 +2,13 @@ package com.alexlionne.apps.avatars.Tour;
 
 import android.Manifest;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.alexlionne.apps.avatars.MainActivity;
 import com.alexlionne.apps.avatars.R;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
+import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
 import com.heinrichreimersoftware.materialintro.slide.Slide;
 
@@ -33,7 +35,7 @@ public class MainIntroActivity extends IntroActivity {
         boolean customFragments = intent.getBooleanExtra(EXTRA_CUSTOM_FRAGMENTS, true);
         boolean permissions = intent.getBooleanExtra(EXTRA_PERMISSIONS, true);
         boolean skipEnabled = intent.getBooleanExtra(EXTRA_SKIP_ENABLED, false);
-        boolean finishEnabled = intent.getBooleanExtra(EXTRA_FINISH_ENABLED, false);
+        boolean finishEnabled = intent.getBooleanExtra(EXTRA_FINISH_ENABLED, true);
 
         setFullscreen(fullscreen);
 
@@ -61,19 +63,35 @@ public class MainIntroActivity extends IntroActivity {
                 .scrollable(scrollable)
                 .build());
 
-        final Slide permissionsSlide;
-        if (permissions) {
-            permissionsSlide = new SimpleSlide.Builder()
-                    .title(R.string.title)
-                    .description(R.string.intro_latest_step)
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            final Slide permissionsSlide;
+            if (permissions) {
+                permissionsSlide = new SimpleSlide.Builder()
+                        .title(R.string.title)
+                        .description(R.string.intro_latest_step)
+                        .background(R.color.primary)
+                        .backgroundDark(R.color.primary_dark)
+                        .scrollable(scrollable)
+                        .permissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE})
+                        .build();
+                addSlide(permissionsSlide);
+            } else {
+                permissionsSlide = null;
+            }
+
+        }
+        final Slide userName;
+        if (customFragments) {
+            userName = new FragmentSlide.Builder()
                     .background(R.color.primary)
                     .backgroundDark(R.color.primary_dark)
-                    .scrollable(scrollable)
-                    .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .fragment(userName_Fragment.newInstance())
                     .build();
-            addSlide(permissionsSlide);
+            addSlide(userName);
         } else {
-            permissionsSlide = null;
+            userName = null;
         }
     }
 
