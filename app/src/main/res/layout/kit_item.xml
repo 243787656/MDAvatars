@@ -78,7 +78,6 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/md_grey_900"
                         android:textSize="16dp"
                         android:typeface="monospace"
                         android:textIsSelectable="true"
@@ -93,7 +92,6 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="12dp"
                         android:textSize="12dp"
-                        android:textColor="@color/md_grey_900"
                         android:textIsSelectable="true" />
 
 

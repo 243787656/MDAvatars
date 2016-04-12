@@ -1,7 +1,6 @@
 package com.alexlionne.apps.avatars;
 
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,10 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.alexlionne.apps.avatars.Tour.MainIntroActivity;
-import com.alexlionne.apps.avatars.Utils.Gitty;
 import com.alexlionne.apps.avatars.Utils.Utils;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;

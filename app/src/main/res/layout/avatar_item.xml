@@ -75,7 +75,6 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/md_grey_900"
                         android:textSize="14sp"
                         android:typeface="monospace"
                         android:textIsSelectable="true"
