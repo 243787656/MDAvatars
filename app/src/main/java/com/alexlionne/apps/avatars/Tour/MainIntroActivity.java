@@ -21,15 +21,21 @@ public class MainIntroActivity extends IntroActivity {
         setFinishEnabled(true);
 
         addSlide(new SimpleSlide.Builder()
-                .title(R.string.title1)
-                .description(R.string.desc1)
-                .image(R.drawable.showcase1)
+                .title(R.string.slide1_title)
+                .description(R.string.slide1_desc)
+
                 .background(R.color.primary)
                 .backgroundDark(R.color.primary_dark)
                 .build());
         addSlide(new SimpleSlide.Builder()
-                .description(R.string.desc2)
-                //.image(R.drawable.moto360)
+                .title(R.string.slide2_title)
+                .description(R.string.slide2_desc)
+                .background(R.color.primary)
+                .backgroundDark(R.color.primary_dark)
+                .build());
+        addSlide(new SimpleSlide.Builder()
+                .title(R.string.slid3_title)
+                .description(R.string.slide3_desc)
                 .background(R.color.primary)
                 .backgroundDark(R.color.primary_dark)
                 .build());

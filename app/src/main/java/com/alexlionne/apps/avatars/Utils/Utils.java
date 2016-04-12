@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Path;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
@@ -39,14 +40,18 @@ import com.gun0912.tedpermission.TedPermission;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.jar.Manifest;
+
 
 /**
  * Created by Alex Lionne on 20/01/2016.
@@ -151,7 +156,10 @@ public class Utils {
         //float finalRadius = (float) Math.hypot(cx, cy);
         int finalRadius = Math.max(v.getWidth(), v.getHeight());
         Animator anim =
-                android.view.ViewAnimationUtils.createCircularReveal(v, cx, cy, 0, finalRadius);
+                null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            anim = android.view.ViewAnimationUtils.createCircularReveal(v, cx, cy, 0, finalRadius);
+        }
         v.setVisibility(View.VISIBLE);
         anim.setDuration(400);
         anim.setInterpolator(new AccelerateDecelerateInterpolator());
@@ -372,6 +380,37 @@ public class Utils {
         }
         return context.getCacheDir().getTotalSpace()-context.getCacheDir().getUsableSpace();
     }
+
+
+
+        public static byte[] toByte(File file) throws IOException{
+
+            ByteArrayOutputStream ous = null;
+            InputStream ios = null;
+            try {
+                byte[] buffer = new byte[4096];
+                ous = new ByteArrayOutputStream();
+                ios = new FileInputStream(file);
+                int read = 0;
+                while ((read = ios.read(buffer)) != -1) {
+                    ous.write(buffer, 0, read);
+                }
+            }finally {
+                try {
+                    if (ous != null)
+                        ous.close();
+                } catch (IOException e) {
+                }
+
+                try {
+                    if (ios != null)
+                        ios.close();
+                } catch (IOException e) {
+                }
+            }
+            return ous.toByteArray();
+        }
+
 
 
 }

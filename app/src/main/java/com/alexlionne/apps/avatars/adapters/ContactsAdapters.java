@@ -1,9 +1,11 @@
 package com.alexlionne.apps.avatars.adapters;
 
 import android.content.Context;
+import android.content.OperationApplicationException;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.RemoteException;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.WebView;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,10 +36,11 @@ public class ContactsAdapters extends RecyclerView.Adapter<ContactsAdapters.View
     private final Context context;
     private final OnItemClickListener onItemClickListener;
     private int lastPosition = -1;
+    private CheckBox checkbox;
 
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(int position) throws RemoteException, OperationApplicationException, IOException;
     }
 
     public ContactsAdapters(Context context, ArrayList<Contact> items, OnItemClickListener onItemClickListener) {
@@ -53,12 +57,12 @@ public class ContactsAdapters extends RecyclerView.Adapter<ContactsAdapters.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        setCheckbox(holder.checkBox);
         Contact contact = itemData.get(position);
         holder.name.setText(contact.getName());
-        if(contact.getPicture()!=null) {
+        /*if(contact.getPicture()!=null) {
             Picasso.with(context).load(loadPic(contact.getPicture())).into(holder.icon);
-        }
+        }*/
 
     }
     private void setAnimation(View viewToAnimate, int position)
@@ -87,6 +91,7 @@ public class ContactsAdapters extends RecyclerView.Adapter<ContactsAdapters.View
         final ImageView icon;
         final TextView name;
         final OnItemClickListener onItemClickListener;
+        final CheckBox checkBox;
 
         public ViewHolder(View v, OnItemClickListener onItemClickListener) {
             super(v);
@@ -94,6 +99,7 @@ public class ContactsAdapters extends RecyclerView.Adapter<ContactsAdapters.View
             v.setOnClickListener(this);
             icon = (ImageView) v.findViewById(R.id.contact_icon);
             name = (TextView) v.findViewById(R.id.contact_name);
+            checkBox = (CheckBox) v.findViewById(R.id.checkBox);
 
             this.onItemClickListener = onItemClickListener;
 
@@ -102,11 +108,24 @@ public class ContactsAdapters extends RecyclerView.Adapter<ContactsAdapters.View
 
         @Override
         public void onClick(View v) {
-            onItemClickListener.onItemClick(getAdapterPosition());
+            try {
+                onItemClickListener.onItemClick(getAdapterPosition());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (OperationApplicationException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
 
-
+    }
+    public void setCheckbox(CheckBox checkbox){
+         this.checkbox = checkbox;
+    }
+    public CheckBox getCheckbox(){
+        return this.checkbox;
     }
     private File loadPic(Bitmap bitmap){
         try {

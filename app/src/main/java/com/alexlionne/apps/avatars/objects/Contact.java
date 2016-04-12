@@ -1,5 +1,6 @@
 package com.alexlionne.apps.avatars.objects;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -16,57 +17,56 @@ import java.util.ArrayList;
  */
 public class Contact {
     private Context context;
-    private String image_uri = "";
-    private Bitmap bitmap = null;
     private Bitmap picture;
     private String name;
+    private Bitmap bitmap;
     public Contact(){
 
     }
     public Contact(Context context){
         this.context = context;
     }
-    public Contact(String name, Bitmap picture){
+    public Contact(String name){
         this.name = name;
-        this.picture = picture;
     }
     public void setContext(Context context){
         this.context = context;
     }
 
-    public ArrayList<Contact> getAllContacts(){
-        ArrayList<Contact>contact = new ArrayList<>();
-        Cursor phones = context.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null,null,null, null);
-        assert phones != null;
-        while (phones.moveToNext())
-        {
-            try {
-            String name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-            image_uri=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
-            if (image_uri != null) {
-                    bitmap = MediaStore.Images.Media
-                            .getBitmap(context.getContentResolver(),
-                                    Uri.parse(image_uri));
-
-                    Contact people = new Contact(name,bitmap);
-                    contact.add(people);
-                }} catch (FileNotFoundException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-
-
-        }
-
-        phones.close();
-        return contact;}
 public String getName(){
     return this.name;
 }
     public Bitmap getPicture(){
         return this.bitmap;
     }
+    public ArrayList<Contact> getAllContacts(){
+        ArrayList<Contact>contact = new ArrayList<>();
+
+        ContentResolver cr = context.getContentResolver();
+
+        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
+                null, null, null, null);
+
+
+        if (cur.getCount() > 0)
+        {
+
+            while (cur.moveToNext()) {
+
+                String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
+
+                String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+
+                if (Integer.parseInt(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0)
+                {
+
+                            Contact people = new Contact(name);
+                            contact.add(people);
+
+            }
+            }
+            cur.close();
+    }
+
+        return contact;}
 }

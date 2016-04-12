@@ -1,13 +1,24 @@
 package com.alexlionne.apps.avatars.fragments;
 
+import android.content.ContentProviderOperation;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.RemoteException;
+import android.provider.Contacts;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -29,6 +40,7 @@ import com.alexlionne.apps.avatars.objects.Contact;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -57,9 +69,10 @@ public class ContactsFragment extends Fragment implements ContactsAdapters.OnIte
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.my_avatars_layout, container, false);
+        root = (ViewGroup) inflater.inflate(R.layout.contacts_layout, container, false);
         FloatingActionButton fab = (FloatingActionButton)root.findViewById(R.id.fab);
-
+        swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.feed_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         kitAdapter = null;
         DEFAULT_COLUMNS_PORTRAIT = 1;
         DEFAULT_COLUMNS_LANDSCAPE = 1;
@@ -73,23 +86,33 @@ public class ContactsFragment extends Fragment implements ContactsAdapters.OnIte
             numColumns = mColumnCount;
         }
         utils = new Utils(getActivity());
-        new UpdateUI().execute();
+        //new UpdateUI().execute();
 
+        new MaterialDialog.Builder(getActivity())
+                .title("Feature soon avaible !")
+                .content("this feature will allow you to set Avatar randomly to your contact ! stay tuned !")
+                .positiveText("NICE")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        ((MainActivity) getActivity()).result.setSelection(0);
+                        ((MainActivity) getActivity()).switchFragment(0, "Kits", "Kit");
+                    }
+                });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) getActivity()).result.setSelection(0);
-                ((MainActivity) getActivity()).switchFragment(0, "Kits", "Kit");
+                //((MainActivity) getActivity()).result.setSelection(0);
+                //((MainActivity) getActivity()).switchFragment(0, "Kits", "Kit");
             }
         });
-        swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.feed_refresh);
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+        /*swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 new UpdateUI().execute();
-            }
-        });
+           }
+        });*/
      return root;
 
     }
@@ -98,7 +121,10 @@ public class ContactsFragment extends Fragment implements ContactsAdapters.OnIte
 
         @Override
         public void onPreExecute() {
-            swipeRefreshLayout.setRefreshing(true);
+            Snackbar snackbar = Snackbar
+                    .make(root, "Loading contact list", Snackbar.LENGTH_LONG);
+
+            snackbar.show();
         }
 
         @Override
@@ -120,8 +146,7 @@ public class ContactsFragment extends Fragment implements ContactsAdapters.OnIte
             return null;
         }
         protected void onProgressUpdate(Void... progress) {
-
-
+            swipeRefreshLayout.setRefreshing(true);
         }
         @Override
         protected void onPostExecute(Void args) {
@@ -144,6 +169,18 @@ public class ContactsFragment extends Fragment implements ContactsAdapters.OnIte
     @Override
     public void onItemClick(int position) {
         final Contact contact = ((ContactsAdapters) recyclerView.getAdapter()).getItemAtPosition(position);
+         ((ContactsAdapters) recyclerView.getAdapter()).getCheckbox().setEnabled(true);
+        ContentResolver cr = getActivity().getContentResolver();
+        try {
+            setContactPhoto(cr,Utils.toByte(new File("/mnt/sdcard/avatar.png")),position);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
+    public static void setContactPhoto(ContentResolver c,byte[] bytes, int id) {
+        Uri uri = ContentUris.withAppendedId(Contacts.People.CONTENT_URI, id);
+        Contacts.People.setPhotoData(c, uri, bytes);
+    }
+
 }

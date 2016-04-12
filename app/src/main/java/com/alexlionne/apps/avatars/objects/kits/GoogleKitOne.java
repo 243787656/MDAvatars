@@ -179,6 +179,19 @@ public class GoogleKitOne extends Kit {
                         });
 
                         break;
+                    case 1 :
+                        ColorPickerDialog dialog2 =  UIManager.colorChooser(R.string.choose_color,
+                                context.getResources().getIntArray(R.array.md_colors_skin)
+                                ,preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        dialog2.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
+                            @Override
+                            public void onColorSelected(int color) {
+                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
+                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                            }
+
+                        });
+                        break;
 
                 }
             }

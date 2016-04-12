@@ -28,4 +28,10 @@
     <string name="title2">Material Design Avatars</string>
     <string name="desc2">Personalize each avatar to your liking edit everything from colors styles and clothes</string>
     <string name="intro_latest_step">Lastly we need permissions for some awesome stuff</string>
+    <string name="slide2_title">Cool features</string>
+    <string name="slide1_title">Unique</string>
+    <string name="slide2_desc">Many personalization to be unique !Share your avatars with your friends</string>
+    <string name="slide1_desc">Create amazing avatar and refresh your profile !</string>
+    <string name="slid3_title"><![CDATA[Beta & and open source]]></string>
+    <string name="slide3_desc">You want to know how this app is made ? Check our public repository for more info</string>
 </resources>

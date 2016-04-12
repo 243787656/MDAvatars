@@ -15,6 +15,7 @@ import android.view.View;
 import com.alexlionne.apps.avatars.Tour.MainIntroActivity;
 import com.alexlionne.apps.avatars.Utils.Utils;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
