@@ -5,7 +5,7 @@
     Welcome to MDavatars. You can follow the development of this app here. I'll update this README later 
     to show you how to use and add SVG kits to the app.
     
-    [Latest app](/../master/app-debug-1.0.8.apk?raw=true)
+![Latest app](/../master/app-debug-1.0.8.apk?raw=true)
     
 ###CREATE YOUR OWN KIT
 ####Part I : Illustration
