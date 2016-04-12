@@ -1,16 +1,13 @@
 package com.alexlionne.apps.avatars.Tour;
 
 import android.Manifest;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.alexlionne.apps.avatars.MainActivity;
 import com.alexlionne.apps.avatars.R;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
-import com.heinrichreimersoftware.materialintro.slide.Slide;
 
 public class MainIntroActivity extends IntroActivity {
 
@@ -24,22 +21,21 @@ public class MainIntroActivity extends IntroActivity {
         setFinishEnabled(true);
 
         addSlide(new SimpleSlide.Builder()
-                .title(R.string.title)
-                .description(R.string.desc)
-                //.image(R.drawable.moto360)
+                .title(R.string.title1)
+                .description(R.string.desc1)
+                .image(R.drawable.showcase1)
                 .background(R.color.primary)
                 .backgroundDark(R.color.primary_dark)
                 .build());
         addSlide(new SimpleSlide.Builder()
-                .title(R.string.title)
-                .description(R.string.desc)
+                .description(R.string.desc2)
                 //.image(R.drawable.moto360)
                 .background(R.color.primary)
                 .backgroundDark(R.color.primary_dark)
                 .build());
         if (Build.VERSION.SDK_INT >= 23) {
             addSlide(new SimpleSlide.Builder()
-                    .title(R.string.title)
+                    .title(R.string.title1)
                     .description(R.string.intro_latest_step)
                     .background(R.color.primary)
                     .backgroundDark(R.color.primary_dark)

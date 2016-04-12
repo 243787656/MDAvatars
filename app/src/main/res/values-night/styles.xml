@@ -9,7 +9,6 @@
     </style>
 
 
-
     <style name="CustomTheme" parent="MaterialDrawerTheme">
         <!-- ...and here we setting appcompat’s color theming attrs -->
         <item name="colorPrimary">@color/colorAccent</item>

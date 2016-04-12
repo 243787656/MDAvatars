@@ -43,13 +43,10 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.folderselector.FolderChooserDialog;
 import com.alexlionne.apps.avatars.Utils.DirectoryChooserFragment;
-import com.alexlionne.apps.avatars.Utils.UIManager;
 import com.alexlionne.apps.avatars.Utils.Utils;
 import com.alexlionne.apps.avatars.adapters.OnSwipeTouchListener;
 import com.alexlionne.apps.avatars.fragments.EditionFragment;
@@ -59,9 +56,6 @@ import com.alexlionne.apps.avatars.objects.kits.AndroidKit;
 import com.alexlionne.apps.avatars.objects.kits.GoogleKitOne;
 import com.alexlionne.apps.avatars.objects.kits.GoogleKitTwo;
 import com.alexlionne.apps.avatars.objects.kits.MCKit;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 

@@ -23,7 +23,9 @@
     <string name="up_label">Up</string>
     <string name="github_link">https://github.com/AlexLionne/MDAvatars</string>
 
-    <string name="title">title</string>
-    <string name="desc">description</string>
+    <string name="title1">Material Design Avatars</string>
+    <string name="desc1">Create Material Design Avatars On The Go On Your Phone</string>
+    <string name="title2">Material Design Avatars</string>
+    <string name="desc2">Personalize each avatar to your liking edit everything from colors styles and clothes</string>
     <string name="intro_latest_step">Lastly we need permissions for some awesome stuff</string>
 </resources>
