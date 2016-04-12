@@ -1,6 +1,6 @@
 # MDAvatars
-![Android SVG](/../master/1.png?raw=true "Android SVG")
-![Android SVG](/../master/2.png?raw=true "Android SVG")
+![Android SVG](/../master/1.png?raw=true =250x "Android SVG")
+![Android SVG](/../master/2.png?raw=true =250x "Android SVG")
 
     Welcome to MDavatars. You can follow the development of this app here. I'll update this README later 
     to show you how to use and add SVG kits to the app.
