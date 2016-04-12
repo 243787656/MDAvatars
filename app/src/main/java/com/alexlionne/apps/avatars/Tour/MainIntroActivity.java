@@ -43,7 +43,7 @@ public class MainIntroActivity extends IntroActivity {
                     .description(R.string.intro_latest_step)
                     .background(R.color.primary)
                     .backgroundDark(R.color.primary_dark)
-                    .permissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                    .permissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE})
                     .build());
         }

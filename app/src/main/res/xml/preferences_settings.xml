@@ -39,10 +39,9 @@
         android:title="Data">
     </PreferenceCategory>
     <Preference
-        android:enabled="false"
         android:title="Cache"
-        android:key="username"
-        android:summary="Delete the cache">
+        android:key="cache"
+        >
     </Preference>
     <PreferenceCategory
         android:title="About">

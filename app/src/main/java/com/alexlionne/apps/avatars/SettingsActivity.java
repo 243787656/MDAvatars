@@ -49,8 +49,9 @@ private Utils utils;
         Preference github = (Preference) findPreference("github");
         Preference issue = (Preference) findPreference("issue");
         Preference libs = (Preference) findPreference("libs");
+        Preference cache = (Preference) findPreference("cache");
 
-
+        cache.setSummary("delete "+Utils.getCache()+"of cache");
         github.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 showGithub();
@@ -58,6 +59,11 @@ private Utils utils;
         });
 
 
+        cache.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                clearCache();
+                return true;}
+        });
         changelog.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 showChangeLog();
@@ -89,6 +95,9 @@ private Utils utils;
     }
     private void showGithub(){
         new FinestWebView.Builder(SettingsActivity.this).show(getResources().getString(R.string.github_link));
+    }
+    private void clearCache(){
+        Utils.trimCache(this);
     }
 
 }

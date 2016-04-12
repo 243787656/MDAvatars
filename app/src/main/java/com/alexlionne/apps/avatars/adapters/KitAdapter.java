@@ -98,7 +98,7 @@ public class KitAdapter extends RecyclerView.Adapter<KitAdapter.ViewHolder> {
             v.setClickable(true);
             v.setOnClickListener(this);
             wall = (WebView) v.findViewById(R.id.webView1);
-            icon = (ImageView) v.findViewById(R.id.kit_icon);
+            icon = (ImageView) v.findViewById(R.id.contact_icon);
             content = (CardView)v.findViewById(R.id.card);
             name = (TextView) v.findViewById(R.id.kit_name);
             smalldesc = (TextView) v.findViewById(R.id.kit_small_desc);
@@ -109,12 +109,9 @@ public class KitAdapter extends RecyclerView.Adapter<KitAdapter.ViewHolder> {
 
         @Override
         public void onClick(View v) {
-            onItemClickListener.onItemClick(getView(),getAdapterPosition());
+            onItemClickListener.onItemClick(v,getAdapterPosition());
         }
 
-        private View getView() {
-            return ViewHolder.wall;
-        }
 
 
     }

@@ -2,9 +2,8 @@ package com.alexlionne.apps.avatars.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.net.Uri;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,25 +11,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alexlionne.apps.avatars.R;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
+import com.alexlionne.apps.avatars.objects.Contact;
+import com.alexlionne.apps.avatars.objects.Kit;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.List;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 
-/**
- * This Class was created by Patrick J
- * on 19.01.16. For more Details and Licensing
- * have a look at the README.md
- */
-public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
 
-    private final List<File> itemData;
+public class ContactsAdapters extends RecyclerView.Adapter<ContactsAdapters.ViewHolder> {
+
+    private final ArrayList<Contact> itemData;
     private final Context context;
     private final OnItemClickListener onItemClickListener;
     private int lastPosition = -1;
@@ -40,7 +39,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
         void onItemClick(int position);
     }
 
-    public FileAdapter(Context context, List<File> items, OnItemClickListener onItemClickListener) {
+    public ContactsAdapters(Context context, ArrayList<Contact> items, OnItemClickListener onItemClickListener) {
         this.itemData = items;
         this.context = context;
         this.onItemClickListener = onItemClickListener;
@@ -48,25 +47,18 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.avatar_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.contact_item, parent, false);
         return new ViewHolder(view, onItemClickListener);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        File file = itemData.get(position);
-        Uri uri = Uri.fromFile(new File(itemData.get(position).getAbsolutePath()));
-
-        Picasso.with(context)
-                .load(uri)
-                .into(holder.wall);
-        //holder.wall.setImageBitmap(getBitmap(file.getAbsolutePath()));
-        holder.name.setText(file.getName().replace(".png",""));
-        holder.icon.setImageDrawable(new IconicsDrawable(context, GoogleMaterial.Icon.gmd_face).sizeDp(18).color(Color.BLACK));
-       // setAnimation(holder.content, position);
-
-
+        Contact contact = itemData.get(position);
+        holder.name.setText(contact.getName());
+        if(contact.getPicture()!=null) {
+            Picasso.with(context).load(loadPic(contact.getPicture())).into(holder.icon);
+        }
 
     }
     private void setAnimation(View viewToAnimate, int position)
@@ -81,7 +73,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
     }
 
 
-    public File getItemAtPosition(int position) {
+    public Contact getItemAtPosition(int position) {
         return itemData.get(position);
     }
 
@@ -92,20 +84,20 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        final ImageView wall,icon;
+        final ImageView icon;
         final TextView name;
         final OnItemClickListener onItemClickListener;
-        final CardView content;
 
         public ViewHolder(View v, OnItemClickListener onItemClickListener) {
             super(v);
             v.setClickable(true);
             v.setOnClickListener(this);
-            wall = (ImageView) v.findViewById(R.id.webView1);
             icon = (ImageView) v.findViewById(R.id.contact_icon);
-            content = (CardView)v.findViewById(R.id.card);
-            name = (TextView) v.findViewById(R.id.kit_name);
+            name = (TextView) v.findViewById(R.id.contact_name);
+
             this.onItemClickListener = onItemClickListener;
+
+
         }
 
         @Override
@@ -113,16 +105,31 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
             onItemClickListener.onItemClick(getAdapterPosition());
         }
 
-    }
-    private Bitmap getBitmap(String url)
-    {
 
-        Bitmap b = BitmapFactory.decodeFile(url);
-        if (b != null)
-        {
-            return b;
-        }
-        return null;
+
     }
+    private File loadPic(Bitmap bitmap){
+        try {
+        //create a file to write bitmap data
+        File f = new File(context.getCacheDir(), "tmp");
+
+            f.createNewFile();
+
+
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+        byte[] bitmapdata = bos.toByteArray();
+
+//write the bytes in file
+        FileOutputStream fos = new FileOutputStream(f);
+        fos.write(bitmapdata);
+        fos.flush();
+        fos.close();
+            return f;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+   return null;}
 
 }
