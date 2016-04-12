@@ -141,7 +141,7 @@ void init(){
     }
 
     public ArrayList<CustomAdapter.OnItemClickListener> getGoogleKitTwoListeners(){
-
+    final Utils utils = new Utils(context);
         ArrayList<CustomAdapter.OnItemClickListener> list = new ArrayList<>();
         CustomAdapter.OnItemClickListener background = new  CustomAdapter.OnItemClickListener(){
             @Override
@@ -151,14 +151,14 @@ void init(){
                 switch (p) {
                     case 0:
                         UIManager = new UIManager(AndroidKit.super.getWebView());
-                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(utils.getItem(fp, p).getId(),0));
                         dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
                             public void onColorSelected(int color) {
 
                                 AvatarActivity.view.setBackgroundColor(color);
                                 UIManager.setWebViewBgColor(color);
-                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                                UIManager.updateView(fp, p, color, utils.getItem(fp, p).getId());
                                 UIManager.setNavigationBarColor(color);
 
                             }
@@ -188,12 +188,12 @@ void init(){
 
                         ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color,
                                 context.getResources().getIntArray(R.array.md_colors)
-                                ,preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                                ,preferences.getInt(utils.getItem(fp, p).getId(),0));
                         dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
                             public void onColorSelected(int color) {
-                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
-                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                                UIManager.loadColor(color, utils.getItem(fp, p).getId());
+                                UIManager.updateView(fp, p, color, utils.getItem(fp, p).getId());
                             }
 
                         });
@@ -210,18 +210,18 @@ void init(){
                 switch (p) {
                     case 0:
 
-                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(utils.getItem(fp, p).getId(),0));
                         dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
                             public void onColorSelected(int color) {
-                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
-                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                                UIManager.loadColor(color, utils.getItem(fp, p).getId());
+                                UIManager.updateView(fp, p, color, utils.getItem(fp, p).getId());
                             }
 
                         });
                         break;
                     case 1 :
-                        AvatarActivity.selectImageBodyBackground(Utils.getItem(fp, 0).getId());
+                        AvatarActivity.selectImageBodyBackground(utils.getItem(fp, 0).getId());
                         break;
 
 
@@ -235,23 +235,23 @@ void init(){
                 switch (p) {
                     case 0:
 
-                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(utils.getItem(fp, p).getId(),0));
                         dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
                             public void onColorSelected(int color) {
-                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
-                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                                UIManager.loadColor(color, utils.getItem(fp, p).getId());
+                                UIManager.updateView(fp, p, color, utils.getItem(fp, p).getId());
                             }
 
                         });
                         break;
                     case 1 :
-                        dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(utils.getItem(fp, p).getId(),0));
                         dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
                             public void onColorSelected(int color) {
-                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
-                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                                UIManager.loadColor(color, utils.getItem(fp, p).getId());
+                                UIManager.updateView(fp, p, color, utils.getItem(fp, p).getId());
                             }
 
                         });

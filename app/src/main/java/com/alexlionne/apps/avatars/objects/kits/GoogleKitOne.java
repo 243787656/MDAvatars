@@ -60,9 +60,8 @@ public class GoogleKitOne extends Kit {
         //setting up default values
         editor.putInt("BackgroundColor", getDefaultBgColor());
         editor.putInt("GMD1_SkinColor", context.getResources().getColor(R.color.md_brown_500));
-        editor.putInt("GMD1_BodyColor", context.getResources().getColor(R.color.md_green_A700));
-        editor.putInt("GMD1_ArmColor", context.getResources().getColor(R.color.md_green_A700));
-        editor.putInt("GMD1_HairColor", context.getResources().getColor(R.color.md_black_1000));
+        editor.putInt("GMD1_BodyColor", context.getResources().getColor(R.color.md_green_500));
+        editor.putInt("GMD1_HairColor", context.getResources().getColor(R.color.md_grey_900));
         editor.apply();
 
     }
@@ -84,7 +83,7 @@ public class GoogleKitOne extends Kit {
         ListItem head = new ListItem();
         head.setTitle("Head");
         head.addItem("HEAD", new Item("Skin color", "GMD1_SkinColor", new IconicsDrawable(context,
-                GoogleMaterial.Icon.gmd_face).sizeDp(18).color(context.getResources().getColor(R.color.md_grey_700)), preferences.getInt("GMD1_HeadColor", 0),
+                GoogleMaterial.Icon.gmd_face).sizeDp(18).color(context.getResources().getColor(R.color.md_grey_700)), preferences.getInt("GMD1_SkinColor", 0),
                 colorChooser));
         head.addItem(null, new Item("Hair color", "GMD1_HairColor", new IconicsDrawable(context,
                 GoogleMaterial.Icon.gmd_face).sizeDp(18).color(context.getResources().getColor(R.color.md_grey_700)), preferences.getInt("GMD1_HairColor", 0),
@@ -96,11 +95,6 @@ public class GoogleKitOne extends Kit {
                 CommunityMaterial.Icon.cmd_format_color_fill).sizeDp(18), preferences.getInt("GMD1_BodyColor", 0),
                 colorChooser));
 
-        ListItem hand = new ListItem();
-        hand.setTitle("Arms");
-        hand.addItem("ARMS", new Item("Arms Color", "GMD1_ArmsColor", new IconicsDrawable(context,
-                CommunityMaterial.Icon.cmd_format_color_fill).sizeDp(18), preferences.getInt("GMD1_ArmsColor", 0),
-                colorChooser));
 
 
         ListItem save = new ListItem();
@@ -113,7 +107,6 @@ public class GoogleKitOne extends Kit {
         result.add(backgroundItem);
         result.add(head);
         result.add(body);
-        result.add(hand);
         result.add(save);
 
         return result;
@@ -167,7 +160,7 @@ public class GoogleKitOne extends Kit {
                     case 0:
 
                         ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color,
-                                context.getResources().getIntArray(R.array.md_colors)
+                                context.getResources().getIntArray(R.array.md_colors_skin)
                                 ,preferences.getInt(Utils.getItem(fp, p).getId(),0));
 
 
@@ -177,6 +170,9 @@ public class GoogleKitOne extends Kit {
                             @Override
                             public void onColorSelected(int color) {
                                 UIManager.loadColor(color, Utils.getItem(fp, p).getId());
+                                UIManager.loadColor(color,"GMD1_up_right_arm");
+                                UIManager.loadColor(color,"GMD1_down_right_arm");
+                                UIManager.loadColor(Utils.getAccentDarkColor(color),"GMD1_left_arm");
                                 UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
                             }
 
@@ -199,6 +195,11 @@ public class GoogleKitOne extends Kit {
                             @Override
                             public void onColorSelected(int color) {
                                 UIManager.loadColor(color, Utils.getItem(fp, p).getId());
+
+                                UIManager.loadColorforGroup(Utils.getAccentDarkColor(color),"GMD1_right_arm_shadow");
+                                UIManager.loadColorforGroup(Utils.getAccentDarkColor(color),"GMD1_left_arm_shadow");
+                                UIManager.loadColorforGroup(Utils.getAccentDarkColor(color),"GMD1_main_shadow");
+                                UIManager.loadColor(Utils.getAccentDarkColor(color),"GMD1_right_arm");
                                 UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
                             }
 
@@ -206,39 +207,6 @@ public class GoogleKitOne extends Kit {
                         break;
                     case 1 :
                         AvatarActivity.selectImageBodyBackground(Utils.getItem(fp, 0).getId());
-                        break;
-
-
-                }
-            }
-        };
-        CustomAdapter.OnItemClickListener arms = new CustomAdapter.OnItemClickListener(){
-            @Override
-            public void onItemClick(View v, final int p,final int fp) {
-                UIManager = new UIManager(GoogleKitOne.super.getWebView());
-                switch (p) {
-                    case 0:
-
-                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
-                        dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
-                            @Override
-                            public void onColorSelected(int color) {
-                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
-                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
-                            }
-
-                        });
-                        break;
-                    case 1 :
-                        dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
-                        dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
-                            @Override
-                            public void onColorSelected(int color) {
-                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
-                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
-                            }
-
-                        });
                         break;
 
 
@@ -265,7 +233,6 @@ public class GoogleKitOne extends Kit {
         list.add(background);
         list.add(head);
         list.add(body);
-        list.add(arms);
         list.add(saves);
 
         return list;

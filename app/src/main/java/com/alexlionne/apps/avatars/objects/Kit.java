@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 
 import com.alexlionne.apps.avatars.adapters.CustomAdapter;
 import com.alexlionne.apps.avatars.adapters.KitAdapter;
+import com.alexlionne.apps.avatars.objects.kits.AlexLionnekit;
 import com.alexlionne.apps.avatars.objects.kits.AndroidKit;
 import com.alexlionne.apps.avatars.objects.kits.GoogleKitOne;
 import com.alexlionne.apps.avatars.objects.kits.GoogleKitTwo;
@@ -254,10 +255,11 @@ public class Kit {
      */
     public static ArrayList<Kit> getAllKits() {
         kitArrayList = new ArrayList<>();
+       // kitArrayList.add(new Kit(context).with(new AlexLionnekit(context)));
         kitArrayList.add(new Kit(context).with(new MCKit(context)));
+        kitArrayList.add(new Kit(context).with(new GoogleKitTwo(context)));
         kitArrayList.add(new Kit(context).with(new AndroidKit(context)));
         kitArrayList.add(new Kit(context).with(new GoogleKitOne(context)));
-        kitArrayList.add(new Kit(context).with(new GoogleKitTwo(context)));
 
 
         return kitArrayList;

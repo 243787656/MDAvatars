@@ -26,14 +26,14 @@ public class MainIntroActivity extends IntroActivity {
         addSlide(new SimpleSlide.Builder()
                 .title(R.string.title)
                 .description(R.string.desc)
-                .image(R.drawable.moto360)
+                //.image(R.drawable.moto360)
                 .background(R.color.primary)
                 .backgroundDark(R.color.primary_dark)
                 .build());
         addSlide(new SimpleSlide.Builder()
                 .title(R.string.title)
                 .description(R.string.desc)
-                .image(R.drawable.moto360)
+                //.image(R.drawable.moto360)
                 .background(R.color.primary)
                 .backgroundDark(R.color.primary_dark)
                 .build());

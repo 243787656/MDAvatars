@@ -122,6 +122,7 @@ public class AlexLionnekit extends Kit {
 
     public ArrayList<CustomAdapter.OnItemClickListener> getGoogleKitOneListeners(){
 
+
         ArrayList<CustomAdapter.OnItemClickListener> list = new ArrayList<>();
         CustomAdapter.OnItemClickListener background = new  CustomAdapter.OnItemClickListener(){
             @Override

@@ -138,8 +138,8 @@ void init(){
                 colorChooser));
         clothes.addItem("MORE", new Item("Image", R.drawable.image, new IconicsDrawable(context,
                 GoogleMaterial.Icon.gmd_public).sizeDp(18), WHITE, colorChooser));
-        clothes.addItem(null, new Item("Logo", R.drawable.logo, new IconicsDrawable(context,
-                CommunityMaterial.Icon.cmd_google).sizeDp(18), WHITE, colorChooser));
+        //clothes.addItem(null, new Item("Logo", R.drawable.logo, new IconicsDrawable(context,
+                //CommunityMaterial.Icon.cmd_google).sizeDp(18), WHITE, colorChooser));
 
 
         ListItem accessories = new ListItem();
@@ -181,7 +181,7 @@ void init(){
     }
 
     public ArrayList<CustomAdapter.OnItemClickListener> getGoogleKitTwoListeners(){
-
+       final Utils utils = new Utils(context);
         ArrayList<CustomAdapter.OnItemClickListener> list = new ArrayList<>();
         CustomAdapter.OnItemClickListener background = new  CustomAdapter.OnItemClickListener(){
             @Override
@@ -191,14 +191,14 @@ void init(){
                 switch (p) {
                     case 0:
                         UIManager = new UIManager(GoogleKitTwo.super.getWebView());
-                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(utils.getItem(fp, p).getId(),0));
                         dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
                             public void onColorSelected(int color) {
 
                                 AvatarActivity.view.setBackgroundColor(color);
                                 UIManager.setWebViewBgColor(color);
-                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                                UIManager.updateView(fp, p, color, utils.getItem(fp, p).getId());
                                 UIManager.setNavigationBarColor(color);
 
                             }
@@ -222,19 +222,18 @@ void init(){
         CustomAdapter.OnItemClickListener head = new CustomAdapter.OnItemClickListener(){
             @Override
             public void onItemClick(View v, final int p,final int fp) {
-                utils = new Utils(context);
                 UIManager = new UIManager(getWebView());
                 switch (p) {
                     case 0:
 
                         ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color,
                                 context.getResources().getIntArray(R.array.md_colors_skin)
-                                ,preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                                ,preferences.getInt(utils.getItem(fp, p).getId(),0));
                         dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
                             public void onColorSelected(int color) {
-                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
-                                UIManager.updateView(fp,p,color,Utils.getItem(fp, p).getId());
+                                UIManager.loadColor(color, utils.getItem(fp, p).getId());
+                                UIManager.updateView(fp,p,color,utils.getItem(fp, p).getId());
                             }
 
                         });
@@ -350,12 +349,12 @@ break;
                     case  3 :
 
 
-                        dialog =  UIManager.colorChooser(R.string.choose_color,context.getResources().getIntArray(R.array.md_colors_skin),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        dialog =  UIManager.colorChooser(R.string.choose_color,context.getResources().getIntArray(R.array.md_colors_skin),preferences.getInt(utils.getItem(fp, p).getId(),0));
                         dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
                             public void onColorSelected(int color) {
                                 UIManager.loadColor(color, preferences.getString(getHairs(),null));
-                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                                UIManager.updateView(fp, p, color, utils.getItem(fp, p).getId());
                             }
 
                         });
@@ -371,12 +370,12 @@ break;
                 switch (p) {
                     case 0:
 
-                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors_skin),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors_skin),preferences.getInt(utils.getItem(fp, p).getId(),0));
                         dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
                             public void onColorSelected(int color) {
-                                UIManager.loadColor(color, Utils.getItem(fp, p).getId());
-                                UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                                UIManager.loadColor(color, utils.getItem(fp, p).getId());
+                                UIManager.updateView(fp, p, color, utils.getItem(fp, p).getId());
                             }
 
                         });
@@ -391,7 +390,6 @@ break;
             @Override
             public void onItemClick(View v, final int p, final int fp) {
 
-                utils = new Utils(context);
                 final String default_color = "#F89921";
                 final String default_color_white = "#FFFFFF";
                 final int color =  Color.parseColor(default_color);
@@ -426,11 +424,11 @@ break;
                                 UIManager.loadColor(default_color, preferences.getString(getClothes(),null));
                                 UIManager.loadColor(default_color, "uparm");
                                 //dealing with shadows
-                                UIManager.loadColorforGroup(Utils.getAccentDarkColor(color), "shadow1");
-                                UIManager.loadColorforGroup(Utils.getAccentDarkColor(color), "shadow2");
-                                UIManager.loadColorforGroup(Utils.getAccentDarkColor(color), "shadow3");
+                                UIManager.loadColorforGroup(utils.getAccentDarkColor(color), "shadow1");
+                                UIManager.loadColorforGroup(utils.getAccentDarkColor(color), "shadow2");
+                                UIManager.loadColorforGroup(utils.getAccentDarkColor(color), "shadow3");
                                 //dismiss the dialog after click
-                                UIManager.updateView(fp, p+1, color, Utils.getItem(fp, p+1).getId());
+                                UIManager.updateView(fp, p+1, color, utils.getItem(fp, p+1).getId());
                                 mBottomSheetDialog.dismiss();
 
                             }
@@ -451,11 +449,11 @@ break;
                                 UIManager.loadColor(default_color, preferences.getString(getClothes(),null));
                                 UIManager.loadColor(default_color, "uparm");
                                 //dealing with shadows
-                                UIManager.loadColorforGroup(Utils.getAccentDarkColor(color), "shadow1");
-                                UIManager.loadColorforGroup(Utils.getAccentDarkColor(color), "shadow2");
-                                UIManager.loadColorforGroup(Utils.getAccentDarkColor(color), "shadow3");
+                                UIManager.loadColorforGroup(utils.getAccentDarkColor(color), "shadow1");
+                                UIManager.loadColorforGroup(utils.getAccentDarkColor(color), "shadow2");
+                                UIManager.loadColorforGroup(utils.getAccentDarkColor(color), "shadow3");
                                 //dismiss the dialog after click
-                                UIManager.updateView(fp, p+1, color, Utils.getItem(fp, p+1).getId());
+                                UIManager.updateView(fp, p+1, color, utils.getItem(fp, p+1).getId());
                                 mBottomSheetDialog.dismiss();
                             }
                         });
@@ -476,11 +474,11 @@ break;
                                 UIManager.loadColor(default_color, preferences.getString(getClothes(),null));
                                 UIManager.loadColor(default_color, "uparm");
                                 //dealing with shadows
-                                UIManager.loadColorforGroup(Utils.getAccentDarkColor(color), "shadow1");
-                                UIManager.loadColorforGroup(Utils.getAccentDarkColor(color), "shadow2");
-                                UIManager.loadColorforGroup(Utils.getAccentDarkColor(color), "shadow3");
+                                UIManager.loadColorforGroup(utils.getAccentDarkColor(color), "shadow1");
+                                UIManager.loadColorforGroup(utils.getAccentDarkColor(color), "shadow2");
+                                UIManager.loadColorforGroup(utils.getAccentDarkColor(color), "shadow3");
                                 //dismiss the dialog after click
-                                UIManager.updateView(fp, p+1, color, Utils.getItem(fp, p+1).getId());
+                                UIManager.updateView(fp, p+1, color, utils.getItem(fp, p+1).getId());
                                 mBottomSheetDialog.dismiss();
 
                             }
@@ -499,10 +497,10 @@ break;
                                 UIManager.loadColorforGroup("#212121", "polygon", "col");
                                 UIManager.loadColor("#ffffff", preferences.getString(getClothes(),null));
                                 UIManager.loadColor("#ffffff", "uparm");
-                                UIManager.loadColorforGroup(Utils.getAccentDarkColor(color_white), "shadow1");
-                                UIManager.loadColorforGroup(Utils.getAccentDarkColor(color_white), "shadow2");
-                                UIManager.loadColorforGroup(Utils.getAccentDarkColor(color_white), "shadow3");
-                                UIManager.updateView(fp, p + 1, color_white, Utils.getItem(fp, p + 1).getId());
+                                UIManager.loadColorforGroup(utils.getAccentDarkColor(color_white), "shadow1");
+                                UIManager.loadColorforGroup(utils.getAccentDarkColor(color_white), "shadow2");
+                                UIManager.loadColorforGroup(utils.getAccentDarkColor(color_white), "shadow3");
+                                UIManager.updateView(fp, p + 1, color_white, utils.getItem(fp, p + 1).getId());
                                 mBottomSheetDialog.dismiss();
 
                             }
@@ -511,21 +509,21 @@ break;
                     case 1:
 
                         if(!preferences.getString(getClothes(),null).equals("ubodychemise")) {
-                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(), 0));
+                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(utils.getItem(fp, p).getId(), 0));
                         dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
                             public void onColorSelected(int color) {
                                     UIManager.loadColor(color, preferences.getString(getClothes(),null));
                                     UIManager.loadColor(color, "uparm");
-                                    UIManager.loadColorforGroup(Utils.getAccentDarkColor(color), "shadow1");
-                                    UIManager.loadColorforGroup(Utils.getAccentDarkColor(color), "shadow2");
-                                    UIManager.loadColorforGroup(Utils.getAccentDarkColor(color), "shadow3");
-                                    UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                                    UIManager.loadColorforGroup(utils.getAccentDarkColor(color), "shadow1");
+                                    UIManager.loadColorforGroup(utils.getAccentDarkColor(color), "shadow2");
+                                    UIManager.loadColorforGroup(utils.getAccentDarkColor(color), "shadow3");
+                                    UIManager.updateView(fp, p, color, utils.getItem(fp, p).getId());
                             }
 
 
                         });}else {
-                            ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(), 0));
+                            ColorPickerDialog dialog =  UIManager.colorChooser(R.string.choose_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(utils.getItem(fp, p).getId(), 0));
                             dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                                 @Override
                                 public void onColorSelected(int color) {
@@ -533,17 +531,17 @@ break;
                                     UIManager.update(getClothes(), "ubodychemise");
                                     UIManager.loadColor(color, preferences.getString(getClothes(), null));
                                     UIManager.loadColor(color, "uparm");
-                                    UIManager.loadColorforGroup(Utils.getAccentDarkColor(color), "shadow1");
-                                    UIManager.loadColorforGroup(Utils.getAccentDarkColor(color), "shadow2");
-                                    UIManager.loadColorforGroup(Utils.getAccentDarkColor(color), "shadow3");
-                                    UIManager.updateView(fp, p, color, Utils.getItem(fp, p).getId());
+                                    UIManager.loadColorforGroup(utils.getAccentDarkColor(color), "shadow1");
+                                    UIManager.loadColorforGroup(utils.getAccentDarkColor(color), "shadow2");
+                                    UIManager.loadColorforGroup(utils.getAccentDarkColor(color), "shadow3");
+                                    UIManager.updateView(fp, p, color, utils.getItem(fp, p).getId());
 
-                                    ColorPickerDialog dialog = UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors), preferences.getInt(Utils.getItem(fp, p).getId(), 0));
+                                    ColorPickerDialog dialog = UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors), preferences.getInt(utils.getItem(fp, p).getId(), 0));
                                     dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                                         @Override
                                         public void onColorSelected(int color) {
                                             UIManager.loadColorforGroup(color, "polygon", "col");
-                                            ColorPickerDialog dialog = UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors), preferences.getInt(Utils.getItem(fp, p).getId(), 0));
+                                            ColorPickerDialog dialog = UIManager.colorChooser(R.string.choose_color, context.getResources().getIntArray(R.array.md_colors), preferences.getInt(utils.getItem(fp, p).getId(), 0));
                                             dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                                                 @Override
                                                 public void onColorSelected(int color) {
@@ -638,17 +636,17 @@ break;
                 UIManager = new UIManager(GoogleKitTwo.super.getWebView());
                 switch (p) {
                     case 0:
-                        ColorPickerDialog dialog0 =  UIManager.colorChooser(R.string.arc_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        ColorPickerDialog dialog0 =  UIManager.colorChooser(R.string.arc_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(utils.getItem(fp, p).getId(),0));
                         dialog0.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
                             public void onColorSelected(int color) {
                                 UIManager.loadColorforItemInGroup(color,"Nexus5x","BodyColor");
-                                ColorPickerDialog dialog1 =  UIManager.colorChooser(R.string.coussins_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(), 0));
+                                ColorPickerDialog dialog1 =  UIManager.colorChooser(R.string.coussins_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(utils.getItem(fp, p).getId(), 0));
                                 dialog1.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                                     @Override
                                     public void onColorSelected(int color) {
                                         UIManager.loadColorforItemInGroup(color, "Nexus5x", "CameraColor");
-                                        ColorPickerDialog dialog2 = UIManager.colorChooser(R.string.coussins_color, context.getResources().getIntArray(R.array.md_colors), preferences.getInt(Utils.getItem(fp, p).getId(), 0));
+                                        ColorPickerDialog dialog2 = UIManager.colorChooser(R.string.coussins_color, context.getResources().getIntArray(R.array.md_colors), preferences.getInt(utils.getItem(fp, p).getId(), 0));
                                         dialog2.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                                             @Override
                                             public void onColorSelected(int color) {
@@ -665,12 +663,12 @@ break;
                         UIManager.loadColor("transparent", "Bracelet");
                         UIManager.loadColor("transparent", "Circular");
                         UIManager.loadStrokeColor("transparent", "LongColor");
-                        ColorPickerDialog dialog3 =  UIManager.colorChooser(R.string.bracelet_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        ColorPickerDialog dialog3 =  UIManager.colorChooser(R.string.bracelet_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(utils.getItem(fp, p).getId(),0));
                         dialog3.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
                             public void onColorSelected(int color) {
                                 UIManager.loadColor(color, "Bracelet");
-                                ColorPickerDialog dialog4 =  UIManager.colorChooser(R.string.long_needle_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(), 0));
+                                ColorPickerDialog dialog4 =  UIManager.colorChooser(R.string.long_needle_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(utils.getItem(fp, p).getId(), 0));
                                 dialog4.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                                     @Override
                                     public void onColorSelected(int color) {
@@ -682,22 +680,22 @@ break;
                         break;
                     case 2:
                         UIManager.loadColor("transparent", "Rectangular");
-                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.bracelet_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        ColorPickerDialog dialog =  UIManager.colorChooser(R.string.bracelet_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(utils.getItem(fp, p).getId(),0));
                         dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
                             public void onColorSelected(int color) {
                                 UIManager.loadColor(color, "Bracelet");
-                                ColorPickerDialog dialog4 =  UIManager.colorChooser(R.string.long_needle_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(), 0));
+                                ColorPickerDialog dialog4 =  UIManager.colorChooser(R.string.long_needle_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(utils.getItem(fp, p).getId(), 0));
                                 dialog4.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                                     @Override
                                     public void onColorSelected(int color) {
                                         UIManager.loadColor(color, "Circular");
-                                        ColorPickerDialog dialog6 =  UIManager.colorChooser(R.string.screen_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(), 0));
+                                        ColorPickerDialog dialog6 =  UIManager.colorChooser(R.string.screen_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(utils.getItem(fp, p).getId(), 0));
                                         dialog6.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                                             @Override
                                             public void onColorSelected(int color) {
                                                 UIManager.loadStrokeColor(color, "LongColor");
-                                                ColorPickerDialog dialog7 =  UIManager.colorChooser(R.string.short_needle_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(), 0));
+                                                ColorPickerDialog dialog7 =  UIManager.colorChooser(R.string.short_needle_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(utils.getItem(fp, p).getId(), 0));
                                                 dialog7.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                                                     @Override
                                                     public void onColorSelected(int color) {
@@ -715,7 +713,7 @@ break;
 
 
                     case 4:
-                        ColorPickerDialog dialog4 =  UIManager.colorChooser(R.string.arc_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(Utils.getItem(fp, p).getId(),0));
+                        ColorPickerDialog dialog4 =  UIManager.colorChooser(R.string.arc_color,context.getResources().getIntArray(R.array.md_colors),preferences.getInt(utils.getItem(fp, p).getId(),0));
                         dialog4.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                             @Override
                             public void onColorSelected(int color) {

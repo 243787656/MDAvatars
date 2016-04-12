@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 buildscript {
-    repositories {
+     repositories {
         mavenCentral()
         mavenLocal()
     }
@@ -45,10 +45,10 @@ android {
 
     defaultConfig {
         applicationId "com.alexlionne.apps.avatars"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 23
-        versionCode 4
-        versionName "1.0.6"
+        versionCode 5
+        versionName "1.0.8"
     }
     buildTypes {
         release {
